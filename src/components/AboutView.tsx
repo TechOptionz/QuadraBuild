@@ -28,7 +28,7 @@ export default function AboutView() {
           <div data-reveal="ctn" className="lab" style={{ gridColumn: "1/4" }}>Quadra Build</div>
           <p data-reveal="p" className="p1" style={{ gridColumn: "9/13" }}>A thoughtful approach to homes, workplaces and the spaces between. Based in Brisbane, Quadra Build brings renovations, residential construction, commercial work and development approval support together with an emphasis on planning, communication and the details that make spaces work.</p>
         </div>
-        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "4rem var(--pad)" }}>
+        <div data-r="hero-stack" style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "4rem var(--pad)" }}>
           <h1 data-reveal="h" data-r="center" className="h1" style={{ fontSize: "calc(var(--h1) * 1.25)", textAlign: "center" }}><span data-ln className="ln">A Builder</span><span data-ln className="ln">Focused on</span><span data-ln className="ln">Better</span><span data-ln className="ln">Spaces.</span></h1>
         </div>
         <div style={{ padding: "0 var(--pad) 3rem", position: "relative" }}>
@@ -67,7 +67,7 @@ export default function AboutView() {
               ))}
             </div>
           </div>
-          <div style={{ gridColumn: "7/13", paddingBottom: "30vh" }}>
+          <div data-st-list style={{ gridColumn: "7/13", paddingBottom: "30vh" }}>
             {ITEMS.map((it) => (
               <div key={it.num} data-st-item style={{ minHeight: "70vh", display: "flex", flexDirection: "column", justifyContent: "center", borderTop: "1px solid rgba(249,244,238,.1)", padding: "3rem 0" }}>
                 <span className="lab5" style={{ color: "rgba(249,244,238,.55)", marginBottom: "1.2rem" }}>{it.num}</span>

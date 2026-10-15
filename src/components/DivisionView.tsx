@@ -51,7 +51,7 @@ export default function DivisionView({ division }: { division: DivisionKey }) {
               ))}
             </div>
           </div>
-          <div style={{ gridColumn: "7/13", paddingBottom: "30vh" }}>
+          <div data-st-list style={{ gridColumn: "7/13", paddingBottom: "30vh" }}>
             {services.map((s) => (
               <div key={s.id} data-st-item id={s.id} style={{ minHeight: "70vh", display: "flex", flexDirection: "column", justifyContent: "center", borderTop: "1px solid rgba(249,244,238,.1)", padding: "3rem 0" }}>
                 <span className="lab5" style={{ color: "rgba(249,244,238,.55)", marginBottom: "1.2rem" }}>{s.num}</span>
@@ -68,7 +68,7 @@ export default function DivisionView({ division }: { division: DivisionKey }) {
 
       <section data-bg="light" style={{ position: "relative", background: "#F9F4EE", color: "#211A19", padding: "var(--sec) 0", overflow: "hidden" }}>
         <div data-shadow style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", mixBlendMode: "multiply" }}>
-          <div data-blob style={{ position: "absolute", right: "-20%", top: "-30%", width: "80%", height: "70%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.12) 0%,rgba(70,50,40,0) 62%)", transform: "rotate(24deg)", filter: "blur(34px)" }} />
+          <div data-blob style={{ position: "absolute", right: "-20%", top: "-30%", width: "80%", height: "70%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.12) 0%,rgba(70,50,40,0) 62%)", transform: "rotate(24deg)" }} />
         </div>
         <div data-grid data-group style={{ padding: "0 var(--pad)", position: "relative", rowGap: "3rem" }}>
           <div data-reveal="ctn" className="lab" style={{ gridColumn: "1/4" }}>Our Process</div>
@@ -91,10 +91,12 @@ export default function DivisionView({ division }: { division: DivisionKey }) {
           <div data-grid data-group style={{ padding: "0 var(--pad)", rowGap: "3rem" }}>
             <div data-reveal="ctn" className="lab" style={{ gridColumn: "1/4" }}>What We Handle</div>
             <div style={{ gridColumn: "4/13" }}>
-              <div data-row className="lab5" style={{ display: "grid", gridTemplateColumns: "1fr 1.3fr 1.3fr", columnGap: "var(--gap)", padding: "0 0 1rem", color: "rgba(33,26,25,.55)" }}><span>Area</span><span>Coordination focus</span><span>Important boundary</span></div>
+              <div data-row data-table-head className="lab5" style={{ display: "grid", gridTemplateColumns: "1fr 1.3fr 1.3fr", columnGap: "var(--gap)", padding: "0 0 1rem", color: "rgba(33,26,25,.55)" }}><span>Area</span><span>Coordination focus</span><span>Important boundary</span></div>
               {d.table.map((r) => (
-                <div key={r[0]} data-row data-reveal="ctn" className="p1" style={{ display: "grid", gridTemplateColumns: "1fr 1.3fr 1.3fr", columnGap: "var(--gap)", padding: "1.2rem 0", borderTop: "1px solid rgba(33,26,25,.15)" }}>
-                  <span className="serif" style={{ fontSize: "calc(var(--p1) * 1.25)" }}>{r[0]}</span><span>{r[1]}</span><span style={{ color: "rgba(33,26,25,.7)" }}>{r[2]}</span>
+                <div key={r[0]} data-row data-table-row data-reveal="ctn" className="p1" style={{ display: "grid", gridTemplateColumns: "1fr 1.3fr 1.3fr", columnGap: "var(--gap)", padding: "1.2rem 0", borderTop: "1px solid rgba(33,26,25,.15)" }}>
+                  <span className="serif" style={{ fontSize: "calc(var(--p1) * 1.25)" }}>{r[0]}</span>
+                  <span><span data-cell-label className="lab5" style={{ color: "rgba(33,26,25,.5)" }}>Coordination focus</span>{r[1]}</span>
+                  <span style={{ color: "rgba(33,26,25,.7)" }}><span data-cell-label className="lab5" style={{ color: "rgba(33,26,25,.5)" }}>Important boundary</span>{r[2]}</span>
                 </div>
               ))}
               <p data-reveal="p" className="lab5" style={{ marginTop: "2.4rem", maxWidth: "34rem", lineHeight: 1.6, color: "rgba(33,26,25,.62)" }}>{d.disclaimer}</p>

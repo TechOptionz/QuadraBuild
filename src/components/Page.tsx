@@ -20,7 +20,7 @@ export default function Page({ current, enter, onInit, before, children }: {
   return (
     <div data-page ref={ref}>
       {before}
-      <main data-main style={{ opacity: 0, position: "relative", willChange: "transform" }}>{children}</main>
+      <main data-main style={{ opacity: 0, position: "relative" }}>{children}</main>
       <Footer current={current} />
     </div>
   );

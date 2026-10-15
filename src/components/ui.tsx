@@ -26,8 +26,8 @@ export function UL({ href, label, icon = "↗", dot, onClick, style, minWidth, l
 }
 
 /** Cover image filling its positioned parent. */
-export function Img({ src, alt = "", priority, eager, sizes = "100vw" }: { src: string; alt?: string; priority?: boolean; eager?: boolean; sizes?: string }) {
-  return <Image src={src} alt={alt} fill sizes={sizes} priority={priority} loading={eager ? "eager" : undefined} style={{ objectFit: "cover" }} />;
+export function Img({ src, alt = "", priority, eager, sizes = "100vw", quality }: { src: string; alt?: string; priority?: boolean; eager?: boolean; sizes?: string; quality?: 60 | 75 }) {
+  return <Image src={src} alt={alt} fill sizes={sizes} quality={quality} priority={priority} loading={eager ? "eager" : undefined} style={{ objectFit: "cover" }} />;
 }
 
 /** Soft dark gradient fill behind images (the design's warm placeholder background). */

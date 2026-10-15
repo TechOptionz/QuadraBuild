@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import QB from "@/lib/qb-engine";
 import { navTo, openDrawer } from "./ui";
 
@@ -67,10 +68,9 @@ export default function Shell() {
             <span>{menuOpen ? "Close" : "Menu"}</span>
           </button>
           <a href="/" onClick={navTo} data-logo aria-label="Quadra Build — home" style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%,-50%)", display: "flex", alignItems: "center", whiteSpace: "nowrap" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <span data-logo-light style={{ display: "flex", alignItems: "center" }}><img src="/brand/qb2-lockup-light.png" alt="Quadra Build" style={{ height: "4.8rem", width: "auto", display: "block" }} /></span>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <span data-logo-dark style={{ display: "none", alignItems: "center" }}><img src="/brand/qb2-lockup-dark.png" alt="Quadra Build" style={{ height: "4.8rem", width: "auto", display: "block" }} /></span>
+            <span data-logo-light style={{ display: "flex", alignItems: "center" }}><Image src="/brand/qb2-lockup-light.png" alt="Quadra Build" width={620} height={389} sizes="200px" loading="eager" style={{ height: "4.8rem", width: "auto", display: "block" }} /></span>
+            {/* eager so the dark variant is already cached when the header crosses into a light section */}
+            <span data-logo-dark style={{ display: "none", alignItems: "center" }}><Image src="/brand/qb2-lockup-dark.png" alt="Quadra Build" width={620} height={389} sizes="200px" loading="eager" style={{ height: "4.8rem", width: "auto", display: "block" }} /></span>
           </a>
           <div style={{ display: "flex", alignItems: "center", gap: "3rem" }}>
             <span className="sans" style={{ fontWeight: 500, fontSize: "calc(var(--l1) * 1.05)", lineHeight: 1.45, letterSpacing: ".1em", textTransform: "uppercase", fontVariantNumeric: "tabular-nums", opacity: 0.85 }} suppressHydrationWarning>{time} BNE</span>

@@ -22,11 +22,11 @@ export default function ProjectsView() {
         <VLine color="rgba(255,255,255,.12)" left="33.333%" />
         <VLine color="rgba(255,255,255,.12)" left="66.666%" />
         <Diag color="rgba(255,255,255,.12)" width="160vw" />
-        <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "2.4rem" }}>
+        <div data-r="hero-stack" style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "2.4rem" }}>
           <h1 data-reveal="h" data-r="center" className="h1" style={{ fontSize: "calc(var(--h1) * 1.15)" }}>A Closer Look at Our Work</h1>
           <p data-reveal="p" data-r="center" className="lab5" style={{ lineHeight: 1.7, color: "rgba(255,255,255,.8)" }}>Spaces shaped with care<br />for the people<br />who use them</p>
         </div>
-        <p data-reveal="p" data-r="center" className="h3" style={{ position: "absolute", left: 0, right: 0, bottom: "2rem", textAlign: "center", color: "rgba(255,255,255,.75)" }}>Spaces shaped around the people who use them.</p>
+        <p data-reveal="p" data-r="hero-caption" className="h3" style={{ position: "absolute", left: 0, right: 0, bottom: "2rem", textAlign: "center", color: "rgba(255,255,255,.75)" }}>Spaces shaped around the people who use them.</p>
       </section>
 
       <section data-bg="dark" style={{ position: "relative", background: "#211A19", color: "#F9F4EE", padding: "3rem 0 var(--sec)", overflow: "hidden" }}>

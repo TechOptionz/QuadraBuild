@@ -16,11 +16,11 @@ export default function ProjectView({ project: p }: { project: Project }) {
         </div>
         <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: "40vh", background: "linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,0))", pointerEvents: "none" }} />
         <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "30vh", background: "linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.4))", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", left: 0, right: 0, top: "calc(var(--hh) + 3rem)", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "1.4rem", padding: "0 var(--pad)", pointerEvents: "none" }}>
+        <div data-r="hero-stack" style={{ position: "absolute", left: 0, right: 0, top: "calc(var(--hh) + 3rem)", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "1.4rem", padding: "0 var(--pad)", pointerEvents: "none" }}>
           <span data-reveal="ctn" className="lab">{p.location}</span>
           <h1 data-reveal="h" data-r="center" className="h1" style={{ fontSize: "calc(var(--h1) * 1.4)" }}>{p.title}</h1>
         </div>
-        <p data-reveal="p" data-r="center" className="h3" style={{ position: "absolute", left: 0, right: 0, bottom: "3rem", textAlign: "center", padding: "0 var(--pad)" }}>{p.caption}</p>
+        <p data-reveal="p" data-r="hero-caption" className="h3" style={{ position: "absolute", left: 0, right: 0, bottom: "3rem", textAlign: "center", padding: "0 var(--pad)" }}>{p.caption}</p>
       </section>
 
       <section data-bg="light" style={{ position: "relative", background: "#F9F4EE", color: "#211A19", padding: "var(--sec) 0", overflow: "hidden" }}>
@@ -42,7 +42,7 @@ export default function ProjectView({ project: p }: { project: Project }) {
 
       <section data-bg="light" style={{ position: "relative", background: "#F9F4EE", color: "#211A19", padding: "0 0 var(--sec)", overflow: "hidden" }}>
         <VLine color="rgba(33,26,25,.1)" left="25%" /><VLine color="rgba(33,26,25,.1)" left="50%" /><VLine color="rgba(33,26,25,.1)" left="75%" />
-        <div data-grid style={{ padding: "0 var(--pad)", rowGap: "6rem", position: "relative", alignItems: "start" }}>
+        <div data-grid data-r="gal-grid" style={{ padding: "0 var(--pad)", rowGap: "6rem", position: "relative", alignItems: "start" }}>
           {p.gallery.map((img, k) => {
             const [col, ratio, mt] = LAYOUT[k % LAYOUT.length];
             return (
@@ -51,7 +51,7 @@ export default function ProjectView({ project: p }: { project: Project }) {
               </div>
             );
           })}
-          <div data-group style={{ gridColumn: "1/5", display: "flex", flexDirection: "column", gap: "1.6rem", alignSelf: "center" }}>
+          <div data-group data-r="gal-quote" style={{ gridColumn: "1/5", display: "flex", flexDirection: "column", gap: "1.6rem", alignSelf: "center" }}>
             <div data-reveal="ctn" aria-hidden="true" className="serif" style={{ fontSize: "8rem", lineHeight: 0.6, letterSpacing: "-.04em", color: "rgba(33,26,25,.2)", height: "3.4rem", overflow: "hidden" }}>“</div>
             <h3 data-reveal="h" className="h2">“Sample statement — replace with an approved client or director quote, or remove this block.”</h3>
             <span data-reveal="ctn" className="lab" style={{ color: "rgba(33,26,25,.6)" }}>Attribution pending</span>

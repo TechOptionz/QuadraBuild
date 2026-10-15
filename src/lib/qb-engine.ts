@@ -40,7 +40,7 @@ QB.setup = function () {
   CustomEase.create("loaderEase", "M0,0 C0,0 .13,.34 .238,.442 .305,.506 .322,.514 .396,.54 .478,.568 .468,.56 .522,.584 .572,.606 .61,.719 .714,.826 .79,.904 .86,1 1,1");
   QB.reduced = matchMedia("(prefers-reduced-motion: reduce)").matches || !!QB.forceReduced;
   QB.desktop = innerWidth >= 992; QB.hover = matchMedia("(hover: hover)").matches;
-  const lenis = (QB.lenis = new Lenis({ duration: 1.2, smoothWheel: true, syncTouch: true, touchMultiplier: 1.5, easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) }));
+  const lenis = (QB.lenis = new Lenis({ duration: 1.2, smoothWheel: true, syncTouch: false, easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) }));
   gsap.ticker.add((t) => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0); lenis.on("scroll", ScrollTrigger.update);
   addEventListener("keydown", (e) => { if (e.key === "Escape") { if (QB.drawerOpen) QB.closeDrawer(); else if (QB.menuOpen) QB.toggleMenu(); } });
   QB.menuOpen = false; QB.drawerOpen = false;
@@ -98,7 +98,15 @@ QB.prepReveals = function (scope: Element) {
 const kind = (el: AnyEl) => el.dataset.reveal || el.dataset.el;
 QB.reveal = function (el: AnyEl, delay = 0) {
   el._shown = true; const t = kind(el);
-  if (QB.reduced) { if (t === "ctn") gsap.set(el, { opacity: 1, y: 0 }); return; }
+  if (QB.reduced) {
+    // reduced motion: snap every reveal kind to its shown state (resetHidden may have hidden it, e.g. drawer / tab content)
+    if (t === "ctn") gsap.set(el, { opacity: 1, y: 0 });
+    else if (t === "h" && el._words) gsap.set(el._words, { yPercent: 0 });
+    else if (t === "p") { gsap.set(el, { opacity: 1 }); if (el._lines) gsap.set(el._lines, { yPercent: 0 }); }
+    else if (t === "line") gsap.set(el, { clipPath: "inset(0% 0% -1px 0%)" });
+    else if (t === "slide") { gsap.set(el, { clipPath: "inset(0% 0% 0% 0%)" }); const im = el.querySelector("[data-img]"); if (im) gsap.set(im, { scale: 1 }); }
+    return;
+  }
   if (t === "h") return gsap.to(el._words, { yPercent: 0, duration: 1.2, ease: "Out", stagger: 0.1, delay, overwrite: true });
   if (t === "p") { if (!el._lines) return; return gsap.to(el._lines, { yPercent: 0, duration: 1.2, ease: "Out", stagger: 0.1, delay, overwrite: true, onComplete: () => { if (el._split) { el._split.revert(); el._split = null; el._lines = null; } } }); }
   if (t === "ctn") return gsap.to(el, { opacity: 1, y: 0, duration: 1.2, ease: "Out", delay, overwrite: true });
@@ -154,11 +162,16 @@ QB.initSnap = function (scope: Element) {
 };
 QB.initFooter = function (scope: Element) {
   const f = q1("[data-footer]", scope), inner = q1("[data-footer-inner]", scope); if (!f || !inner) return;
-  const wm = q1("[data-wm-light]", scope);
+  const wm = q1("[data-wm-light]", scope), mark = q1("[data-wm]", scope);
   if (wm && QB.hover && !QB.reduced) {
     const pos = { x: 50, y: 120 }; const apply = () => { wm.style.setProperty("--mx", pos.x + "%"); wm.style.setProperty("--my", pos.y + "%"); };
-    f.addEventListener("pointermove", (e) => { const r = wm.getBoundingClientRect(); gsap.to(pos, { x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100, duration: 0.9, ease: "power3.out", overwrite: true, onUpdate: apply }); });
-    f.addEventListener("pointerleave", () => gsap.to(pos, { y: 200, duration: 1.6, ease: "power2.out", overwrite: true, onUpdate: apply }));
+    const mx = mark ? gsap.quickTo(mark, "x", { duration: 1.4, ease: "power3" }) : null, my = mark ? gsap.quickTo(mark, "y", { duration: 1.4, ease: "power3" }) : null;
+    f.addEventListener("pointermove", (e) => {
+      const r = wm.getBoundingClientRect(), fr = f.getBoundingClientRect();
+      gsap.to(pos, { x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100, duration: 0.9, ease: "power3.out", overwrite: true, onUpdate: apply });
+      if (mx && my) { mx(((e.clientX - fr.left) / fr.width - 0.5) * -36); my(((e.clientY - fr.top) / fr.height - 0.5) * -18); }
+    });
+    f.addEventListener("pointerleave", () => { gsap.to(pos, { y: 200, duration: 1.6, ease: "power2.out", overwrite: true, onUpdate: apply }); if (mx && my) { mx(0); my(0); } });
   }
   if (!QB.desktop || QB.reduced) return;
   gsap.fromTo(inner, { yPercent: -40 }, { yPercent: 0, ease: "none", scrollTrigger: { trigger: f, start: "top bottom", end: "bottom bottom", scrub: true } });
@@ -168,10 +181,13 @@ QB.initFooter = function (scope: Element) {
 QB.initHeader = function () {
   const header = q1("[data-header]"); if (!header) return; QB.headerEl = header;
   const colors: Record<string, string> = { dark: "#F9F4EE", light: "#211A19", color: "#FFFFFF", grey: "#211A19" };
+  let bgs: AnyEl[] = [], bgScope: Element | null = null, cur = "";
   const theme = () => {
+    const scope = QB.page || QB.root; if (scope !== bgScope) { bgScope = scope; bgs = q("[data-bg]", scope); }
     const y = header.offsetHeight / 2; let bg = "dark";
-    for (const s of q("[data-bg]", QB.page || QB.root)) { const r = s.getBoundingClientRect(); if (r.top <= y && r.bottom > y) { bg = s.dataset.bg || "dark"; break; } }
+    for (const s of bgs) { const r = s.getBoundingClientRect(); if (r.top <= y && r.bottom > y) { bg = s.dataset.bg || "dark"; break; } }
     if (QB.menuOpen) bg = "dark";
+    if (bg === cur) return; cur = bg;
     header.style.color = colors[bg] || colors.dark; header.dataset.theme = bg;
     const L = header.querySelector<HTMLElement>("[data-logo-light]"), D = header.querySelector<HTMLElement>("[data-logo-dark]"); const light = bg === "light" || bg === "grey";
     if (L && D) { L.style.display = light ? "none" : "flex"; D.style.display = light ? "flex" : "none"; }
@@ -202,18 +218,25 @@ QB.initHovers = function () {
     a.addEventListener("mouseleave", () => { gsap.to(ca, { yPercent: 0, opacity: 1, duration: 0.8, ease: "Out", stagger: 0.02, overwrite: true }); gsap.to(cb, { yPercent: 100, opacity: 0, duration: 0.8, ease: "Out", stagger: 0.02, overwrite: true }); });
   });
 };
+const MAG = "[data-magnetic],[data-ul],[data-cta],[data-pulse],[data-enq-arrow],[data-acc-icon],[data-filters] button,[data-navlink],[data-svc-item],[data-fnav] a,[data-fdiv] a,[data-flegal] a,[data-rel-cap],[data-logo]";
+const magStrength = (el: AnyEl) => {
+  const a = el.getAttribute("data-magnetic"); if (a && !isNaN(+a)) return +a;
+  if (el.hasAttribute("data-pulse")) return 22; if (el.hasAttribute("data-enq-arrow")) return 18; if (el.hasAttribute("data-cta")) return 16; if (el.hasAttribute("data-magnetic")) return 25;
+  if (el.hasAttribute("data-acc-icon")) return 12; if (el.hasAttribute("data-ul")) return 10; if (el.closest("[data-fnav]")) return 8; return 6;
+};
 QB.initMagnetic = function (scope: Element | null) {
-  if (!scope || !QB.hover) return;
-  q("[data-magnetic]", scope).forEach((btn) => {
-    if (btn._mag) return; btn._mag = true;
-    btn.addEventListener("pointermove", (e) => { const r = btn.getBoundingClientRect(); const dx = ((e.clientX - r.left) / r.width - 0.5) * 25, dy = ((e.clientY - r.top) / r.height - 0.5) * 25; gsap.to(btn, { x: dx, y: dy, duration: 1.6, ease: "power4.out", overwrite: true }); });
-    btn.addEventListener("pointerleave", () => gsap.to(btn, { x: 0, y: 0, duration: 1.6, ease: "elastic.out(1,.3)", overwrite: true }));
+  if (!scope || !QB.hover || !QB.desktop || QB.reduced) return;
+  q(MAG, scope).forEach((btn) => {
+    if (btn._mag) return; btn._mag = true; const k = magStrength(btn);
+    const inner = btn.querySelector<HTMLElement>(".ul-row > span:last-child,[data-cta-dot],[data-svc-arrow]");
+    btn.addEventListener("pointermove", (e) => { const r = btn.getBoundingClientRect(); const dx = ((e.clientX - r.left) / r.width - 0.5) * k, dy = ((e.clientY - r.top) / r.height - 0.5) * k; gsap.to(btn, { x: dx, y: dy, duration: 1.2, ease: "power4.out", overwrite: "auto" }); if (inner) gsap.to(inner, { x: dx * 0.8, y: dy * 0.8, duration: 1.2, ease: "power4.out", overwrite: "auto" }); });
+    btn.addEventListener("pointerleave", () => { gsap.to(btn, { x: 0, y: 0, duration: 1.4, ease: "elastic.out(1,.35)", overwrite: "auto" }); if (inner) gsap.to(inner, { x: 0, y: 0, duration: 1.4, ease: "elastic.out(1,.35)", overwrite: "auto" }); });
   });
 };
 QB.initCursor = function () {
   if (!QB.desktop || !QB.hover || QB.reduced) return;
   const glow = q1("[data-glow]");
-  try { QB._fluid = !!initFluidCursor({ zIndex: 1150, opacity: 0.08, densityIntensity: 0.012, splatRadius: 0.012, velocityScale: 380, densityDissipation: 0.985 }); } catch { QB._fluid = false; }
+  try { QB._fluid = !!initFluidCursor({ zIndex: 1150, opacity: 0.08, densityIntensity: 0.012, splatRadius: 0.012, velocityScale: 380, densityDissipation: 0.985, maxPixelRatio: 1, idleFrames: 150 }); } catch { QB._fluid = false; }
   if (QB._fluid) { if (glow) gsap.set(glow, { display: "none" }); return; }
   if (!glow) return; gsap.set(glow, { display: "block", x: innerWidth / 2, y: innerHeight / 2 });
   const gx = gsap.quickTo(glow, "x", { duration: 0.6, ease: "power3" }), gy = gsap.quickTo(glow, "y", { duration: 0.6, ease: "power3" });

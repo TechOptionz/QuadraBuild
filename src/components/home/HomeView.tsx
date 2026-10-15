@@ -1,5 +1,6 @@
 "use client";
-import { useRef, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import QB from "@/lib/qb-engine";
@@ -30,7 +31,7 @@ export default function HomeView() {
   /* ---------- hero slideshow ---------- */
   const initHeroSlides = () => {
     const slides = q("[data-hero-slide]"), fills = q("[data-hero-fill]"); if (slides.length < 2) return;
-    const HOLD = 6, FADE = 1.6; let i = 0; const calls: any[] = [];
+    const HOLD = 4.5, FADE = 1.2; let i = 0; const calls: any[] = [];
     gsap.set(slides, { scale: 1.08 }); gsap.set(slides[0], { opacity: 1 });
     const run = () => {
       const cur = slides[i], nxt = slides[(i + 1) % slides.length];
@@ -131,7 +132,7 @@ export default function HomeView() {
     gsap.set(words, { yPercent: 135 }); gsap.set(frame, { clipPath: "inset(50% 0% 50% 0%)" }); gsap.set(fimg, { scale: 1.2 }); gsap.set(texts, { opacity: 0, y: 16 });
     const deltas = masks.map((m: HTMLElement, i: number) => { const mr = m.getBoundingClientRect(), ar = anchors[i].getBoundingClientRect(); return { x: ar.left - (mr.left + mr.width / 2), y: ar.top - (mr.top + mr.height / 2) }; });
     const lr = logo.getBoundingClientRect(), hr = hLogo.getBoundingClientRect();
-    const ld = { x: hr.left + hr.width / 2 - (lr.left + lr.width / 2), y: hr.top + hr.height / 2 - (lr.top + lr.height / 2) };
+    const ld = { x: hr.left + hr.width / 2 - (lr.left + lr.width / 2), y: hr.top + hr.height / 2 - (lr.top + lr.height / 2), s: hr.width && lr.width ? hr.width / lr.width : 0.45 };
     const ap = { p: 0 }; const o = { v: 0 };
     const clip = (p: number) => { const h = 50 * p; pre.style.clipPath = "polygon(evenodd, 0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, " + (50 - h) + "% " + (50 - h) + "%, " + (50 + h) + "% " + (50 - h) + "%, " + (50 + h) + "% " + (50 + h) + "%, " + (50 - h) + "% " + (50 + h) + "%, " + (50 - h) + "% " + (50 - h) + "%)"; };
     const tl = gsap.timeline({ onComplete: () => finishIntro() });
@@ -140,7 +141,7 @@ export default function HomeView() {
       .to(o, { v: 100, duration: 3, ease: "loaderEase", onUpdate: () => { counter.textContent = String(Math.round(o.v)).padStart(2, "0") + " %"; prog.style.transform = "scaleX(" + o.v / 100 + ")"; } }, 1.2)
       .add(() => masks.forEach((m: HTMLElement) => (m.style.overflow = "visible")), 1.3)
       .to(words, { x: (i: number) => deltas[i].x, y: (i: number) => deltas[i].y, duration: 1.2, ease: "InOut" }, 1.3)
-      .to(logo, { x: ld.x, y: ld.y, scale: 0.45, duration: 1.2, ease: "InOut" }, 1.3)
+      .to(logo, { x: ld.x, y: ld.y, scale: ld.s, duration: 1.2, ease: "InOut" }, 1.3)
       .to(prog, { opacity: 0, duration: 0.4 }, 1.3)
       .to(frame, { clipPath: "inset(0% 0% 0% 0%)", duration: 1, ease: "InOut" }, 1.4)
       .to(fimg, { scale: 1, duration: 1, ease: "InOut" }, 1.4)
@@ -169,9 +170,7 @@ export default function HomeView() {
       <section id="hero" data-hero data-bg="color" data-sout style={{ position: "relative", height: "100svh", minHeight: 600, overflow: "hidden", background: "#211A19", color: "#fff" }}>
         <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
           <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(90% 70% at 30% 30%,#54433b 0%,rgba(84,67,59,0) 60%),radial-gradient(60% 50% at 80% 80%,#3b2f2a 0%,rgba(59,47,42,0) 70%),linear-gradient(170deg,#2a2220 0%,#211A19 55%,#17120f 100%)" }}>
-            {HERO_SLIDES.map((id, i) => (
-              <div key={id} data-hero-slide={i} style={{ position: "absolute", inset: 0, opacity: i ? 0 : 1, willChange: "transform,opacity" }}><Img src={px(id, 2560)} alt="" priority={i === 0} eager /></div>
-            ))}
+            <HeroSlides />
           </div>
         </div>
         <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: "32vh", background: "linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,0))", pointerEvents: "none" }} />
@@ -199,8 +198,8 @@ export default function HomeView() {
       {/* 02 ABOUT */}
       <section id="about" data-bg="dark" style={{ position: "relative", background: "#211A19", color: "#F9F4EE", padding: "var(--sec) 0 calc(var(--sec) * .8)", overflow: "hidden" }}>
         <div data-shadow style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", mixBlendMode: "multiply" }}>
-          <div data-blob style={{ position: "absolute", left: "-10%", top: "-20%", width: "70%", height: "60%", background: "radial-gradient(ellipse at center,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 65%)", transform: "rotate(-18deg)", filter: "blur(40px)" }} />
-          <div data-blob style={{ position: "absolute", right: "-15%", bottom: "-25%", width: "60%", height: "70%", background: "radial-gradient(ellipse at center,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 65%)", transform: "rotate(22deg)", filter: "blur(50px)" }} />
+          <div data-blob style={{ position: "absolute", left: "-10%", top: "-20%", width: "70%", height: "60%", background: "radial-gradient(ellipse at center,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 65%)", transform: "rotate(-18deg)" }} />
+          <div data-blob style={{ position: "absolute", right: "-15%", bottom: "-25%", width: "60%", height: "70%", background: "radial-gradient(ellipse at center,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 65%)", transform: "rotate(22deg)" }} />
         </div>
         <VLine />
         <div data-grid style={{ padding: "0 var(--pad)", alignItems: "center", position: "relative", rowGap: "3rem" }}>
@@ -273,8 +272,8 @@ export default function HomeView() {
       {/* 05 CRAFT / SKETCH */}
       <section id="craft" data-bg="light" data-snap data-r="snap" style={{ position: "relative", height: "100vh", minHeight: 640, background: "#F9F4EE", color: "#211A19", overflow: "hidden" }}>
         <div data-shadow style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", mixBlendMode: "multiply" }}>
-          <div data-blob style={{ position: "absolute", right: "-20%", top: "-30%", width: "80%", height: "80%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.16) 0%,rgba(70,50,40,0) 62%)", transform: "rotate(28deg)", filter: "blur(30px)" }} />
-          <div data-blob style={{ position: "absolute", right: "5%", top: "10%", width: "40%", height: "35%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.12) 0%,rgba(70,50,40,0) 65%)", transform: "rotate(-12deg)", filter: "blur(24px)" }} />
+          <div data-blob style={{ position: "absolute", right: "-20%", top: "-30%", width: "80%", height: "80%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.16) 0%,rgba(70,50,40,0) 62%)", transform: "rotate(28deg)" }} />
+          <div data-blob style={{ position: "absolute", right: "5%", top: "10%", width: "40%", height: "35%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.12) 0%,rgba(70,50,40,0) 65%)", transform: "rotate(-12deg)" }} />
         </div>
         <Diag color="rgba(33,26,25,.12)" width="150vw" />
         <div data-grid data-group data-craft-grid style={{ gridTemplateRows: "1fr auto", padding: "var(--hh) var(--pad) 3rem", position: "relative", height: "100%", rowGap: "2.5rem" }}>
@@ -296,7 +295,7 @@ export default function HomeView() {
         <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
           <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(70% 60% at 50% 40%,#5c4a3f 0%,rgba(92,74,63,0) 60%),linear-gradient(180deg,#33291f 0%,#211A19 55%,#120e0c 100%)" }}><Img src={px(8134745)} alt="" /></div>
         </div>
-        <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "40%", background: "linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.35))", pointerEvents: "none" }} />
+        <div data-r="shade" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "40%", background: "linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.35))", pointerEvents: "none" }} />
         <div data-grid data-group data-spread-wrap style={{ padding: "0 var(--pad)", position: "absolute", left: 0, right: 0, top: "50%", transform: "translateY(-50%)", pointerEvents: "none", rowGap: ".4rem" }}>
           <h2 data-reveal="h" className="h1" style={{ gridColumn: "1/5" }}>RENOVATE.</h2>
           <h2 data-reveal="h" className="h1" style={{ gridColumn: "6/9" }}>BUILD.</h2>
@@ -317,14 +316,14 @@ export default function HomeView() {
       {/* 07 SERVICES */}
       <section id="services" data-bg="light" data-group style={{ position: "relative", background: "#F9F4EE", color: "#211A19", padding: "var(--sec) 0", overflow: "hidden" }}>
         <div data-shadow style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", mixBlendMode: "multiply" }}>
-          <div data-blob style={{ position: "absolute", left: "-10%", top: "-40%", width: "90%", height: "90%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.1) 0%,rgba(70,50,40,0) 62%)", transform: "rotate(-20deg)", filter: "blur(36px)" }} />
+          <div data-blob style={{ position: "absolute", left: "-10%", top: "-40%", width: "90%", height: "90%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.1) 0%,rgba(70,50,40,0) 62%)", transform: "rotate(-20deg)" }} />
         </div>
         <div data-grid style={{ padding: "0 var(--pad)", position: "relative", alignItems: "stretch", rowGap: "2rem" }}>
           <div data-r="mob" data-mo="0" className="lab" style={{ gridColumn: "1/-1", display: "block" }}>Services</div>
           <div data-r="stage" data-mo="4" style={{ gridColumn: "1/7", position: "relative", aspectRatio: "16/10", overflow: "hidden" }}>
             {TABS.map((t, i) => (
               <div key={t.href} data-tab-img={i} {...(i ? { "data-el": "slide" } : { "data-reveal": "slide" })} style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-                <div data-img style={{ position: "absolute", inset: 0, background: t.bg }}><Img src={t.img} alt={t.label} eager sizes="(min-width: 992px) 50vw, 100vw" /></div>
+                <div data-img style={{ position: "absolute", inset: 0, background: t.bg }}><Img src={t.img} alt={t.label} sizes="(min-width: 992px) 50vw, 100vw" /></div>
               </div>
             ))}
           </div>
@@ -360,22 +359,37 @@ export default function HomeView() {
   );
 }
 
+/** Hero slideshow frames. Slide 0 is the LCP image and is preloaded; the other frames mount shortly after so they
+ *  never compete with it (the first crossfade is 6s away). No will-change: GSAP promotes only the frame it animates. */
+function HeroSlides() {
+  const [rest, setRest] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setRest(true), 1500); return () => clearTimeout(t); }, []);
+  return (
+    <>
+      {HERO_SLIDES.map((id, i) => (
+        <div key={id} data-hero-slide={i} style={{ position: "absolute", inset: 0, opacity: i ? 0 : 1 }}>
+          {(i === 0 || rest) && <Img src={px(id, 2560)} alt="" priority={i === 0} quality={i === 0 ? 75 : 60} />}
+        </div>
+      ))}
+    </>
+  );
+}
+
 function Preloader() {
   const lines = ["16.666%", "33.333%", "50%", "66.666%", "83.333%"];
   return (
     <div data-pre style={{ position: "fixed", inset: 0, zIndex: 3000, background: "#211A19", color: "#F9F4EE", overflow: "hidden", visibility: "hidden" }}>
       {lines.map((l) => <div key={l} style={{ position: "absolute", top: 0, bottom: 0, left: l, width: 1, background: "rgba(249,244,238,.1)" }} />)}
       <div data-pre-logo style={{ position: "absolute", left: "var(--pad)", top: "50%", transform: "translateY(-50%)", width: "18rem" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/brand/qb2-lockup-light.png" alt="Quadra Build" style={{ width: "100%", height: "auto", display: "block" }} />
+        <Image src="/brand/qb2-lockup-light.png" alt="Quadra Build" width={620} height={389} priority sizes="360px" style={{ width: "100%", height: "auto", display: "block" }} />
       </div>
       <div data-pre-prog style={{ position: "absolute", left: "var(--pad)", top: "calc(50% + 6.9rem)", width: "18rem", height: 1, background: "#FF6500", transform: "scaleX(0)", transformOrigin: "left" }} />
       <div data-pre-head className="h1" style={{ position: "absolute", left: "50%", top: "50%", transform: "translateY(-50%)", whiteSpace: "nowrap", paddingLeft: "1rem" }}>
-        {["Built", "With", "Care", "Always"].map((w) => (
-          <span key={w} style={{ display: "inline-block", overflow: "hidden", padding: ".1em 0 .2em", margin: "-.1em 0 -.2em", verticalAlign: "top" }}><span data-pw style={{ display: "inline-block" }}>{w}</span>{" "}</span>
+        {["Built", "With", "Care", "Always"].map((w, i) => (
+          <span key={w} style={{ display: "inline-block", overflow: "hidden", padding: ".1em 0 .2em", margin: `-.1em 0 -.2em ${i ? ".25em" : "0"}`, verticalAlign: "top" }}><span data-pw style={{ display: "inline-block" }}>{w}</span></span>
         ))}
       </div>
-      {[["8.333%", "50%"], ["25%", "50%"], ["58.333%", "26%"], ["58.333%", "74%"]].map(([l, t]) => <div key={l + t} data-pt style={{ position: "absolute", left: l, top: t, width: 0, height: 0 }} />)}
+      {[["8.333%", "50%"], ["25%", "50%"], ["58.333%", "26%"], ["58.333%", "74%"]].map(([l, t], i) => <div key={l + t} data-pt={i} style={{ position: "absolute", left: l, top: t, width: 0, height: 0 }} />)}
       <div data-pre-frame style={{ position: "absolute", left: "calc(66.666% + 1.5rem)", right: "1.5rem", top: "18vh", height: "64vh", overflow: "hidden" }}>
         <div data-img style={{ position: "absolute", inset: 0, background: warm() }}><Img src={px(9976121)} alt="" priority sizes="33vw" /></div>
       </div>
