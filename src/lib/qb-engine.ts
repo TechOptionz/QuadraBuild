@@ -34,6 +34,7 @@ QB.failSafe = function () {
 QB.setup = function () {
   if (QB._setup) return; QB._setup = true;
   QB.root = document.querySelector("[data-qb]");
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual"; // the engine owns scroll position on every page entry
   gsap.registerPlugin(ScrollTrigger, SplitText, CustomEase);
   CustomEase.create("InOut", "0.75,0,0.25,1"); CustomEase.create("Out", "0.25,1,0.5,1"); CustomEase.create("In", "0.5,0,0.75,0"); CustomEase.create("Ease", "0.25,0.1,0.25,1");
   CustomEase.create("loaderEase", "M0,0 C0,0 .13,.34 .238,.442 .305,.506 .322,.514 .396,.54 .478,.568 .468,.56 .522,.584 .572,.606 .61,.719 .714,.826 .79,.904 .86,1 1,1");
@@ -54,8 +55,8 @@ QB.initPage = function (page: HTMLElement, opts: any) {
   QB.reduced = matchMedia("(prefers-reduced-motion: reduce)").matches || !!QB.forceReduced;
   QB.page = page; QB._leaving = false; QB._entered = true;
   ScrollTrigger.getAll().forEach((t) => t.kill());
-  window.scrollTo(0, 0); QB.lenis.scrollTo(0, { immediate: true, force: true });
-  const header = q1("[data-header]"); if (header) { gsap.set(header, { yPercent: 0 }); QB._hidden = false; }
+  QB.toTop(); setTimeout(QB.toTop, 60); setTimeout(QB.toTop, 300); // beat any late scroll restoration by the browser or router
+  QB.resetHeader();
   if (QB.drawerOpen) QB.closeDrawer(); if (QB.menuOpen) QB.toggleMenu();
   document.documentElement.style.overflow = ""; QB.lenis.start();
   QB.prepReveals(page); QB.initScrollReveals(page); QB.initParallax(page); QB.initSout(page); QB.initShadows(page); QB.initFooter(page); QB.initAccordions(page); QB.initSticky(page); QB.initSnap(page); QB.initMagnetic(page);
@@ -63,6 +64,8 @@ QB.initPage = function (page: HTMLElement, opts: any) {
   if (opts.enter !== false) QB.enterPage(opts.enter || "iris");
   if (QB.theme) QB.theme();
 };
+QB.toTop = function () { if (!QB.page) return; window.scrollTo(0, 0); if (QB.lenis) QB.lenis.scrollTo(0, { immediate: true, force: true }); };
+QB.resetHeader = function () { const header = q1("[data-header]"); if (!header) return; QB._hidden = false; gsap.set(header, { yPercent: 0 }); };
 QB.destroyPage = function () {
   ScrollTrigger.getAll().forEach((t) => t.kill());
   QB._cleanup.forEach((f: () => void) => { try { f(); } catch {} }); QB._cleanup = [];
@@ -176,7 +179,8 @@ QB.initHeader = function () {
   QB.theme = theme; theme();
   let dir = 0, turnY = 0; QB._hidden = false;
   QB.lenis.on("scroll", ({ scroll, direction }: any) => {
-    theme(); if (direction !== dir) { dir = direction; turnY = scroll; }
+    theme(); if (QB.lenis.isStopped || QB._leaving || !QB._entered) return; // ignore restoration jumps while locked or leaving
+    if (direction !== dir) { dir = direction; turnY = scroll; }
     const nearBottom = scroll >= document.documentElement.scrollHeight - innerHeight - 10;
     if (direction === 1 && scroll > 100 && !QB._hidden && !QB.drawerOpen) { QB._hidden = true; gsap.to(header, { yPercent: -200, duration: 0.8, ease: "Out", overwrite: true }); }
     else if (QB._hidden && ((direction === -1 && turnY - scroll > 40) || nearBottom || scroll < 100)) { QB._hidden = false; gsap.to(header, { yPercent: 0, duration: 0.8, ease: "Out", overwrite: true }); }
@@ -305,7 +309,7 @@ QB.transitionOut = function (href: string) {
 QB.enterPage = function (mode: string) {
   const main = q1("[data-main]"), header = q1("[data-header]"); if (!main) return;
   const heroItems = q("[data-hero] [data-reveal]");
-  ScrollTrigger.refresh();
+  ScrollTrigger.refresh(); QB.resetHeader();
   if (QB.reduced) { gsap.set([main, header], { opacity: 1 }); return; }
   if (QB.navigated || mode === "iris") {
     const o = { p: 0 }; QB.iris(main, 0); gsap.set(main, { opacity: 1 }); gsap.to(header, { opacity: 1, duration: 0.8, ease: "Out", delay: 0.3 });

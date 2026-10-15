@@ -114,8 +114,9 @@ export default function HomeView() {
   };
   const finishIntro = () => {
     if (S.introDone) return; S.introDone = true;
-    const pre = q1("[data-pre]"), main = q1("[data-main]");
+    const pre = q1("[data-pre]"), main = q1("[data-main]"), header = QB.q1("[data-header]");
     gsap.set(pre, { display: "none" }); gsap.set(main, { clearProps: "transform" });
+    QB.resetHeader(); gsap.to(header, { opacity: 1, duration: 0.6, ease: "Out", overwrite: "auto" });
     try { sessionStorage.setItem("qb_visited", "1"); } catch {}
     QB.unlock(); ScrollTrigger.refresh(); revealHero(0.1); startHeroSlides();
   };
