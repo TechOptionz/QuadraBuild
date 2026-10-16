@@ -1,5 +1,6 @@
 "use client";
 import { DIVISIONS } from "@/lib/divisions";
+import { GALLERIES } from "@/lib/galleries";
 import { PROJECTS, projectHref, px, type DivisionKey } from "@/lib/projects";
 import Page from "./Page";
 import Promise from "./Promise";
@@ -7,6 +8,7 @@ import { Img, UL, VLine, navTo, warm } from "./ui";
 
 export default function DivisionView({ division }: { division: DivisionKey }) {
   const d = DIVISIONS[division];
+  const gal = GALLERIES[division];
   const proj = PROJECTS.find((p) => p.divisionKey === division) || PROJECTS[0];
   const services = d.services.map((s, i) => ({ num: "0" + (i + 1), title: s[0], body: s[1], id: `${division}-s${i + 1}`, img: px(d.pool[i % d.pool.length]) }));
   return (
@@ -64,6 +66,33 @@ export default function DivisionView({ division }: { division: DivisionKey }) {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section data-bg="dark" style={{ position: "relative", background: "#211A19", color: "#F9F4EE", padding: "0 0 var(--sec)", overflow: "hidden" }}>
+        <div data-grid data-group style={{ padding: "3rem var(--pad) 3rem", position: "relative", rowGap: "2rem", borderTop: "1px solid rgba(249,244,238,.1)" }}>
+          <div data-reveal="ctn" className="lab" style={{ gridColumn: "1/4" }}>{gal.eyebrow}</div>
+          <div style={{ gridColumn: "7/13", display: "flex", flexDirection: "column", gap: "1.4rem" }}>
+            <h2 data-reveal="h" className="h2">{gal.title}</h2>
+            <p data-reveal="p" className="lab5" style={{ lineHeight: 1.6, color: "rgba(249,244,238,.62)", maxWidth: "32rem" }}>{gal.intro}</p>
+          </div>
+        </div>
+        <div data-grid data-group style={{ padding: "0 var(--pad)", position: "relative", rowGap: "var(--gap)", alignItems: "stretch" }}>
+          {gal.items.map((it, i) => {
+            const span = ["1/8", "8/13", "1/5", "5/9", "9/13", "1/13"][i];
+            const ratio = ["16/10", undefined, "1/1", "1/1", "1/1", "21/9"][i];
+            return (
+              <figure key={it.src} data-reveal="slide" data-rel-img data-r="gal" style={{ gridColumn: span, aspectRatio: ratio, position: "relative", overflow: "hidden", margin: 0, minHeight: ratio ? undefined : "12rem", background: warm(150 + i * 15) }}>
+                <div data-img style={{ position: "absolute", inset: 0 }}><Img src={it.src} alt={it.alt} sizes={i === 5 ? "100vw" : i < 2 ? "(min-width: 992px) 58vw, 100vw" : "(min-width: 992px) 33vw, 100vw"} /></div>
+                <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "45%", background: "linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.55))", pointerEvents: "none" }} />
+                <figcaption className="lab5" style={{ position: "absolute", left: "1.4rem", bottom: "1.2rem", right: "1.4rem", color: "rgba(249,244,238,.9)", textShadow: "0 1px 10px rgba(0,0,0,.4)" }}>{it.caption}</figcaption>
+              </figure>
+            );
+          })}
+        </div>
+        <div data-grid data-group style={{ padding: "3rem var(--pad) 0", position: "relative" }}>
+          <p data-reveal="p" className="lab5" style={{ gridColumn: "1/7", lineHeight: 1.6, color: "rgba(249,244,238,.5)", maxWidth: "30rem" }}>Illustrative imagery showing the type of work explored by this division.</p>
+          <div style={{ gridColumn: "7/13", display: "flex" }}><UL href="/projects" label="View Our Projects" data-reveal="ctn" minWidth="13rem" lineOpacity={0.4} /></div>
         </div>
       </section>
 
