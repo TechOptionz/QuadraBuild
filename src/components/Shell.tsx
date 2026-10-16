@@ -46,8 +46,8 @@ export default function Shell() {
 
       <header data-header style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1200, height: "var(--hh)", color: "#F9F4EE", opacity: 0, background: "rgba(58,51,48,.5)", backdropFilter: "blur(18px) saturate(140%)", WebkitBackdropFilter: "blur(18px) saturate(140%)", borderBottom: "1px solid rgba(249,244,238,.08)", boxShadow: "0 1px 0 rgba(0,0,0,.25)" }}>
         <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%", padding: "0 var(--pad)" }}>
-          <a href="/" onClick={navTo} data-logo aria-label="Quadra Build — home" style={{ display: "flex", alignItems: "center", flex: "none" }}>
-            <Image src="/brand/qb-lockup.png" alt="Quadra Build" width={1179} height={726} sizes="200px" loading="eager" style={{ height: "4.3rem", width: "auto", display: "block" }} />
+          <a href="/" onClick={navTo} data-logo aria-label="Quadra Build — home" style={{ display: "flex", alignItems: "center", flex: "none", paddingLeft: "1.4rem" }}>
+            <Image src="/brand/qb-lockup.png" alt="Quadra Build" width={1179} height={726} sizes="240px" loading="eager" style={{ height: "min(5rem, calc(var(--hh) - .5rem))", width: "auto", display: "block" }} />
           </a>
           <nav data-r="desk" aria-label="Primary" style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%,-50%)", display: "flex", gap: "2.6rem", alignItems: "center", whiteSpace: "nowrap" }}>
               <NavLink label="Home" href="/" />
