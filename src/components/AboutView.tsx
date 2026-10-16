@@ -19,6 +19,7 @@ export default function AboutView() {
         <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
           <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "#211A19" }}><Img src={px(8134821, 2560)} alt="" priority /></div>
         </div>
+        <div data-hero-scrim />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.25) 40%,rgba(0,0,0,.6))", pointerEvents: "none" }} />
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(60% 55% at 50% 60%,rgba(0,0,0,.45),rgba(0,0,0,0) 70%)", pointerEvents: "none" }} />
         <Diag color="rgba(255,255,255,.14)" width="160vw" />
@@ -85,7 +86,10 @@ export default function AboutView() {
       <section data-bg="light" style={{ position: "relative", background: "#F9F4EE", color: "#211A19", padding: "var(--sec) 0", overflow: "hidden" }}>
         <VLine color="rgba(33,26,25,.1)" />
         <div data-grid data-group style={{ padding: "0 var(--pad)", position: "relative", rowGap: "3rem" }}>
-          <h2 data-reveal="h" className="h1" style={{ gridColumn: "1/6" }}><span data-ln className="ln">Explore Our</span><span data-ln className="ln">Divisions</span></h2>
+          <div style={{ gridColumn: "1/6", display: "flex", flexDirection: "column", gap: "2rem", alignSelf: "start" }}>
+            <h2 data-reveal="h" className="h1"><span data-ln className="ln">Explore Our</span><span data-ln className="ln">Divisions</span></h2>
+            <UL href="/services" label="View All Services" data-reveal="ctn" minWidth="13rem" lineOpacity={0.4} />
+          </div>
           <div style={{ gridColumn: "7/13", display: "flex", flexDirection: "column" }}>
             {DIVS.map(([n, l, h]) => (
               <a key={h} href={h} onClick={navTo} data-reveal="ctn" data-ul style={{ display: "grid", gridTemplateColumns: "3rem 1fr auto", alignItems: "center", gap: "1rem", padding: "1.4rem 0", minWidth: 0, alignSelf: "stretch" }}>

@@ -17,6 +17,7 @@ export default function ProjectsView() {
         <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
           <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "#211A19" }}><Img src={px(4626268, 2560)} alt="" priority /></div>
         </div>
+        <div data-hero-scrim />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.25) 40%,rgba(0,0,0,.6))", pointerEvents: "none" }} />
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(60% 55% at 50% 55%,rgba(0,0,0,.45),rgba(0,0,0,0) 70%)", pointerEvents: "none" }} />
         <VLine color="rgba(255,255,255,.12)" left="33.333%" />

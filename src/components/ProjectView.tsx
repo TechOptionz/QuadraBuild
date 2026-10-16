@@ -14,6 +14,7 @@ export default function ProjectView({ project: p }: { project: Project }) {
         <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
           <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(80% 60% at 25% 35%,#5a483f 0%,rgba(90,72,63,0) 60%),linear-gradient(165deg,#30261f 0%,#211A19 60%,#15100e 100%)" }}><Img src={p.hero} alt={p.title} priority /></div>
         </div>
+        <div data-hero-scrim />
         <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: "40vh", background: "linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,0))", pointerEvents: "none" }} />
         <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "30vh", background: "linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.4))", pointerEvents: "none" }} />
         <div data-r="hero-stack" style={{ position: "absolute", left: 0, right: 0, top: "calc(var(--hh) + 3rem)", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: "1.4rem", padding: "0 var(--pad)", pointerEvents: "none" }}>

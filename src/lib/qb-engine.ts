@@ -26,7 +26,6 @@ QB.ready = function (cb: () => void) {
 QB.failSafe = function () {
   const root = document.querySelector("[data-qb]"); if (!root) return;
   root.querySelectorAll<HTMLElement>("[data-reveal],[data-el]").forEach((el) => (el.style.visibility = "visible"));
-  const pre = root.querySelector<HTMLElement>("[data-pre]"); if (pre) pre.style.display = "none";
   root.querySelectorAll<HTMLElement>("[data-main],[data-header]").forEach((e) => (e.style.opacity = "1"));
 };
 
@@ -180,7 +179,6 @@ QB.initFooter = function (scope: Element) {
 /* ---------- header ---------- */
 QB.initHeader = function () {
   const header = q1("[data-header]"); if (!header) return; QB.headerEl = header;
-  const colors: Record<string, string> = { dark: "#F9F4EE", light: "#211A19", color: "#FFFFFF", grey: "#211A19" };
   let bgs: AnyEl[] = [], bgScope: Element | null = null, cur = "";
   const theme = () => {
     const scope = QB.page || QB.root; if (scope !== bgScope) { bgScope = scope; bgs = q("[data-bg]", scope); }
@@ -188,9 +186,7 @@ QB.initHeader = function () {
     for (const s of bgs) { const r = s.getBoundingClientRect(); if (r.top <= y && r.bottom > y) { bg = s.dataset.bg || "dark"; break; } }
     if (QB.menuOpen) bg = "dark";
     if (bg === cur) return; cur = bg;
-    header.style.color = colors[bg] || colors.dark; header.dataset.theme = bg;
-    const L = header.querySelector<HTMLElement>("[data-logo-light]"), D = header.querySelector<HTMLElement>("[data-logo-dark]"); const light = bg === "light" || bg === "grey";
-    if (L && D) { L.style.display = light ? "none" : "flex"; D.style.display = light ? "flex" : "none"; }
+    header.dataset.theme = bg; // the glass bar is always dark, so the header keeps one colour and one logo across every section
   };
   QB.theme = theme; theme();
   let dir = 0, turnY = 0; QB._hidden = false;

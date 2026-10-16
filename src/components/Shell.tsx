@@ -17,14 +17,13 @@ export default function Shell() {
   const router = useRouter();
   const [time, setTime] = useState("--:--");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [subOpen, setSubOpen] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "failed" | "unconfigured">("idle");
 
   useEffect(() => {
     QB.push = (href: string) => router.push(href);
     QB.prefetchRoute = (href: string) => router.prefetch(href);
-    QB.onMenuState = (open: boolean) => { setMenuOpen(open); setSubOpen(false); };
+    QB.onMenuState = (open: boolean) => setMenuOpen(open);
     const tick = () => setTime(QB.brisbaneTime()); tick(); const t = setInterval(tick, 15000);
     return () => clearInterval(t);
   }, [router]);
@@ -45,37 +44,36 @@ export default function Shell() {
     <div data-shell>
       <div data-glow style={{ position: "fixed", left: 0, top: 0, width: "40vw", height: "40vw", margin: "-20vw 0 0 -20vw", borderRadius: "50%", background: "radial-gradient(circle,rgba(255,101,0,.6) 0%,rgba(255,101,0,0) 62%)", mixBlendMode: "screen", opacity: 0.16, pointerEvents: "none", zIndex: 1150, display: "none" }} />
 
-      <header data-header style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1200, height: "var(--hh)", color: "#fff", opacity: 0, transition: "color .5s" }}>
+      <header data-header style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1200, height: "var(--hh)", color: "#F9F4EE", opacity: 0, background: "rgba(58,51,48,.5)", backdropFilter: "blur(18px) saturate(140%)", WebkitBackdropFilter: "blur(18px) saturate(140%)", borderBottom: "1px solid rgba(249,244,238,.08)", boxShadow: "0 1px 0 rgba(0,0,0,.25)" }}>
         <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%", padding: "0 var(--pad)" }}>
-          <nav data-r="desk" aria-label="Primary" style={{ display: "flex", gap: "2.6rem", alignItems: "center" }}>
-            <NavLink label="Home" href="/" />
-            <NavLink label="About" href="/about" />
-            <div data-svc style={{ position: "relative" }}>
-              <NavLink label="Services" href="/renovations" />
-              <div data-svc-panel style={{ position: "absolute", top: "100%", left: "-1.2rem", paddingTop: ".6rem", opacity: 0, transform: "translateY(.5rem)", pointerEvents: "none" }}>
-                <div style={{ background: "#211A19", color: "#F9F4EE", padding: ".8rem 1.2rem", display: "flex", flexDirection: "column", minWidth: "16rem", border: "1px solid rgba(249,244,238,.1)" }}>
-                  {SERVICES.map(([l, h]) => (
-                    <a key={h} href={h} onClick={navTo} data-svc-item><span data-svc-bar /><span>{l}</span><span data-svc-arrow>↗</span></a>
-                  ))}
+          <a href="/" onClick={navTo} data-logo aria-label="Quadra Build — home" style={{ display: "flex", alignItems: "center", flex: "none" }}>
+            <Image src="/brand/qb-lockup.png" alt="Quadra Build" width={1179} height={726} sizes="200px" loading="eager" style={{ height: "4.3rem", width: "auto", display: "block" }} />
+          </a>
+          <nav data-r="desk" aria-label="Primary" style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%,-50%)", display: "flex", gap: "2.6rem", alignItems: "center", whiteSpace: "nowrap" }}>
+              <NavLink label="Home" href="/" />
+              <NavLink label="About" href="/about" />
+              <div data-svc style={{ position: "relative", display: "flex" }}>
+                <NavLink label="Services" href="/services" />
+                <div data-svc-panel style={{ position: "absolute", top: "100%", left: "-1.2rem", paddingTop: ".6rem", opacity: 0, transform: "translateY(.5rem)", pointerEvents: "none" }}>
+                  <div style={{ background: "rgba(46,40,38,.9)", backdropFilter: "blur(18px)", WebkitBackdropFilter: "blur(18px)", color: "#F9F4EE", padding: ".8rem 1.2rem", display: "flex", flexDirection: "column", minWidth: "16rem", border: "1px solid rgba(249,244,238,.1)" }}>
+                    {SERVICES.map(([l, h]) => (
+                      <a key={h} href={h} onClick={navTo} data-svc-item><span data-svc-bar /><span>{l}</span><span data-svc-arrow>↗</span></a>
+                    ))}
+                    <a href="/services" onClick={navTo} data-svc-item data-svc-all style={{ marginTop: ".4rem", paddingTop: ".9rem", borderTop: "1px solid rgba(249,244,238,.14)", color: "#F9F4EE", fontWeight: 700 }}><span data-svc-bar /><span>All Services</span><span data-svc-arrow>↗</span></a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <NavLink label="Projects" href="/projects" />
-            <NavLink label="Contact" href="/contact" />
+              <NavLink label="Projects" href="/projects" />
+              <NavLink label="Contact" href="/contact" />
           </nav>
-          <button data-r="mob" onClick={() => QB.toggleMenu()} aria-label="Menu" className="lab" style={{ display: "flex", alignItems: "center", gap: ".7rem", background: "none", border: 0, padding: 0, color: "inherit", cursor: "pointer" }}>
-            <span data-menu-icon style={{ display: "flex", gap: 3 }}><span style={{ width: 4, height: 4, borderRadius: "50%", background: "currentColor" }} /><span style={{ width: 4, height: 4, borderRadius: "50%", background: "currentColor" }} /></span>
-            <span>{menuOpen ? "Close" : "Menu"}</span>
-          </button>
-          <a href="/" onClick={navTo} data-logo aria-label="Quadra Build — home" style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%,-50%)", display: "flex", alignItems: "center", whiteSpace: "nowrap" }}>
-            <span data-logo-light style={{ display: "flex", alignItems: "center" }}><Image src="/brand/qb2-lockup-light.png" alt="Quadra Build" width={620} height={389} sizes="200px" loading="eager" style={{ height: "4.8rem", width: "auto", display: "block" }} /></span>
-            {/* eager so the dark variant is already cached when the header crosses into a light section */}
-            <span data-logo-dark style={{ display: "none", alignItems: "center" }}><Image src="/brand/qb2-lockup-dark.png" alt="Quadra Build" width={620} height={389} sizes="200px" loading="eager" style={{ height: "4.8rem", width: "auto", display: "block" }} /></span>
-          </a>
           <div style={{ display: "flex", alignItems: "center", gap: "3rem" }}>
             <span className="sans" style={{ fontWeight: 500, fontSize: "calc(var(--l1) * 1.05)", lineHeight: 1.45, letterSpacing: ".1em", textTransform: "uppercase", fontVariantNumeric: "tabular-nums", opacity: 0.85 }} suppressHydrationWarning>{time} BNE</span>
             <button data-r="desk" data-cta onClick={openDrawer} className="sans" style={{ display: "inline-flex", alignItems: "center", gap: ".7rem", background: "rgba(255,101,0,.08)", border: "1px solid rgba(255,101,0,.75)", borderRadius: 999, padding: ".7rem 1.3rem .7rem 1.1rem", color: "inherit", cursor: "pointer", fontWeight: 700, fontSize: "calc(var(--l1) * 1.08)", lineHeight: 1, letterSpacing: ".1em", textTransform: "uppercase", transition: "background .4s,color .4s,border-color .4s" }}>
               <span data-cta-dot style={{ width: 7, height: 7, borderRadius: "50%", background: "#FF6500", display: "block", transition: "background .4s" }} /><span>Let&apos;s Talk</span>
+            </button>
+            <button data-r="mob" onClick={() => QB.toggleMenu()} aria-label="Menu" className="lab" style={{ display: "flex", alignItems: "center", gap: ".7rem", background: "none", border: 0, padding: 0, color: "inherit", cursor: "pointer" }}>
+              <span data-menu-icon style={{ display: "flex", gap: 3 }}><span style={{ width: 4, height: 4, borderRadius: "50%", background: "currentColor" }} /><span style={{ width: 4, height: 4, borderRadius: "50%", background: "currentColor" }} /></span>
+              <span>{menuOpen ? "Close" : "Menu"}</span>
             </button>
           </div>
         </div>
@@ -89,8 +87,8 @@ export default function Shell() {
               <span data-el="ctn" style={{ display: "block", width: "2rem", height: 1, background: "rgba(249,244,238,.25)" }} />
             </span>
           ))}
-          <button onClick={() => setSubOpen((s) => !s)} data-el="ctn" className="h2t" style={{ display: "block", padding: "1rem 0", background: "none", border: 0, color: "inherit", cursor: "pointer" }}>Services</button>
-          <div style={{ display: subOpen ? "flex" : "none", flexDirection: "column", gap: ".9rem", padding: ".4rem 0 1.2rem" }}>
+          <a href="/services" onClick={navTo} data-el="ctn" className="h2t" style={{ display: "block", padding: "1rem 0" }}>Services</a>
+          <div data-el="ctn" style={{ display: "flex", flexDirection: "column", gap: ".8rem", padding: ".2rem 0 1.2rem" }}>
             {SERVICES.map(([l, h]) => <a key={h} href={h} onClick={navTo} className="lab5" style={{ color: "rgba(249,244,238,.75)" }}>{l}</a>)}
           </div>
           <span data-el="ctn" style={{ display: "block", width: "2rem", height: 1, background: "rgba(249,244,238,.25)" }} />

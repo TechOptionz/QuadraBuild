@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
-import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import QB from "@/lib/qb-engine";
@@ -104,68 +103,25 @@ export default function HomeView() {
   };
   const onTabClick = (e: MouseEvent<HTMLButtonElement>) => selectTab(+(e.currentTarget.dataset.i || 0));
 
-  /* ---------- intro / enter ---------- */
+  /* ---------- enter ---------- */
   const revealHero = (delay: number) => q("#hero [data-reveal]").forEach((el: any, i: number) => QB.reveal(el, delay + i * 0.1));
-  const enterSimple = () => {
-    const pre = q1("[data-pre]"), main = q1("[data-main]"), header = QB.q1("[data-header]");
-    gsap.set(pre, { display: "none" }); gsap.set(main, { clearProps: "transform,clipPath" });
+  const enter = () => {
+    const main = q1("[data-main]"), header = QB.q1("[data-header]");
+    gsap.set(main, { clearProps: "transform,clipPath" });
     if (QB.enterPage && !QB.reduced) { QB.enterPage("iris"); gsap.delayedCall(0.9, () => startHeroSlides()); return; }
     gsap.to(main, { opacity: 1, duration: 1.2, ease: "Out" }); gsap.to(header, { opacity: 1, duration: 1.2, ease: "Out", delay: 0.3 });
     ScrollTrigger.refresh(); revealHero(0.3);
   };
-  const finishIntro = () => {
-    if (S.introDone) return; S.introDone = true;
-    const pre = q1("[data-pre]"), main = q1("[data-main]"), header = QB.q1("[data-header]");
-    gsap.set(pre, { display: "none" }); gsap.set(main, { clearProps: "transform" });
-    QB.resetHeader(); gsap.to(header, { opacity: 1, duration: 0.6, ease: "Out", overwrite: "auto" });
-    try { sessionStorage.setItem("qb_visited", "1"); } catch {}
-    QB.unlock(); ScrollTrigger.refresh(); revealHero(0.1); startHeroSlides();
-  };
-  const playIntro = () => {
-    QB.lock();
-    const pre = q1("[data-pre]"), main = q1("[data-main]"), header = QB.q1("[data-header]");
-    gsap.set(pre, { visibility: "visible" });
-    const words = q("[data-pw]"), anchors = q("[data-pt]"), masks = words.map((w: HTMLElement) => w.parentElement as HTMLElement);
-    const counter = q1("[data-pre-count]"), prog = q1("[data-pre-prog]"), frame = q1("[data-pre-frame]"), fimg = frame.querySelector("[data-img]");
-    const logo = q1("[data-pre-logo]"), hLogo = QB.q1("[data-logo]"), texts = q("[data-pre-text]");
-    gsap.set(main, { opacity: 1, scale: 0.5, transformOrigin: "center 50vh" });
-    gsap.set(words, { yPercent: 135 }); gsap.set(frame, { clipPath: "inset(50% 0% 50% 0%)" }); gsap.set(fimg, { scale: 1.2 }); gsap.set(texts, { opacity: 0, y: 16 });
-    const deltas = masks.map((m: HTMLElement, i: number) => { const mr = m.getBoundingClientRect(), ar = anchors[i].getBoundingClientRect(); return { x: ar.left - (mr.left + mr.width / 2), y: ar.top - (mr.top + mr.height / 2) }; });
-    const lr = logo.getBoundingClientRect(), hr = hLogo.getBoundingClientRect();
-    const ld = { x: hr.left + hr.width / 2 - (lr.left + lr.width / 2), y: hr.top + hr.height / 2 - (lr.top + lr.height / 2), s: hr.width && lr.width ? hr.width / lr.width : 0.45 };
-    const ap = { p: 0 }; const o = { v: 0 };
-    const clip = (p: number) => { const h = 50 * p; pre.style.clipPath = "polygon(evenodd, 0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, " + (50 - h) + "% " + (50 - h) + "%, " + (50 + h) + "% " + (50 - h) + "%, " + (50 + h) + "% " + (50 + h) + "%, " + (50 - h) + "% " + (50 + h) + "%, " + (50 - h) + "% " + (50 - h) + "%)"; };
-    const tl = gsap.timeline({ onComplete: () => finishIntro() });
-    tl.to(words, { yPercent: 0, duration: 1.2, ease: "Out", stagger: 0.1 }, 0)
-      .to(texts, { opacity: 1, y: 0, duration: 1.2, ease: "Out", stagger: 0.1 }, 0.3)
-      .to(o, { v: 100, duration: 3, ease: "loaderEase", onUpdate: () => { counter.textContent = String(Math.round(o.v)).padStart(2, "0") + " %"; prog.style.transform = "scaleX(" + o.v / 100 + ")"; } }, 1.2)
-      .add(() => masks.forEach((m: HTMLElement) => (m.style.overflow = "visible")), 1.3)
-      .to(words, { x: (i: number) => deltas[i].x, y: (i: number) => deltas[i].y, duration: 1.2, ease: "InOut" }, 1.3)
-      .to(logo, { x: ld.x, y: ld.y, scale: ld.s, duration: 1.2, ease: "InOut" }, 1.3)
-      .to(prog, { opacity: 0, duration: 0.4 }, 1.3)
-      .to(frame, { clipPath: "inset(0% 0% 0% 0%)", duration: 1, ease: "InOut" }, 1.4)
-      .to(fimg, { scale: 1, duration: 1, ease: "InOut" }, 1.4)
-      .to(words, { x: 0, y: 0, duration: 1.2, ease: "InOut" }, 2.9)
-      .to(frame, { clipPath: "inset(50% 0% 50% 0%)", duration: 0.8, ease: "InOut" }, 2.9)
-      .to(fimg, { scale: 1.2, duration: 0.8, ease: "InOut" }, 2.9)
-      .to(ap, { p: 1, duration: 1.8, ease: "InOut", onUpdate: () => clip(ap.p) }, 4.3)
-      .to(main, { scale: 1, duration: 1.8, ease: "InOut" }, 4.3)
-      .to(header, { opacity: 1, duration: 1, ease: "Out" }, 5.2);
-    S.introDone = false;
-    const wd = setTimeout(() => { if (!S.introDone) tl.progress(1); }, 12000); // watchdog: never leave the page hidden behind the preloader
-    QB.onCleanup(() => { clearTimeout(wd); tl.kill(); });
-  };
   const onInit = () => {
     S.heroStarted = false;
     initHeroSlides(); initProjects(); initSketch(); initTabs();
-    // Full intro only on a direct load of the home page; client-side navigations get the iris entrance.
-    if (QB.reduced || QB.navigated) enterSimple(); else playIntro();
+    enter();
   };
 
   const underline = (label: string, href: string, extra: Record<string, string | undefined> = {}) => <UL href={href} label={label} data-reveal="ctn" {...extra} />;
 
   return (
-    <Page current="home" enter={false} onInit={onInit} before={<Preloader />}>
+    <Page current="home" enter={false} onInit={onInit}>
       {/* 01 HERO */}
       <section id="hero" data-hero data-bg="color" data-sout style={{ position: "relative", height: "100svh", minHeight: 600, overflow: "hidden", background: "#211A19", color: "#fff" }}>
         <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
@@ -173,6 +129,7 @@ export default function HomeView() {
             <HeroSlides />
           </div>
         </div>
+        <div data-hero-scrim />
         <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: "32vh", background: "linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,0))", pointerEvents: "none" }} />
         <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "50vh", background: "linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.5))", pointerEvents: "none" }} />
         <div data-r="desk" data-hero-dots style={{ position: "absolute", right: "var(--pad)", bottom: "3.3rem", display: "flex", gap: ".6rem", alignItems: "center", zIndex: 2 }}>
@@ -181,12 +138,12 @@ export default function HomeView() {
           ))}
         </div>
         <div data-grid data-r="hero-bottom" style={{ padding: "0 var(--pad) 3rem", position: "absolute", left: 0, right: 0, bottom: 0, alignItems: "end", pointerEvents: "none" }}>
-          <div data-reveal="ctn" data-manual data-mo="3" style={{ gridColumn: "1/4", display: "flex", flexDirection: "column", gap: ".4rem", pointerEvents: "auto" }}>
-            <span className="lab">Quadra Build</span>
-            <span className="h3" style={{ opacity: 0.85 }}>Brisbane and South East Queensland</span>
-          </div>
-          <div data-mo="1" style={{ gridColumn: "7/12", display: "flex", flexDirection: "column", gap: "2.5rem", pointerEvents: "auto" }}>
-            <h1 data-reveal="h" data-manual data-hero-h className="h1" style={{ color: "#fff" }}><span data-ln className="ln">We build.</span><span data-ln className="ln">We renovate.</span><span data-ln className="ln">We transform.</span></h1>
+          <div data-mo="1" style={{ gridColumn: "1/9", display: "flex", flexDirection: "column", gap: "2.4rem", pointerEvents: "auto" }}>
+            <div data-reveal="ctn" data-manual style={{ display: "flex", flexDirection: "column", gap: ".4rem" }}>
+              <span className="lab">Quadra Build</span>
+              <span className="h3" style={{ opacity: 0.85 }}>Brisbane and South East Queensland</span>
+            </div>
+            <h1 data-reveal="h" data-manual data-hero-h className="h1" style={{ color: "#fff", fontSize: "calc(var(--h1) * 1.45)" }}><span data-ln className="ln">We build.</span><span data-ln className="ln">We renovate.</span><span data-ln className="ln">We transform.</span></h1>
             <div style={{ display: "flex", gap: "3rem", alignItems: "center" }}>
               <span data-reveal="p" data-manual data-r="desk" className="lab5">Scroll to explore</span>
               <UL href="#services" label="Explore Services" data-reveal="ctn" data-manual data-r="mob" gap="2rem" lineOpacity={0.4} />
@@ -276,9 +233,9 @@ export default function HomeView() {
           <div data-blob style={{ position: "absolute", right: "5%", top: "10%", width: "40%", height: "35%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.12) 0%,rgba(70,50,40,0) 65%)", transform: "rotate(-12deg)" }} />
         </div>
         <Diag color="rgba(33,26,25,.12)" width="150vw" />
-        <div data-grid data-group data-craft-grid style={{ gridTemplateRows: "1fr auto", padding: "var(--hh) var(--pad) 3rem", position: "relative", height: "100%", rowGap: "2.5rem" }}>
-          <div data-tilt-outer data-sk-wrap data-r="pt" style={{ gridColumn: "1/9", gridRow: 1, alignSelf: "center", position: "relative" }}>
-            <div data-tilt><Sketch /></div>
+        <div data-grid data-group data-craft-grid style={{ gridTemplateRows: "minmax(0,1fr) auto", padding: "var(--hh) var(--pad) 3rem", position: "relative", height: "100%", rowGap: "2.5rem" }}>
+          <div data-tilt-outer data-sk-wrap data-r="pt" style={{ gridColumn: "1/9", gridRow: 1, alignSelf: "stretch", minHeight: 0, position: "relative" }}>
+            <div data-tilt style={{ height: "100%" }}><Sketch /></div>
             <div className="mono" style={{ position: "absolute", left: 0, bottom: "-1.6rem", color: "rgba(33,26,25,.5)" }}>[CLIENT ASSET: ARCHITECTURAL_LINE_SKETCH.svg] — stand-in drawing, animation-ready</div>
           </div>
           <h2 data-reveal="h" className="h1" style={{ gridColumn: "7/11", gridRow: 1, alignSelf: "center", position: "relative", zIndex: 2 }}><span data-ln className="ln">Crafted with Care.</span><span data-ln className="ln">Made for Living.</span></h2>
@@ -335,6 +292,7 @@ export default function HomeView() {
                 <span data-dot style={{ width: 7, height: 7, borderRadius: "50%", background: "#FF6500", opacity: i ? 0 : 1, transition: "transform .4s" }} />
               </button>
             ))}
+            <UL href="/services" label="View All Services" data-reveal="ctn" minWidth="13rem" lineOpacity={0.4} style={{ marginTop: "2rem" }} />
           </div>
           <div data-mo="2" data-tab-col style={{ gridColumn: "10/13", position: "relative", display: "flex", flexDirection: "column", minHeight: "22rem" }}>
             {TABS.map((t, i) => {
@@ -372,35 +330,5 @@ function HeroSlides() {
         </div>
       ))}
     </>
-  );
-}
-
-function Preloader() {
-  const lines = ["16.666%", "33.333%", "50%", "66.666%", "83.333%"];
-  return (
-    <div data-pre style={{ position: "fixed", inset: 0, zIndex: 3000, background: "#211A19", color: "#F9F4EE", overflow: "hidden", visibility: "hidden" }}>
-      {lines.map((l) => <div key={l} style={{ position: "absolute", top: 0, bottom: 0, left: l, width: 1, background: "rgba(249,244,238,.1)" }} />)}
-      <div data-pre-logo style={{ position: "absolute", left: "var(--pad)", top: "50%", transform: "translateY(-50%)", width: "18rem" }}>
-        <Image src="/brand/qb2-lockup-light.png" alt="Quadra Build" width={620} height={389} priority sizes="360px" style={{ width: "100%", height: "auto", display: "block" }} />
-      </div>
-      <div data-pre-prog style={{ position: "absolute", left: "var(--pad)", top: "calc(50% + 6.9rem)", width: "18rem", height: 1, background: "#FF6500", transform: "scaleX(0)", transformOrigin: "left" }} />
-      <div data-pre-head className="h1" style={{ position: "absolute", left: "50%", top: "50%", transform: "translateY(-50%)", whiteSpace: "nowrap", paddingLeft: "1rem" }}>
-        {["Built", "With", "Care", "Always"].map((w, i) => (
-          <span key={w} style={{ display: "inline-block", overflow: "hidden", padding: ".1em 0 .2em", margin: `-.1em 0 -.2em ${i ? ".25em" : "0"}`, verticalAlign: "top" }}><span data-pw style={{ display: "inline-block" }}>{w}</span></span>
-        ))}
-      </div>
-      {[["8.333%", "50%"], ["25%", "50%"], ["58.333%", "26%"], ["58.333%", "74%"]].map(([l, t], i) => <div key={l + t} data-pt={i} style={{ position: "absolute", left: l, top: t, width: 0, height: 0 }} />)}
-      <div data-pre-frame style={{ position: "absolute", left: "calc(66.666% + 1.5rem)", right: "1.5rem", top: "18vh", height: "64vh", overflow: "hidden" }}>
-        <div data-img style={{ position: "absolute", inset: 0, background: warm() }}><Img src={px(9976121)} alt="" priority sizes="33vw" /></div>
-      </div>
-      <div data-pre-text style={{ position: "absolute", left: "var(--pad)", bottom: "var(--pad)", display: "flex", gap: "1.5rem", alignItems: "baseline" }}>
-        <span className="lab5" style={{ color: "rgba(249,244,238,.7)" }}>Loading</span>
-        <span data-pre-count className="serif" style={{ fontSize: "var(--h3)", lineHeight: 1 }}>00 %</span>
-      </div>
-      <div data-pre-text style={{ position: "absolute", left: "50%", bottom: "var(--pad)", paddingLeft: "1rem", display: "flex", flexDirection: "column", gap: ".4rem" }}>
-        <span className="lab">Quadra Build</span>
-        <span className="h3">Building spaces for everyday life.</span>
-      </div>
-    </div>
   );
 }

@@ -15,6 +15,7 @@ export default function DivisionView({ division }: { division: DivisionKey }) {
         <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
           <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(90% 70% at 30% 30%,#54433b 0%,rgba(84,67,59,0) 60%),linear-gradient(170deg,#2a2220 0%,#211A19 55%,#17120f 100%)" }}><Img src={d.heroImg} alt={d.eyebrow} priority /></div>
         </div>
+        <div data-hero-scrim />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.35) 50%,rgba(0,0,0,.15) 100%)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: "32vh", background: "linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,0))", pointerEvents: "none" }} />
         <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "55vh", background: "linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.55))", pointerEvents: "none" }} />
@@ -148,6 +149,10 @@ export default function DivisionView({ division }: { division: DivisionKey }) {
                 <span className="ul-base" style={{ opacity: 0.15 }} /><span data-ul-line className="ul-line" />
               </a>
             ))}
+            <a href="/services" onClick={navTo} data-reveal="ctn" data-ul style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: "1rem", padding: "1.4rem 0", alignSelf: "stretch" }}>
+              <span className="h2t">All Services</span><span className="lab">↗</span>
+              <span className="ul-base" style={{ opacity: 0.15 }} /><span data-ul-line className="ul-line" />
+            </a>
           </div>
           <div style={{ gridColumn: "1/13", paddingTop: "var(--sec)", display: "flex", flexDirection: "column", gap: "2.4rem", alignItems: "flex-start" }}>
             <h2 data-reveal="h" className="h1" style={{ fontSize: "calc(var(--h1) * 1.4)", maxWidth: "60rem" }}>{d.closingH}</h2>

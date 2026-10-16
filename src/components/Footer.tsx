@@ -1,11 +1,11 @@
 "use client";
 import { navTo } from "./ui";
 
-export type FooterCurrent = "home" | "about" | "renovations" | "homes" | "commercial" | "approvals" | "projects" | "contact" | "legal";
+export type FooterCurrent = "home" | "about" | "services" | "renovations" | "homes" | "commercial" | "approvals" | "projects" | "contact" | "legal";
 
 export default function Footer({ current }: { current: FooterCurrent }) {
   const op = (k: string) => (current === k ? 0.5 : 1);
-  const svc = ["renovations", "homes", "commercial", "approvals"].includes(current) ? 0.5 : 1;
+  const svc = ["services", "renovations", "homes", "commercial", "approvals"].includes(current) ? 0.5 : 1;
   return (
     <footer id="contact" data-footer data-bg="dark" style={{ position: "relative", background: "#211A19", color: "#F9F4EE", overflow: "clip" }}>
       <div data-footer-inner style={{ position: "relative" }}>
@@ -18,7 +18,7 @@ export default function Footer({ current }: { current: FooterCurrent }) {
           <nav aria-label="Footer" data-fnav data-reveal="ctn" className="h2t" style={{ gridColumn: "3/6", display: "flex", flexDirection: "column", gap: ".5rem" }}>
             <a href="/" onClick={navTo} style={{ opacity: op("home") }}>Home</a>
             <a href="/about" onClick={navTo} style={{ opacity: op("about") }}>About</a>
-            <a href="/renovations" onClick={navTo} style={{ opacity: svc }}>Services</a>
+            <a href="/services" onClick={navTo} style={{ opacity: svc }}>Services</a>
             <a href="/projects" onClick={navTo} style={{ opacity: op("projects") }}>Projects</a>
             <a href="/contact" onClick={navTo} style={{ opacity: op("contact") }}>Contact</a>
           </nav>
