@@ -13,7 +13,7 @@ const BLURB: Record<DivisionKey, string> = {
   approvals: "Understand the steps from an early idea to development and building applications, with practical coordination of planning information, documentation and relevant approval specialists.",
 };
 const CTA: Record<DivisionKey, string> = { renovations: "Explore Renovations", homes: "Explore Homes", commercial: "Explore Commercial", approvals: "Explore Approvals" };
-const TONE: Record<DivisionKey, string> = { renovations: warm(170, "#55443b", "30% 30%"), homes: warm(190, "#4f4a43", "70% 30%"), commercial: warm(160, "#4a4541", "50% 70%"), approvals: warm(200, "#5a483f", "30% 70%") };
+const TONE: Record<DivisionKey, string> = { renovations: warm(170, "#5a483f", "30% 30%"), homes: warm(190, "#4a3b35", "70% 30%"), commercial: warm(160, "#4a3b35", "50% 70%"), approvals: warm(200, "#5a483f", "30% 70%") };
 
 const SERVICES = ORDER.map((key, i) => {
   const d = DIVISIONS[key];
@@ -40,7 +40,7 @@ export default function ServicesView() {
       {/* 01 HERO */}
       <section data-hero data-bg="color" data-sout data-r="snap" style={{ position: "relative", height: "100svh", minHeight: 640, overflow: "hidden", background: "#211A19", color: "#fff", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
         <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-          <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(90% 70% at 30% 30%,#54433b 0%,rgba(84,67,59,0) 60%),linear-gradient(170deg,#2a2220 0%,#211A19 55%,#17120f 100%)" }}><Img src={px(6077368, 2560)} alt="" priority /></div>
+          <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(90% 70% at 30% 30%,#5a483f 0%,transparent 60%),linear-gradient(170deg,#2b2320 0%,#211A19 55%,#15100e 100%)" }}><Img src={px(6077368, 2560)} alt="" priority /></div>
         </div>
         <div data-hero-scrim />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.35) 50%,rgba(0,0,0,.15) 100%)", pointerEvents: "none" }} />
@@ -103,7 +103,7 @@ export default function ServicesView() {
       {/* 04 ONE APPROACH */}
       <section data-bg="light" style={{ position: "relative", background: "#F9F4EE", color: "#211A19", padding: "var(--sec) 0", overflow: "hidden" }}>
         <div data-shadow style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", mixBlendMode: "multiply" }}>
-          <div data-blob style={{ position: "absolute", right: "-20%", top: "-30%", width: "80%", height: "70%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.12) 0%,rgba(70,50,40,0) 62%)", transform: "rotate(24deg)" }} />
+          <div data-blob style={{ position: "absolute", right: "-20%", top: "-30%", width: "80%", height: "70%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.12) 0%,transparent 62%)", transform: "rotate(24deg)" }} />
         </div>
         <div data-grid data-group style={{ padding: "0 var(--pad)", position: "relative", rowGap: "3rem" }}>
           <div data-reveal="ctn" className="lab" style={{ gridColumn: "1/4" }}>One Approach</div>
@@ -152,7 +152,7 @@ export default function ServicesView() {
       {/* 06 CLOSING */}
       <section data-bg="color" data-r="tall" style={{ position: "relative", minHeight: "90vh", overflow: "hidden", background: "#211A19", color: "#fff", display: "flex", alignItems: "center" }}>
         <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-          <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(70% 60% at 30% 40%,#5c4a3f 0%,rgba(92,74,63,0) 60%),linear-gradient(180deg,#33291f 0%,#211A19 55%,#120e0c 100%)" }}><Img src={px(4626268)} alt="" /></div>
+          <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(70% 60% at 30% 40%,#5a483f 0%,transparent 60%),linear-gradient(180deg,#2b2320 0%,#211A19 55%,#15100e 100%)" }}><Img src={px(4626268)} alt="" /></div>
         </div>
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.55))", pointerEvents: "none" }} />
         <div data-grid data-group style={{ padding: "calc(var(--hh) + 3rem) var(--pad) 4rem", position: "relative", width: "100%", rowGap: "3rem", pointerEvents: "none", alignItems: "end" }}>

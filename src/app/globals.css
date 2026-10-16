@@ -1,7 +1,7 @@
 /* Quadra Build — base + tokens (ported from qb-base.css) */
 :root {
   --h1: 4rem; --h2: 2.5rem; --h3: 1rem; --p1: 1.25rem; --l1: .75rem;
-  --pad: .5rem; --gap: 1rem; --sec: 6rem; --hh: 5.4rem;
+  --pad: .5rem; --gap: 1rem; --sec: 6rem; --hh: 5.8rem; --logo-h: 5rem;
   --ink: #211A19; --paper: #F9F4EE; --orange: #FF6500; --rust: #C8460B;
 }
 html { font-size: clamp(12px, 1vw, 19.2px); background: #211A19; -webkit-text-size-adjust: 100%; }
@@ -24,7 +24,7 @@ h1, h2, h3, p { margin: 0; }
 [data-svc-item]:hover [data-svc-bar] { transform: translateY(-50%) scaleX(1); }
 [data-svc-item]:hover [data-svc-arrow] { opacity: 1; transform: translateX(0); }
 [data-svc-item] + [data-svc-item]:not([data-svc-all]) { border-top: 1px solid rgba(249,244,238,.08); }
-[data-enq]:hover { background: #2b2220 !important; }
+[data-enq]:hover { background: #2b2320 !important; }
 [data-enq]:hover [data-enq-arrow] { background: #FF6500; border-color: #FF6500; color: #211A19; transform: translateX(.4rem); }
 [data-grid] { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: var(--gap); }
 
@@ -110,7 +110,7 @@ textarea.input { resize: vertical; }
 @media (min-width: 992px) { [data-r=mob], [data-cell-label] { display: none !important; } }
 @media (max-width: 991px) {
   html { font-size: 2.0833vw; }
-  :root { --h1: 3rem; --h2: 2rem; --p1: 1.25rem; --l1: .6875rem; --pad: 1rem; --gap: 1rem; --sec: 4rem; --hh: 5.4rem; }
+  :root { --h1: 3rem; --h2: 2rem; --p1: 1.25rem; --l1: .6875rem; --pad: 1rem; --gap: 1rem; --sec: 4rem; --hh: 5.4rem; --logo-h: 4.4rem; }
   [data-r=desk] { display: none !important; }
   [data-grid] > * { grid-column: 1 / -1 !important; grid-row: auto !important; }
   [data-mo="1"] { order: 1 !important; } [data-mo="2"] { order: 2 !important; } [data-mo="3"] { order: 3 !important; } [data-mo="4"] { order: 4 !important; }
@@ -168,8 +168,13 @@ textarea.input { resize: vertical; }
 }
 @media (max-width: 767px) {
   html { font-size: 3.5714vw; }
-  :root { --h1: 2.5rem; --h2: 1.75rem; --p1: .9375rem; --l1: .75rem; --pad: 1rem; --sec: 4rem; --hh: 4.8rem; }
+  :root { --h1: 2.5rem; --h2: 1.75rem; --p1: .9375rem; --l1: .75rem; --pad: 1rem; --sec: 4rem; --hh: 4.8rem; --logo-h: 3.8rem; }
 }
 
 /* hero image scrim: full-cover darkening under hero text so copy stays readable on any photo */
 [data-hero-scrim] { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(14,9,8,.5) 0%, rgba(14,9,8,.38) 45%, rgba(14,9,8,.58) 100%); }
+
+/* logo preview selector (internal review tool) */
+[data-logo-trigger]:hover { border-color: rgba(255,255,255,.28) !important; background: #2a2220 !important; }
+[data-logo-option]:focus-visible { outline: 1px solid #FF6500; outline-offset: -1px; }
+@media (max-width: 767px) { [data-logo-group] { gap: .7rem !important; padding-left: 0 !important; } [data-logo-trigger] { padding: 0 .6rem !important; } }

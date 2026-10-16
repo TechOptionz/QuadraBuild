@@ -103,7 +103,7 @@ export default function AboutView() {
 
       <section data-bg="color" data-r="tall" style={{ position: "relative", minHeight: "100vh", overflow: "hidden", background: "#211A19", color: "#fff", display: "flex", alignItems: "center" }}>
         <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-          <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(70% 60% at 30% 40%,#5c4a3f 0%,rgba(92,74,63,0) 60%),linear-gradient(180deg,#33291f 0%,#211A19 55%,#120e0c 100%)" }}><Img src={px(30484316)} alt="" /></div>
+          <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(70% 60% at 30% 40%,#5a483f 0%,transparent 60%),linear-gradient(180deg,#2b2320 0%,#211A19 55%,#15100e 100%)" }}><Img src={px(30484316)} alt="" /></div>
         </div>
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(rgba(0,0,0,.25),rgba(0,0,0,.45))", pointerEvents: "none" }} />
         <div data-grid data-group style={{ padding: "calc(var(--hh) + 3rem) var(--pad) 4rem", position: "relative", width: "100%", rowGap: "3rem", pointerEvents: "none", alignItems: "end" }}>

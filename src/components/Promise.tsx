@@ -7,7 +7,7 @@ export default function Promise() {
   return (
     <section data-bg="color" data-r="tall" style={{ position: "relative", height: "140vh", minHeight: 900, overflow: "hidden", background: "#211A19", color: "#fff" }}>
       <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-        <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(80% 50% at 50% 15%,#6b5a4d 0%,rgba(107,90,77,0) 60%),linear-gradient(180deg,#3a2f27 0%,#241c19 50%,#15100e 100%)" }}>
+        <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(80% 50% at 50% 15%,#5a483f 0%,transparent 60%),linear-gradient(180deg,#4a3b35 0%,#2b2320 50%,#15100e 100%)" }}>
           <Img src={px(8134746)} alt="Quadra Build exterior" />
         </div>
       </div>

@@ -12,14 +12,14 @@ import Sketch from "./Sketch";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const HERO_SLIDES = [8134821, 31737860, 30484316, 4626268, 8134746, 6077368, 31737862, 9976121];
 const FEATURED = [
-  { slug: "ashgrove-residence", title: "Ashgrove Residence", meta: "Renovations · Ashgrove, QLD", img: px(30484316), scrub: true, bg: "radial-gradient(80% 60% at 25% 35%,#5a483f 0%,rgba(90,72,63,0) 60%),linear-gradient(165deg,#30261f 0%,#211A19 60%,#15100e 100%)" },
-  { slug: "paddington-house", title: "Paddington House", meta: "Homes · Paddington, QLD", img: px(8134821), scrub: true, bg: "radial-gradient(70% 60% at 75% 30%,#4f4a43 0%,rgba(79,74,67,0) 60%),linear-gradient(195deg,#2b2623 0%,#211A19 60%,#15100e 100%)" },
-  { slug: "valley-espresso", title: "Valley Espresso", meta: "Commercial · Fortitude Valley, QLD", img: px(5490827), scrub: false, bg: "radial-gradient(80% 60% at 50% 20%,#4a4541 0%,rgba(74,69,65,0) 60%),linear-gradient(180deg,#2b2623 0%,#211A19 60%,#15100e 100%)" },
+  { slug: "ashgrove-residence", title: "Ashgrove Residence", meta: "Renovations · Ashgrove, QLD", img: px(30484316), scrub: true, bg: "radial-gradient(80% 60% at 25% 35%,#5a483f 0%,transparent 60%),linear-gradient(165deg,#2b2320 0%,#211A19 60%,#15100e 100%)" },
+  { slug: "paddington-house", title: "Paddington House", meta: "Homes · Paddington, QLD", img: px(8134821), scrub: true, bg: "radial-gradient(70% 60% at 75% 30%,#4a3b35 0%,transparent 60%),linear-gradient(195deg,#2b2320 0%,#211A19 60%,#15100e 100%)" },
+  { slug: "valley-espresso", title: "Valley Espresso", meta: "Commercial · Fortitude Valley, QLD", img: px(5490827), scrub: false, bg: "radial-gradient(80% 60% at 50% 20%,#4a3b35 0%,transparent 60%),linear-gradient(180deg,#2b2320 0%,#211A19 60%,#15100e 100%)" },
 ];
 const TABS = [
-  { num: "1.0", label: "Renovations", img: px(10153052), bg: warm(170, "#55443b", "30% 30%"), h: ["Homes,", "Reimagined."], p: "Renovate an existing home, extend your living space or refresh kitchens, bathrooms and outdoor areas. We also discuss landscaping, fencing and whole-home transformations.", cta: "Explore Renovations", href: "/renovations" },
-  { num: "2.0", label: "New Homes", img: px(9976121), bg: warm(190, "#4f4a43", "70% 30%"), h: ["New", "Beginnings."], p: "From custom homes to granny flats and secondary dwellings, Quadra Homes helps shape residential building ideas around the site, the brief and everyday living.", cta: "Explore Homes", href: "/homes" },
-  { num: "3.0", label: "Commercial", img: px(5490827), bg: warm(160, "#4a4541", "50% 70%"), h: ["Spaces for", "Business."], p: "Create a commercial space that serves its purpose, from retail and shop fit-outs to office improvements, hospitality environments and considered refurbishments.", cta: "Explore Commercial", href: "/commercial" },
+  { num: "1.0", label: "Renovations", img: px(10153052), bg: warm(170, "#5a483f", "30% 30%"), h: ["Homes,", "Reimagined."], p: "Renovate an existing home, extend your living space or refresh kitchens, bathrooms and outdoor areas. We also discuss landscaping, fencing and whole-home transformations.", cta: "Explore Renovations", href: "/renovations" },
+  { num: "2.0", label: "New Homes", img: px(9976121), bg: warm(190, "#4a3b35", "70% 30%"), h: ["New", "Beginnings."], p: "From custom homes to granny flats and secondary dwellings, Quadra Homes helps shape residential building ideas around the site, the brief and everyday living.", cta: "Explore Homes", href: "/homes" },
+  { num: "3.0", label: "Commercial", img: px(5490827), bg: warm(160, "#4a3b35", "50% 70%"), h: ["Spaces for", "Business."], p: "Create a commercial space that serves its purpose, from retail and shop fit-outs to office improvements, hospitality environments and considered refurbishments.", cta: "Explore Commercial", href: "/commercial" },
   { num: "4.0", label: "Approvals", img: px(3990587), bg: warm(200, "#5a483f", "30% 70%"), h: ["Progress with", "Clarity."], p: "Understand the steps from an early idea to development and building applications, with practical coordination of planning information, documentation and relevant approval specialists.", cta: "Explore Approvals", href: "/approvals" },
 ];
 
@@ -125,7 +125,7 @@ export default function HomeView() {
       {/* 01 HERO */}
       <section id="hero" data-hero data-bg="color" data-sout style={{ position: "relative", height: "100svh", minHeight: 600, overflow: "hidden", background: "#211A19", color: "#fff" }}>
         <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-          <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(90% 70% at 30% 30%,#54433b 0%,rgba(84,67,59,0) 60%),radial-gradient(60% 50% at 80% 80%,#3b2f2a 0%,rgba(59,47,42,0) 70%),linear-gradient(170deg,#2a2220 0%,#211A19 55%,#17120f 100%)" }}>
+          <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(90% 70% at 30% 30%,#5a483f 0%,transparent 60%),radial-gradient(60% 50% at 80% 80%,#4a3b35 0%,transparent 70%),linear-gradient(170deg,#2b2320 0%,#211A19 55%,#15100e 100%)" }}>
             <HeroSlides />
           </div>
         </div>
@@ -229,8 +229,8 @@ export default function HomeView() {
       {/* 05 CRAFT / SKETCH */}
       <section id="craft" data-bg="light" data-snap data-r="snap" style={{ position: "relative", height: "100vh", minHeight: 640, background: "#F9F4EE", color: "#211A19", overflow: "hidden" }}>
         <div data-shadow style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", mixBlendMode: "multiply" }}>
-          <div data-blob style={{ position: "absolute", right: "-20%", top: "-30%", width: "80%", height: "80%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.16) 0%,rgba(70,50,40,0) 62%)", transform: "rotate(28deg)" }} />
-          <div data-blob style={{ position: "absolute", right: "5%", top: "10%", width: "40%", height: "35%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.12) 0%,rgba(70,50,40,0) 65%)", transform: "rotate(-12deg)" }} />
+          <div data-blob style={{ position: "absolute", right: "-20%", top: "-30%", width: "80%", height: "80%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.16) 0%,transparent 62%)", transform: "rotate(28deg)" }} />
+          <div data-blob style={{ position: "absolute", right: "5%", top: "10%", width: "40%", height: "35%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.12) 0%,transparent 65%)", transform: "rotate(-12deg)" }} />
         </div>
         <Diag color="rgba(33,26,25,.12)" width="150vw" />
         <div data-grid data-group data-craft-grid style={{ gridTemplateRows: "minmax(0,1fr) auto", padding: "var(--hh) var(--pad) 3rem", position: "relative", height: "100%", rowGap: "2.5rem" }}>
@@ -250,7 +250,7 @@ export default function HomeView() {
       {/* 06 STATEMENT */}
       <section id="statement" data-statement data-bg="color" data-snap data-r="snap" style={{ position: "relative", height: "100vh", minHeight: 640, overflow: "hidden", background: "#211A19", color: "#fff" }}>
         <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-          <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(70% 60% at 50% 40%,#5c4a3f 0%,rgba(92,74,63,0) 60%),linear-gradient(180deg,#33291f 0%,#211A19 55%,#120e0c 100%)" }}><Img src={px(8134745)} alt="" /></div>
+          <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(70% 60% at 50% 40%,#5a483f 0%,transparent 60%),linear-gradient(180deg,#2b2320 0%,#211A19 55%,#15100e 100%)" }}><Img src={px(8134745)} alt="" /></div>
         </div>
         <div data-r="shade" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "40%", background: "linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.35))", pointerEvents: "none" }} />
         <div data-grid data-group data-spread-wrap style={{ padding: "0 var(--pad)", position: "absolute", left: 0, right: 0, top: "50%", transform: "translateY(-50%)", pointerEvents: "none", rowGap: ".4rem" }}>
@@ -273,7 +273,7 @@ export default function HomeView() {
       {/* 07 SERVICES */}
       <section id="services" data-bg="light" data-group style={{ position: "relative", background: "#F9F4EE", color: "#211A19", padding: "var(--sec) 0", overflow: "hidden" }}>
         <div data-shadow style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", mixBlendMode: "multiply" }}>
-          <div data-blob style={{ position: "absolute", left: "-10%", top: "-40%", width: "90%", height: "90%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.1) 0%,rgba(70,50,40,0) 62%)", transform: "rotate(-20deg)" }} />
+          <div data-blob style={{ position: "absolute", left: "-10%", top: "-40%", width: "90%", height: "90%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.10) 0%,transparent 62%)", transform: "rotate(-20deg)" }} />
         </div>
         <div data-grid style={{ padding: "0 var(--pad)", position: "relative", alignItems: "stretch", rowGap: "2rem" }}>
           <div data-r="mob" data-mo="0" className="lab" style={{ gridColumn: "1/-1", display: "block" }}>Services</div>

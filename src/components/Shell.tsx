@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import QB from "@/lib/qb-engine";
 import { navTo, openDrawer } from "./ui";
+import LogoMenu, { LogoImage } from "./LogoMenu";
 
 const SERVICES: [string, string][] = [["Quadra Renovations", "/renovations"], ["Quadra Homes", "/homes"], ["Quadra Commercial", "/commercial"], ["Quadra Approvals", "/approvals"]];
 const NAV: [string, string][] = [["Home", "/"], ["About", "/about"], ["Projects", "/projects"], ["Contact", "/contact"]];
@@ -44,11 +44,14 @@ export default function Shell() {
     <div data-shell>
       <div data-glow style={{ position: "fixed", left: 0, top: 0, width: "40vw", height: "40vw", margin: "-20vw 0 0 -20vw", borderRadius: "50%", background: "radial-gradient(circle,rgba(255,101,0,.6) 0%,rgba(255,101,0,0) 62%)", mixBlendMode: "screen", opacity: 0.16, pointerEvents: "none", zIndex: 1150, display: "none" }} />
 
-      <header data-header style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1200, height: "var(--hh)", color: "#F9F4EE", opacity: 0, background: "rgba(58,51,48,.5)", backdropFilter: "blur(18px) saturate(140%)", WebkitBackdropFilter: "blur(18px) saturate(140%)", borderBottom: "1px solid rgba(249,244,238,.08)", boxShadow: "0 1px 0 rgba(0,0,0,.25)" }}>
+      <header data-header style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1200, height: "var(--hh)", color: "#F9F4EE", opacity: 0, background: "rgba(33,26,25,.94)", backdropFilter: "blur(18px)", WebkitBackdropFilter: "blur(18px)", borderBottom: "1px solid rgba(249,244,238,.08)", boxShadow: "0 1px 0 rgba(0,0,0,.25)" }}>
         <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", height: "100%", padding: "0 var(--pad)" }}>
-          <a href="/" onClick={navTo} data-logo aria-label="Quadra Build — home" style={{ display: "flex", alignItems: "center", flex: "none", paddingLeft: "1.4rem" }}>
-            <Image src="/brand/qb-lockup.png" alt="Quadra Build" width={1179} height={726} sizes="240px" loading="eager" style={{ height: "min(5rem, calc(var(--hh) - .5rem))", width: "auto", display: "block" }} />
-          </a>
+          <div data-logo-group style={{ display: "flex", alignItems: "center", gap: "1.2rem", flex: "none", paddingLeft: "1.2rem" }}>
+            <a href="/" onClick={navTo} data-logo aria-label="Quadra Build — home" style={{ display: "flex", alignItems: "center", flex: "none" }}>
+              <LogoImage />
+            </a>
+            <LogoMenu />
+          </div>
           <nav data-r="desk" aria-label="Primary" style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-50%,-50%)", display: "flex", gap: "2.6rem", alignItems: "center", whiteSpace: "nowrap" }}>
               <NavLink label="Home" href="/" />
               <NavLink label="About" href="/about" />

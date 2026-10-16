@@ -12,7 +12,7 @@ export default function ProjectView({ project: p }: { project: Project }) {
     <Page current="projects">
       <section data-hero data-bg="color" data-sout style={{ position: "relative", height: "100svh", minHeight: 640, overflow: "hidden", background: "#211A19", color: "#fff" }}>
         <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-          <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(80% 60% at 25% 35%,#5a483f 0%,rgba(90,72,63,0) 60%),linear-gradient(165deg,#30261f 0%,#211A19 60%,#15100e 100%)" }}><Img src={p.hero} alt={p.title} priority /></div>
+          <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(80% 60% at 25% 35%,#5a483f 0%,transparent 60%),linear-gradient(165deg,#2b2320 0%,#211A19 60%,#15100e 100%)" }}><Img src={p.hero} alt={p.title} priority /></div>
         </div>
         <div data-hero-scrim />
         <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: "40vh", background: "linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,0))", pointerEvents: "none" }} />
@@ -63,7 +63,7 @@ export default function ProjectView({ project: p }: { project: Project }) {
       <section data-bg="dark" style={{ position: "relative", background: "#211A19", color: "#F9F4EE" }}>
         {p.inside.map((s) => (
           <div key={s.title} data-r="inside" style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden", background: "#211A19" }}>
-            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(80% 60% at 60% 40%,#4f4036 0%,rgba(79,64,54,0) 60%),linear-gradient(180deg,#2b2320 0%,#211A19 60%,#15100e 100%)" }}><Img src={s.img} alt={s.title} /></div>
+            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(80% 60% at 60% 40%,#4a3b35 0%,transparent 60%),linear-gradient(180deg,#2b2320 0%,#211A19 60%,#15100e 100%)" }}><Img src={s.img} alt={s.title} /></div>
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,0) 40%,rgba(0,0,0,0) 60%,rgba(0,0,0,.45))", pointerEvents: "none" }} />
             <div data-group style={{ position: "absolute", left: "var(--pad)", top: "calc(var(--hh) + 2rem)", display: "flex", flexDirection: "column", gap: "1rem", pointerEvents: "none" }}>
               <span data-reveal="ctn" className="lab">{s.eyebrow}</span>

@@ -15,7 +15,7 @@ export default function DivisionView({ division }: { division: DivisionKey }) {
     <Page current={division}>
       <section data-hero data-bg="color" data-sout data-r="snap" style={{ position: "relative", height: "100svh", minHeight: 640, overflow: "hidden", background: "#211A19", color: "#fff", display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
         <div data-parallax="w" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-          <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(90% 70% at 30% 30%,#54433b 0%,rgba(84,67,59,0) 60%),linear-gradient(170deg,#2a2220 0%,#211A19 55%,#17120f 100%)" }}><Img src={d.heroImg} alt={d.eyebrow} priority /></div>
+          <div data-parallax="img" style={{ position: "absolute", left: 0, right: 0, top: "-15%", height: "130%", background: "radial-gradient(90% 70% at 30% 30%,#5a483f 0%,transparent 60%),linear-gradient(170deg,#2b2320 0%,#211A19 55%,#15100e 100%)" }}><Img src={d.heroImg} alt={d.eyebrow} priority /></div>
         </div>
         <div data-hero-scrim />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.35) 50%,rgba(0,0,0,.15) 100%)", pointerEvents: "none" }} />
@@ -98,7 +98,7 @@ export default function DivisionView({ division }: { division: DivisionKey }) {
 
       <section data-bg="light" style={{ position: "relative", background: "#F9F4EE", color: "#211A19", padding: "var(--sec) 0", overflow: "hidden" }}>
         <div data-shadow style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", mixBlendMode: "multiply" }}>
-          <div data-blob style={{ position: "absolute", right: "-20%", top: "-30%", width: "80%", height: "70%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.12) 0%,rgba(70,50,40,0) 62%)", transform: "rotate(24deg)" }} />
+          <div data-blob style={{ position: "absolute", right: "-20%", top: "-30%", width: "80%", height: "70%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.12) 0%,transparent 62%)", transform: "rotate(24deg)" }} />
         </div>
         <div data-grid data-group style={{ padding: "0 var(--pad)", position: "relative", rowGap: "3rem" }}>
           <div data-reveal="ctn" className="lab" style={{ gridColumn: "1/4" }}>Our Process</div>
@@ -163,7 +163,7 @@ export default function DivisionView({ division }: { division: DivisionKey }) {
           <div style={{ gridColumn: "1/7", display: "flex", flexDirection: "column", gap: "1.6rem", alignSelf: "start" }}>
             <div data-reveal="ctn" className="lab">Related Project</div>
             <a href={projectHref(proj.slug)} onClick={navTo} data-rel-img style={{ display: "block", position: "relative", aspectRatio: "16/10", overflow: "hidden" }}>
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(170deg,#2e2522 0%,#211A19 60%,#1a1514 100%)" }}><Img src={proj.hero} alt={proj.title} sizes="(min-width: 992px) 50vw, 100vw" /></div>
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(170deg,#2b2320 0%,#211A19 60%,#15100e 100%)" }}><Img src={proj.hero} alt={proj.title} sizes="(min-width: 992px) 50vw, 100vw" /></div>
             </a>
             <a href={projectHref(proj.slug)} onClick={navTo} data-rel-cap style={{ display: "flex", flexDirection: "column", gap: ".5rem" }}>
               <span className="lab" style={{ color: "rgba(249,244,238,.7)" }}>{proj.location}</span>

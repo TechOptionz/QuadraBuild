@@ -32,7 +32,7 @@ export function Img({ src, alt = "", priority, eager, sizes = "100vw", quality }
 
 /** Soft dark gradient fill behind images (the design's warm placeholder background). */
 export const warm = (angle = 160, hot = "#4a3b35", at = "70% 20%") =>
-  `radial-gradient(120% 80% at ${at},${hot} 0%,rgba(74,59,53,0) 60%),linear-gradient(${angle}deg,#2e2522 0%,#211A19 60%,#1a1514 100%)`;
+  `radial-gradient(120% 80% at ${at},${hot} 0%,transparent 60%),linear-gradient(${angle}deg,#2b2320 0%,#211A19 60%,#15100e 100%)`;
 
 export function Eyebrow({ children, col = "1/4", style, ...rest }: { children: ReactNode; col?: string; style?: CSSProperties } & Extra) {
   return <div data-reveal="ctn" className="lab" style={{ gridColumn: col, ...style }} {...rest}>{children}</div>;

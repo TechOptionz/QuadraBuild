@@ -7,8 +7,8 @@ export default function ContactView() {
     <Page current="contact">
       <section data-hero data-bg="light" data-sout="fade" style={{ position: "relative", minHeight: "100svh", background: "#F9F4EE", color: "#211A19", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "calc(var(--hh) + 2rem) 0 3rem" }}>
         <div data-shadow style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", mixBlendMode: "multiply" }}>
-          <div data-blob style={{ position: "absolute", left: "-15%", top: "-30%", width: "70%", height: "80%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.16) 0%,rgba(70,50,40,0) 62%)", transform: "rotate(-22deg)" }} />
-          <div data-blob style={{ position: "absolute", right: "-20%", bottom: "-30%", width: "70%", height: "80%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.12) 0%,rgba(70,50,40,0) 62%)", transform: "rotate(18deg)" }} />
+          <div data-blob style={{ position: "absolute", left: "-15%", top: "-30%", width: "70%", height: "80%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.16) 0%,transparent 62%)", transform: "rotate(-22deg)" }} />
+          <div data-blob style={{ position: "absolute", right: "-20%", bottom: "-30%", width: "70%", height: "80%", background: "radial-gradient(ellipse at center,rgba(70,50,40,.12) 0%,transparent 62%)", transform: "rotate(18deg)" }} />
         </div>
         <VLine color="rgba(33,26,25,.1)" />
         <Diag color="rgba(33,26,25,.1)" width="160vw" />
