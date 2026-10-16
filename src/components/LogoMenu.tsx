@@ -21,8 +21,8 @@ export const LOGO_VARIANTS: LogoVariant[] = [
 
 const KEY = "qb-logo-variant";
 const EVT = "qb-logo-variant";
-/** The selector is a preview tool: shown in development, or when NEXT_PUBLIC_LOGO_PREVIEW=1 is set for a review build. */
-export const LOGO_PREVIEW_ENABLED = process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_LOGO_PREVIEW === "1";
+/** The selector is a review tool. It is on by default (so the deployed review site shows it); set NEXT_PUBLIC_LOGO_PREVIEW=0 to hide it on the public launch build. */
+export const LOGO_PREVIEW_ENABLED = process.env.NEXT_PUBLIC_LOGO_PREVIEW !== "0";
 
 const CLASSIC_PNG = "/brand/qb-lockup.png";
 const PNG_W = 1179, PNG_H = 726;
