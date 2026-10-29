@@ -92,6 +92,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
         <Footer />
+        <div className="scroll-progress" aria-hidden="true" />
         <RevealObserver />
         <Analytics />
       </body>

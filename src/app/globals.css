@@ -32,16 +32,16 @@
   --sandstone: #d2b48c;
   /* Section tones from the four logo blocks: a light tint, a readable ink for
      labels on that tint, and a deep shade for dark sections. */
-  --sage-tint: #d7dfcc;
+  --sage-tint: #e0e5d7;
   --sage-ink: #4a5741;
   --sage-deep: #3b4636;
-  --sand-tint: #ecdbbd;
+  --sand-tint: #efe5d1;
   --sand-ink: #7a5728;
   --sand-deep: #5a4527;
-  --clay-tint: #ecd5bf;
+  --clay-tint: #f0e1d2;
   --clay-ink: #9a4420;
   --brick-deep: #6f3322;
-  --slate-tint: #d5dce3;
+  --slate-tint: #e0e4e8;
   --slate-ink: #3c434b;
   --slate-deep: #283039;
   --div-renovations: var(--brick);
@@ -196,10 +196,10 @@ button {
 }
 
 /* Light tones re-point --bg so frames, buttons and inputs inside blend in. */
-.tone-sage { --bg: var(--sage-tint); --bg-alt: #c9d3bc; --tone-ink: var(--sage-ink); }
-.tone-sand { --bg: var(--sand-tint); --bg-alt: #e2cca6; --tone-ink: var(--sand-ink); }
-.tone-clay { --bg: var(--clay-tint); --bg-alt: #e3c3a6; --tone-ink: var(--clay-ink); }
-.tone-slate { --bg: var(--slate-tint); --bg-alt: #c6cfd8; --tone-ink: var(--slate-ink); }
+.tone-sage { --bg: var(--sage-tint); --bg-alt: #d3dac8; --tone-ink: var(--sage-ink); }
+.tone-sand { --bg: var(--sand-tint); --bg-alt: #e6d7bb; --tone-ink: var(--sand-ink); }
+.tone-clay { --bg: var(--clay-tint); --bg-alt: #e8d1bc; --tone-ink: var(--clay-ink); }
+.tone-slate { --bg: var(--slate-tint); --bg-alt: #d0d7de; --tone-ink: var(--slate-ink); }
 .tone-sage,
 .tone-sand,
 .tone-clay,
@@ -1359,7 +1359,8 @@ html.intro-playing:not(.intro-revealing) .hero *::after {
   position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  /* No fixed height: the grid stretches each card to its row, so staggered
+     cards still end level and every "Explore Service" link lines up. */
   color: inherit;
 }
 .division-card .media {
@@ -1447,35 +1448,6 @@ html.intro-playing:not(.intro-revealing) .hero *::after {
 }
 
 /* ---------- Project cards ---------- */
-.project-feature-grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: clamp(2.5rem, 4vw, 3.5rem) clamp(1rem, 2.5vw, 2rem);
-}
-.project-feature-grid > :nth-child(4n + 1) {
-  grid-column: span 7;
-}
-.project-feature-grid > :nth-child(4n + 2) {
-  grid-column: span 5;
-  margin-top: clamp(0rem, 8vw, 7rem);
-}
-.project-feature-grid > :nth-child(4n + 3) {
-  grid-column: span 5;
-}
-.project-feature-grid > :nth-child(4n + 4) {
-  grid-column: span 7;
-  margin-top: clamp(0rem, -4vw, 0rem);
-}
-.project-feature-grid > :nth-child(4n + 1) .media,
-.project-feature-grid > :nth-child(4n + 4) .media {
-  aspect-ratio: 16 / 11;
-}
-@media (max-width: 760px) {
-  .project-feature-grid > * {
-    grid-column: 1 / -1 !important;
-    margin-top: 0 !important;
-  }
-}
 
 .project-grid {
   display: grid;
@@ -3114,6 +3086,302 @@ html:not(.js) .footer-word > span {
   }
 }
 
+/* ---------- Featured projects showcase (home) ----------
+   Default: a native horizontal swipe row. Where scroll-driven animations are
+   supported (and motion is welcome), the section pins and the row travels
+   sideways as the page scrolls. */
+.showcase {
+  padding-block: clamp(4.5rem, 10vw, 8.5rem);
+}
+.showcase-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+  gap: 1.5rem clamp(2rem, 6vw, 6rem);
+  align-items: end;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+.showcase-head > div:first-child {
+  display: grid;
+  gap: 1.25rem;
+}
+.showcase-aside {
+  display: grid;
+  gap: 1.75rem;
+}
+.showcase-progress {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.showcase-bar {
+  position: relative;
+  flex: 1;
+  height: 1px;
+  background: var(--line-strong);
+}
+.showcase-bar > span {
+  position: absolute;
+  inset: -1px 0;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(0.2);
+}
+.showcase-hint::after {
+  content: " \2192";
+}
+.showcase-track {
+  --edge: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
+  list-style: none;
+  margin: 0;
+  display: flex;
+  align-items: stretch;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  padding: 0 var(--edge) 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--edge);
+  scrollbar-width: thin;
+}
+.showcase-track > li {
+  flex: 0 0 auto;
+  width: clamp(17rem, 34vw, 31rem);
+  scroll-snap-align: start;
+}
+.showcase-track > li:nth-child(even) {
+  padding-top: clamp(0rem, 3.5vw, 3rem);
+}
+.showcase .project-card .media {
+  aspect-ratio: 4 / 3;
+}
+.showcase-track > .showcase-end {
+  display: flex;
+  width: clamp(14rem, 20vw, 19rem);
+}
+.showcase-end-link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: clamp(1.5rem, 2.5vw, 2.25rem);
+  background: var(--graphite);
+  color: var(--on-dark);
+  transition: background-color 0.45s var(--ease);
+}
+.showcase-end-link .eyebrow {
+  color: var(--on-dark-muted);
+}
+.showcase-end-link .h-lg {
+  margin-top: auto;
+}
+.showcase-end-link .arrow {
+  width: 2.25rem;
+  height: auto;
+  transition: transform 0.45s var(--ease);
+}
+.showcase-end-link:hover,
+.showcase-end-link:focus-visible {
+  background: var(--accent);
+}
+.showcase-end-link:hover .arrow,
+.showcase-end-link:focus-visible .arrow {
+  transform: translateX(0.6rem);
+}
+@media (max-width: 860px) {
+  .showcase-head {
+    grid-template-columns: 1fr;
+  }
+  .showcase-track > li {
+    width: min(85vw, 26rem);
+  }
+  .showcase-track > li:nth-child(even) {
+    padding-top: 0;
+  }
+  .showcase-track > .showcase-end {
+    width: min(70vw, 18rem);
+  }
+}
+
+/* ---------- Page scroll progress ---------- */
+.scroll-progress {
+  display: none;
+}
+
+/* ---------- Scroll-driven motion ----------
+   Progressive enhancement only: browsers without scroll timelines keep the
+   static layout, and reduced-motion users never get these. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Thin brick rule across the top that fills as you read. */
+    .scroll-progress {
+      display: block;
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 60;
+      height: 2px;
+      background: var(--accent);
+      transform-origin: left;
+      pointer-events: none;
+      animation: grow-x linear both;
+      animation-timeline: scroll(root);
+    }
+
+    /* Hero copy lifts and dims as the photo parallaxes away beneath it. */
+    .hero-content {
+      animation: hero-out linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 90vh;
+    }
+
+    /* Photos drift inside their frames as they pass through the viewport. */
+    .intro-media .frame,
+    .reasons-aside .frame,
+    .split .frame,
+    .project-card .media,
+    .division-card .media,
+    .cta-band .bg {
+      view-timeline: --media block;
+    }
+    .intro-media .frame img,
+    .reasons-aside .frame img,
+    .split .frame img,
+    .project-card .media img,
+    .division-card .media img,
+    .cta-band .bg img {
+      scale: 1.12;
+      animation: media-drift linear both;
+      animation-timeline: --media;
+      animation-range: cover;
+    }
+
+    /* "Brisbane / & South East Queensland." slide in from opposite sides. */
+    .areas-section {
+      overflow-x: clip;
+    }
+    .areas-band .big {
+      animation: slide-from-left linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 50%;
+    }
+    .areas-band .big span {
+      animation: slide-from-right linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 50%;
+    }
+
+    /* Pinned horizontal project showcase (desktop and tablet, tall enough screens). */
+    @media (min-width: 861px) and (min-height: 640px) {
+      .showcase {
+        padding-block: 0;
+      }
+      .showcase-pin {
+        height: 250vh;
+        view-timeline: --showcase block;
+      }
+      .showcase-sticky {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-top: calc(var(--header-h) * 0.6);
+      }
+      .showcase-track {
+        width: max-content;
+        overflow: visible;
+        scroll-snap-type: none;
+        padding-bottom: 0;
+        animation: showcase-x linear both;
+        animation-timeline: --showcase;
+        animation-range: contain 0% contain 100%;
+      }
+      .showcase-track > li {
+        width: clamp(18rem, 30vw, 29rem);
+      }
+      .showcase .project-card .media {
+        aspect-ratio: auto;
+        height: clamp(13rem, 36vh, 24rem);
+      }
+      .showcase .project-card p {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .showcase-bar > span {
+        animation: grow-x-from linear both;
+        animation-timeline: --showcase;
+        animation-range: contain 0% contain 100%;
+      }
+    }
+  }
+}
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes grow-x-from {
+  from {
+    transform: scaleX(0.04);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes hero-out {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.3;
+    translate: 0 -10vh;
+  }
+}
+@keyframes media-drift {
+  from {
+    translate: 0 -5%;
+  }
+  to {
+    translate: 0 5%;
+  }
+}
+@keyframes slide-from-left {
+  from {
+    translate: -8vw 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@keyframes slide-from-right {
+  from {
+    translate: 10vw 0;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+@keyframes showcase-x {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: calc(100vw - 100%) 0;
+  }
+}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -3352,7 +3620,9 @@ html:not(.js) .footer-word > span {
     height: 46vh;
     padding: 1.75rem 0 1.25rem;
     margin-inline: calc(var(--gutter) * -1);
-    background: linear-gradient(var(--graphite) 88%, transparent);
+    /* Solid behind the caption; the fade sits below the panel instead. */
+    background: var(--graphite);
+    box-shadow: 0 1.25rem 1.25rem -0.25rem var(--graphite);
   }
   .build-art {
     height: 100%;

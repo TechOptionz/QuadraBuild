@@ -135,25 +135,46 @@ export default function HomePage() {
       </section>
 
       {/* ---------- Featured projects ---------- */}
-      <section className="section" aria-labelledby="projects-title">
-        <div className="container">
-          <SectionHead eyebrow="Featured Projects" title="Built Around Your Vision." id="projects-title">
-            <p>A selection of the project types we deliver across Brisbane and South East Queensland.</p>
-          </SectionHead>
-          <div className="project-feature-grid">
-            {featuredProjects.map((p, i) => (
-              <ProjectCard
-                key={p.id}
-                project={p}
-                style={delay((i % 2) * 120)}
-                sizes={i % 3 === 0 ? "(max-width: 760px) 100vw, 58vw" : "(max-width: 760px) 100vw, 42vw"}
-              />
-            ))}
-          </div>
-          <div className="mt-lg">
-            <ButtonLink href="/projects" variant="outline">
-              View All Projects
-            </ButtonLink>
+      {/* Pinned while the cards travel sideways (scroll-driven); a native swipe row where unsupported. */}
+      <section className="showcase" aria-labelledby="projects-title">
+        <div className="showcase-pin">
+          <div className="showcase-sticky">
+            <div className="container showcase-head">
+              <div>
+                <p className="eyebrow" data-reveal>
+                  Featured Projects
+                </p>
+                <h2 className="h-xl" id="projects-title" data-reveal style={delay(80)}>
+                  Built Around Your Vision.
+                </h2>
+              </div>
+              <div className="showcase-aside" data-reveal style={delay(160)}>
+                <p className="lead">A selection of the project types we deliver across Brisbane and South East Queensland.</p>
+                <div className="showcase-progress" aria-hidden="true">
+                  <span className="showcase-count">
+                    {String(featuredProjects.length).padStart(2, "0")} projects
+                  </span>
+                  <span className="showcase-bar">
+                    <span />
+                  </span>
+                  <span className="showcase-hint">Scroll</span>
+                </div>
+              </div>
+            </div>
+            <ul className="showcase-track">
+              {featuredProjects.map((p) => (
+                <li key={p.id}>
+                  <ProjectCard project={p} reveal={false} sizes="(max-width: 760px) 85vw, 36vw" />
+                </li>
+              ))}
+              <li className="showcase-end">
+                <Link href="/projects" className="showcase-end-link">
+                  <span className="eyebrow">Project gallery</span>
+                  <span className="h-lg">View All Projects</span>
+                  <Arrow />
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
       </section>
@@ -201,7 +222,7 @@ export default function HomePage() {
       </section>
 
       {/* ---------- Service areas ---------- */}
-      <section className="section section--dark grid-lines tone-brick-deep" aria-labelledby="areas-title">
+      <section className="section section--dark grid-lines tone-brick-deep areas-section" aria-labelledby="areas-title">
         <div className="container areas-band">
           <h2 id="areas-title" className="big" data-reveal>
             Brisbane
