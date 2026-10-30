@@ -5,7 +5,9 @@ import { CtaBand } from "@/components/CtaBand";
 import { DivisionKey } from "@/components/DivisionKey";
 import { PageHero } from "@/components/PageHero";
 import { ProcessSteps } from "@/components/ProcessSteps";
+import { ImageSlot } from "@/components/ImageSlot";
 import { SectionHead } from "@/components/SectionHead";
+import { imageSlots } from "@/content/imageSlots";
 import { divisions } from "@/content/divisions";
 import { processNote, processSteps } from "@/content/home";
 import { images } from "@/content/images";
@@ -125,6 +127,7 @@ export default function AboutPage() {
       <section className="section" aria-labelledby="values-title">
         <div className="container">
           <SectionHead eyebrow="Our values" title="What Guides the Work" id="values-title" />
+          <ImageSlot slot={imageSlots.aboutTeam} ratio="21 / 9" sizes="(max-width: 1400px) 100vw, 1400px" className="mb-lg" />
           <ul className="values">
             {values.map((v, i) => (
               <li key={v.title} data-reveal style={delay(i * 80)}>

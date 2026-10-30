@@ -1576,51 +1576,83 @@ html.intro-playing:not(.intro-revealing) .hero *::after {
 }
 
 /* ---------- Process ---------- */
+/* ---------- Process timeline ----------
+   A rail runs along the top; it fills when the list scrolls into view and each
+   stage's node lights up in turn. Numerals are outlined and fill on hover. */
 .process {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  counter-reset: step;
   list-style: none;
+  margin: 0;
   padding: 0;
+}
+.process::before,
+.process::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--line-dark);
+}
+.process::after {
+  top: -0.5px;
+  height: 2px;
+  background: var(--accent-on-dark);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.8s var(--ease-in-out) 0.1s;
+}
+.process.is-visible::after,
+.no-js .process::after {
+  transform: scaleX(1);
 }
 .process li {
   position: relative;
-  padding: 2rem 1.5rem 0 0;
-  border-top: 1px solid var(--line-dark);
+  padding: clamp(2.25rem, 3.5vw, 3rem) clamp(1rem, 2vw, 1.75rem) 0.5rem 0;
 }
-.section:not(.section--dark) .process li {
-  border-top-color: var(--line);
+.process li + li {
+  padding-left: clamp(1rem, 2vw, 1.75rem);
+  border-left: 1px solid var(--line-dark);
 }
-.process li::before {
-  content: "";
+.process .step-node {
   position: absolute;
-  top: -1px;
+  z-index: 1;
+  top: -6.5px;
   left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 1s var(--ease);
-  transition-delay: calc(var(--i, 0) * 0.15s);
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--graphite);
+  border: 1.5px solid var(--on-dark-muted);
+  transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease);
+  transition-delay: calc(0.15s + var(--i, 0) * 0.34s);
 }
-.process.is-visible li::before,
-.no-js .process li::before {
-  transform: scaleX(1);
+.process li + li .step-node {
+  left: -7px;
+}
+.process.is-visible .step-node,
+.no-js .process .step-node {
+  background: var(--accent-on-dark);
+  border-color: var(--accent-on-dark);
 }
 .process .step-num {
   display: block;
+  margin-bottom: 1.25rem;
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 3.5vw, 3rem);
+  font-size: clamp(2.75rem, 4.6vw, 4.25rem);
   font-weight: 700;
   font-stretch: 110%;
   letter-spacing: -0.04em;
-  line-height: 1;
-  color: var(--accent-on-dark);
-  margin-bottom: 1.25rem;
+  line-height: 0.9;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--accent-on-dark);
+  transition: color 0.45s var(--ease);
 }
-.section:not(.section--dark) .process .step-num {
-  color: var(--accent-text);
+.process li:hover .step-num {
+  color: var(--accent-on-dark);
 }
 .process h3 {
   margin-bottom: 0.6rem;
@@ -1628,6 +1660,30 @@ html.intro-playing:not(.intro-revealing) .hero *::after {
 .process p {
   font-size: 0.95rem;
   color: var(--on-dark-muted);
+}
+/* Light-section variant. */
+.section:not(.section--dark) .process::before {
+  background: var(--line-strong);
+}
+.section:not(.section--dark) .process::after {
+  background: var(--accent);
+}
+.section:not(.section--dark) .process li + li {
+  border-left-color: var(--line);
+}
+.section:not(.section--dark) .process .step-node {
+  background: var(--bg);
+  border-color: var(--line-strong);
+}
+.section:not(.section--dark) .process.is-visible .step-node {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.section:not(.section--dark) .process .step-num {
+  -webkit-text-stroke-color: var(--accent-text);
+}
+.section:not(.section--dark) .process li:hover .step-num {
+  color: var(--accent-text);
 }
 .section:not(.section--dark) .process p {
   color: var(--muted);
@@ -1644,18 +1700,47 @@ html.intro-playing:not(.intro-revealing) .hero *::after {
   border-top-color: var(--line-strong);
   color: var(--muted);
 }
+/* Narrow screens: the rail turns vertical and runs down the left. */
 @media (max-width: 960px) {
   .process {
     grid-template-columns: 1fr;
+    padding-left: 2.25rem;
   }
-  .process li {
-    display: grid;
-    grid-template-columns: 4.5rem 1fr;
-    padding: 1.5rem 0;
+  .process::before,
+  .process::after {
+    top: 0.5rem;
+    bottom: 0;
+    left: 6px;
+    right: auto;
+    width: 1px;
+    height: auto;
+  }
+  .process::after {
+    left: 5.5px;
+    width: 2px;
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  .process.is-visible::after,
+  .no-js .process::after {
+    transform: scaleY(1);
+  }
+  .process li,
+  .process li + li {
+    padding: 0 0 2.25rem;
+    border-left: 0;
+  }
+  .process li:last-child {
+    padding-bottom: 0;
+  }
+  .process .step-node,
+  .process li + li .step-node {
+    top: 0.65rem;
+    left: -2.25rem;
   }
   .process .step-num {
-    grid-row: span 2;
-    margin: 0;
+    font-size: 2.6rem;
+    margin-bottom: 0.75rem;
   }
 }
 
@@ -1918,45 +2003,183 @@ html.intro-playing:not(.intro-revealing) .hero *::after {
 }
 
 /* ---------- Division page ---------- */
-.service-list {
+/* ---------- Division services: sticky intro + numbered spec rows ---------- */
+.services-layout {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: start;
+}
+.services-aside {
+  position: sticky;
+  top: calc(var(--header-h) + 2rem);
+  display: grid;
+  gap: 1.25rem;
+  justify-items: start;
+}
+.services-aside .lead {
+  max-width: 30em;
+}
+.services-aside .services-photo {
+  margin-top: 1rem;
+  max-height: 52vh;
+}
+.service-list {
   list-style: none;
+  margin: 0;
   padding: 0;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-strong);
 }
 .service-list li {
   position: relative;
   display: grid;
-  gap: 0.6rem;
-  align-content: start;
-  padding: 1.75rem 1.75rem 2rem 0;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: clamp(1.4rem, 2.4vw, 1.9rem) 1rem clamp(1.4rem, 2.4vw, 1.9rem) 0;
   border-bottom: 1px solid var(--line);
+  transition: background-color 0.45s var(--ease), padding 0.45s var(--ease);
 }
-.service-list li::before {
+/* Brick rule that draws across the row on hover. */
+.service-list li::after {
   content: "";
-  width: 10px;
-  height: 10px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
   background: var(--accent);
-  margin-bottom: 0.5rem;
-  transition: transform 0.5s var(--ease);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.6s var(--ease);
 }
-.service-list li:hover::before {
-  transform: rotate(45deg);
+.service-list li:hover {
+  background: var(--bg-alt);
+  padding-left: 1rem;
+}
+.service-list li:hover::after {
+  transform: scaleX(1);
+}
+.service-idx {
+  padding-top: 0.2rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: var(--tone-ink, var(--accent-text));
+  transition: color 0.4s var(--ease);
+}
+.service-list li:hover .service-idx {
+  color: var(--accent-text);
+}
+.service-list h3 {
+  margin-bottom: 0.45rem;
 }
 .service-list p {
+  max-width: 38em;
   color: var(--muted);
-  font-size: 0.97rem;
+  font-size: 0.98rem;
 }
 @media (max-width: 960px) {
-  .service-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .services-layout {
+    grid-template-columns: 1fr;
+  }
+  .services-aside {
+    position: static;
+  }
+  .services-aside .services-photo {
+    max-height: none;
+    aspect-ratio: 16 / 10 !important;
   }
 }
 @media (max-width: 600px) {
-  .service-list {
-    grid-template-columns: 1fr;
+  .service-list li {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
   }
+}
+
+/* ---------- Image frames and photo placeholders ---------- */
+.image-frame {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg-alt);
+}
+.image-frame img {
+  object-fit: cover;
+}
+.image-slot-inner {
+  --inset: clamp(0.75rem, 1.6vw, 1.25rem);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.7rem;
+  padding: 2rem;
+  text-align: center;
+  color: var(--muted);
+  background: repeating-linear-gradient(135deg, transparent 0 13px, var(--line) 13px 14px), var(--bg-alt);
+}
+/* Inner drafting border with set-out pegs at each corner. */
+.image-slot-inner::before {
+  content: "";
+  position: absolute;
+  inset: var(--inset);
+  border: 1px solid var(--line-strong);
+}
+.image-slot-peg {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  background: var(--bg-alt);
+}
+.image-slot-peg--tl { top: calc(var(--inset) - 4px); left: calc(var(--inset) - 4px); }
+.image-slot-peg--tr { top: calc(var(--inset) - 4px); right: calc(var(--inset) - 4px); }
+.image-slot-peg--bl { bottom: calc(var(--inset) - 4px); left: calc(var(--inset) - 4px); }
+.image-slot-peg--br { bottom: calc(var(--inset) - 4px); right: calc(var(--inset) - 4px); }
+.image-slot-icon,
+.image-slot-label,
+.image-slot-hint {
+  position: relative;
+  background: var(--bg-alt);
+}
+.image-slot-icon {
+  padding: 0.35rem;
+  box-sizing: content-box;
+  color: var(--ink-2);
+  opacity: 0.75;
+}
+.image-slot-label {
+  max-width: 28ch;
+  padding: 0.3rem 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  line-height: 1.6;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.image-slot-hint {
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
+}
+.section--dark .image-slot-inner {
+  color: var(--on-dark-muted);
+  background: repeating-linear-gradient(135deg, transparent 0 13px, var(--line-dark) 13px 14px), var(--graphite-2);
+}
+.section--dark .image-slot-inner::before {
+  border-color: var(--line-dark);
+}
+.section--dark .image-slot-icon,
+.section--dark .image-slot-label,
+.section--dark .image-slot-hint,
+.section--dark .image-slot-peg {
+  background: var(--graphite-2);
+  color: var(--on-dark);
+}
+.mb-lg {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
 .split {
@@ -3244,7 +3467,8 @@ html:not(.js) .footer-word > span {
     .split .frame,
     .project-card .media,
     .division-card .media,
-    .cta-band .bg {
+    .cta-band .bg,
+    .image-frame {
       view-timeline: --media block;
     }
     .intro-media .frame img,
@@ -3252,7 +3476,8 @@ html:not(.js) .footer-word > span {
     .split .frame img,
     .project-card .media img,
     .division-card .media img,
-    .cta-band .bg img {
+    .cta-band .bg img,
+    .image-frame img {
       scale: 1.12;
       animation: media-drift linear both;
       animation-timeline: --media;
@@ -3402,8 +3627,8 @@ html:not(.js) .footer-word > span {
     transform: none;
     clip-path: none;
   }
-  .process li::before {
-    transform: scaleX(1);
+  .process::after {
+    transform: none;
   }
 }
 

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { ButtonLink } from "@/components/ButtonLink";
 import { CtaBand } from "@/components/CtaBand";
+import { ImageSlot } from "@/components/ImageSlot";
 import { PageHero } from "@/components/PageHero";
+import { imageSlots } from "@/content/imageSlots";
 import { Ph } from "@/components/Placeholder";
 import { SectionHead } from "@/components/SectionHead";
 import { divisions } from "@/content/divisions";
@@ -57,6 +59,7 @@ export default function ServiceAreasPage() {
               </p>
             </article>
           </div>
+          <ImageSlot slot={imageSlots.serviceAreasMap} ratio="21 / 9" sizes="(max-width: 1400px) 100vw, 1400px" className="mt-lg" />
         </div>
       </section>
 

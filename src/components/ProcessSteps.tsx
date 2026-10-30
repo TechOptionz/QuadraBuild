@@ -6,6 +6,7 @@ export function ProcessSteps({ steps, note }: { steps: { title: string; text: st
       <ol className="process" data-reveal="fade">
         {steps.map((s, i) => (
           <li key={s.title} style={cssVar("--i", i)}>
+            <span className="step-node" aria-hidden="true" />
             <span className="step-num" aria-hidden="true">
               {String(i + 1).padStart(2, "0")}
             </span>
