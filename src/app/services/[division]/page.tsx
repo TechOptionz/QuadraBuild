@@ -3,8 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLink, ButtonLink } from "@/components/ButtonLink";
-import { ImageSlot } from "@/components/ImageSlot";
-import { imageSlots, type SlotKey } from "@/content/imageSlots";
 import { CtaBand } from "@/components/CtaBand";
 import { FaqList } from "@/components/FaqList";
 import { DivisionKey } from "@/components/DivisionKey";
@@ -12,6 +10,7 @@ import { PageHero } from "@/components/PageHero";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SectionHead } from "@/components/SectionHead";
+import { ServicesShowcase } from "@/components/ServicesShowcase";
 import { divisions, getDivision, type DivisionSlug } from "@/content/divisions";
 import { divisionHref } from "@/content/navigation";
 import { projects, type ProjectCategory } from "@/content/projects";
@@ -41,13 +40,6 @@ const relatedCategories: Record<DivisionSlug, ProjectCategory[]> = {
   homes: ["new-homes", "granny-flats"],
   commercial: ["commercial"],
   approvals: [],
-};
-
-const SERVICE_SLOTS: Record<DivisionSlug, SlotKey> = {
-  renovations: "servicesRenovations",
-  homes: "servicesHomes",
-  commercial: "servicesCommercial",
-  approvals: "servicesApprovals",
 };
 
 /** Each division's pages are tinted with its own logo block colour (light, deep). */
@@ -124,42 +116,21 @@ export default async function DivisionPage({ params }: Props) {
 
       {/* Services */}
       <section id="services-list" className={`section ${light}`} aria-labelledby="services-title">
-        <div className="container services-layout">
-          <div className="services-aside">
-            <p className="eyebrow eyebrow--accent" data-reveal>
-              What we do
-            </p>
-            <h2 id="services-title" className="h-xl" data-reveal style={delay(80)}>
-              Services
-            </h2>
-            <p className="lead" data-reveal style={delay(140)}>
-              {division.name} covers the following services. Not sure where your project fits? Get in touch and
-              we&apos;ll point you in the right direction.
-            </p>
-            <div data-reveal style={delay(200)}>
-              <ArrowLink href={enquiryHref}>Ask about your project</ArrowLink>
-            </div>
-            <ImageSlot
-              slot={imageSlots[SERVICE_SLOTS[division.slug]]}
-              ratio="4 / 5"
-              sizes="(max-width: 960px) 100vw, 38vw"
-              className="services-photo"
-            />
+        <ServicesShowcase services={division.services}>
+          <p className="eyebrow eyebrow--accent" data-reveal>
+            What we do
+          </p>
+          <h2 id="services-title" className="h-xl" data-reveal style={delay(80)}>
+            Services
+          </h2>
+          <p className="lead" data-reveal style={delay(140)}>
+            {division.name} covers the following services. Not sure where your project fits? Get in touch and
+            we&apos;ll point you in the right direction.
+          </p>
+          <div data-reveal style={delay(200)}>
+            <ArrowLink href={enquiryHref}>Ask about your project</ArrowLink>
           </div>
-          <ol className="service-list">
-            {division.services.map((s, i) => (
-              <li key={s.title} data-reveal style={delay((i % 3) * 60)}>
-                <span className="service-idx" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div>
-                  <h3 className="h-sm">{s.title}</h3>
-                  <p>{s.text}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
+        </ServicesShowcase>
       </section>
 
       {/* Journey */}

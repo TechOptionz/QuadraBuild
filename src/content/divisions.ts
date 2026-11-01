@@ -1,4 +1,5 @@
 import { images, type SiteImage } from "./images";
+import { serviceImages } from "./serviceImages";
 
 export type DivisionSlug = "renovations" | "homes" | "commercial" | "approvals";
 
@@ -15,7 +16,7 @@ export type Division = {
   intro: string[];
   heroImage: SiteImage;
   supportImages: [SiteImage, SiteImage];
-  services: { title: string; text: string }[];
+  services: { title: string; text: string; image: SiteImage }[];
   focus: { title: string; text: string }[];
   journeyTitle: string;
   journey: { title: string; text: string }[];
@@ -42,15 +43,15 @@ export const divisions: Division[] = [
     heroImage: images.openLiving,
     supportImages: [images.bathroom, images.outdoorLiving],
     services: [
-      { title: "Home renovations & remodelling", text: "Whole-of-home or staged renovations that refresh layouts, finishes and functionality." },
-      { title: "Extensions & additions", text: "Additional bedrooms, living areas or levels, designed to connect with the existing home." },
-      { title: "Kitchen renovations", text: "Practical, well-planned kitchens built around storage, workflow and everyday use." },
-      { title: "Bathroom renovations", text: "Bathrooms and ensuites with considered layouts, waterproofing coordination and durable finishes." },
-      { title: "Internal alterations", text: "Reconfiguring walls and spaces to open up living areas or create rooms that suit how you live now." },
-      { title: "Flooring, painting & finishing", text: "The detail work that pulls a renovation together — floors, paint, joinery and trims." },
-      { title: "Landscaping & outdoor improvements", text: "Gardens, paving, retaining and outdoor upgrades that extend the usable space of your home." },
-      { title: "Fencing & boundary upgrades", text: "New or replacement fencing, gates and boundary treatments for privacy, security and street appeal." },
-      { title: "Outdoor living & entertaining", text: "Decks, patios and covered entertaining areas suited to South East Queensland living." },
+      { title: "Home renovations & remodelling", text: "Whole-of-home or staged renovations that refresh layouts, finishes and functionality.", image: serviceImages.renoRemodel },
+      { title: "Extensions & additions", text: "Additional bedrooms, living areas or levels, designed to connect with the existing home.", image: serviceImages.renoExtension },
+      { title: "Kitchen renovations", text: "Practical, well-planned kitchens built around storage, workflow and everyday use.", image: serviceImages.renoKitchen },
+      { title: "Bathroom renovations", text: "Bathrooms and ensuites with considered layouts, waterproofing coordination and durable finishes.", image: serviceImages.renoBathroom },
+      { title: "Internal alterations", text: "Reconfiguring walls and spaces to open up living areas or create rooms that suit how you live now.", image: serviceImages.renoAlterations },
+      { title: "Flooring, painting & finishing", text: "The detail work that pulls a renovation together — floors, paint, joinery and trims.", image: serviceImages.renoFinishing },
+      { title: "Landscaping & outdoor improvements", text: "Gardens, paving, retaining and outdoor upgrades that extend the usable space of your home.", image: serviceImages.renoLandscaping },
+      { title: "Fencing & boundary upgrades", text: "New or replacement fencing, gates and boundary treatments for privacy, security and street appeal.", image: serviceImages.renoFencing },
+      { title: "Outdoor living & entertaining", text: "Decks, patios and covered entertaining areas suited to South East Queensland living.", image: serviceImages.renoOutdoorLiving },
     ],
     focus: [
       { title: "Space", text: "Layouts that make better use of the footprint you already have." },
@@ -108,13 +109,13 @@ export const divisions: Division[] = [
     heroImage: images.newHome,
     supportImages: [images.grannyFlat, images.newHomeDusk],
     services: [
-      { title: "New home construction", text: "New residential builds planned and coordinated from early feasibility through to completion." },
-      { title: "Custom home builds", text: "Homes tailored to your site, lifestyle and brief, working with your designer or ours." },
-      { title: "Granny flats & secondary dwellings", text: "Additional dwellings for family, guests or flexible living — subject to site and planning assessment." },
-      { title: "Residential building works", text: "A range of residential construction works coordinated under one team." },
-      { title: "Extensions & additional living areas", text: "Extra space added to existing homes, integrated with the original structure." },
-      { title: "Outdoor integration & landscaping", text: "Decks, outdoor rooms and landscaping considered as part of the overall home." },
-      { title: "Construction planning & coordination", text: "Scheduling, trades, consultants and documentation managed in a clear sequence." },
+      { title: "New home construction", text: "New residential builds planned and coordinated from early feasibility through to completion.", image: serviceImages.homesConstruction },
+      { title: "Custom home builds", text: "Homes tailored to your site, lifestyle and brief, working with your designer or ours.", image: serviceImages.homesCustom },
+      { title: "Granny flats & secondary dwellings", text: "Additional dwellings for family, guests or flexible living — subject to site and planning assessment.", image: serviceImages.homesGrannyFlat },
+      { title: "Residential building works", text: "A range of residential construction works coordinated under one team.", image: serviceImages.homesBuildingWorks },
+      { title: "Extensions & additional living areas", text: "Extra space added to existing homes, integrated with the original structure.", image: serviceImages.homesExtension },
+      { title: "Outdoor integration & landscaping", text: "Decks, outdoor rooms and landscaping considered as part of the overall home.", image: serviceImages.homesOutdoor },
+      { title: "Construction planning & coordination", text: "Scheduling, trades, consultants and documentation managed in a clear sequence.", image: serviceImages.homesPlanning },
     ],
     focus: [
       { title: "Site first", text: "Orientation, slope, access and services shape what can be built and how." },
@@ -173,13 +174,13 @@ export const divisions: Division[] = [
     heroImage: images.office,
     supportImages: [images.hospitality, images.officeCorridor],
     services: [
-      { title: "Retail & shop fit-outs", text: "Shopfronts, display areas, counters and back-of-house built to support sales and brand presentation." },
-      { title: "Office fit-outs & refurbishments", text: "Workspaces, meeting rooms and breakout areas planned around how your team works." },
-      { title: "Commercial renovations", text: "Upgrades to existing commercial premises, from finishes refreshes to larger reconfigurations." },
-      { title: "Business premises upgrades", text: "Targeted improvements to entries, amenities, lighting and finishes." },
-      { title: "Interior alterations & space optimisation", text: "Partitioning and layout changes that make better use of your floor area." },
-      { title: "Commercial finishes & coordination", text: "Joinery, flooring, ceilings and finishes coordinated with services trades." },
-      { title: "Hospitality & other commercial spaces", text: "Cafés, venues and specialised spaces, subject to project suitability and requirements." },
+      { title: "Retail & shop fit-outs", text: "Shopfronts, display areas, counters and back-of-house built to support sales and brand presentation.", image: serviceImages.commRetail },
+      { title: "Office fit-outs & refurbishments", text: "Workspaces, meeting rooms and breakout areas planned around how your team works.", image: serviceImages.commOffice },
+      { title: "Commercial renovations", text: "Upgrades to existing commercial premises, from finishes refreshes to larger reconfigurations.", image: serviceImages.commRenovation },
+      { title: "Business premises upgrades", text: "Targeted improvements to entries, amenities, lighting and finishes.", image: serviceImages.commPremises },
+      { title: "Interior alterations & space optimisation", text: "Partitioning and layout changes that make better use of your floor area.", image: serviceImages.commAlterations },
+      { title: "Commercial finishes & coordination", text: "Joinery, flooring, ceilings and finishes coordinated with services trades.", image: serviceImages.commFinishes },
+      { title: "Hospitality & other commercial spaces", text: "Cafés, venues and specialised spaces, subject to project suitability and requirements.", image: serviceImages.commHospitality },
     ],
     focus: [
       { title: "Operations", text: "Layouts that support workflow, storage and day-to-day use." },
@@ -237,14 +238,14 @@ export const divisions: Division[] = [
     heroImage: images.plansDetail,
     supportImages: [images.officeDesk, images.siteTeam],
     services: [
-      { title: "Initial development enquiries", text: "A first look at what you're hoping to achieve and the questions that need answering." },
-      { title: "Preliminary feasibility coordination", text: "Coordinating early site and project feasibility input from the appropriate professionals." },
-      { title: "Planning & zoning enquiries", text: "Helping identify the zoning, overlays and planning provisions that may apply to a site." },
-      { title: "Building approval coordination", text: "Coordinating documentation and liaison with a building certifier for building approval." },
-      { title: "Development application support", text: "Supporting the preparation and coordination of development applications with qualified planners." },
-      { title: "Consultant coordination", text: "Engaging and coordinating town planners, designers, engineers, surveyors and certifiers as required." },
-      { title: "Documentation & process guidance", text: "Helping you understand what's needed, in what order, and why." },
-      { title: "Council requirement identification", text: "Support identifying relevant local council requirements for your project." },
+      { title: "Initial development enquiries", text: "A first look at what you're hoping to achieve and the questions that need answering.", image: serviceImages.apprEnquiry },
+      { title: "Preliminary feasibility coordination", text: "Coordinating early site and project feasibility input from the appropriate professionals.", image: serviceImages.apprFeasibility },
+      { title: "Planning & zoning enquiries", text: "Helping identify the zoning, overlays and planning provisions that may apply to a site.", image: serviceImages.apprZoning },
+      { title: "Building approval coordination", text: "Coordinating documentation and liaison with a building certifier for building approval.", image: serviceImages.apprBuildingApproval },
+      { title: "Development application support", text: "Supporting the preparation and coordination of development applications with qualified planners.", image: serviceImages.apprDevApplication },
+      { title: "Consultant coordination", text: "Engaging and coordinating town planners, designers, engineers, surveyors and certifiers as required.", image: serviceImages.apprConsultants },
+      { title: "Documentation & process guidance", text: "Helping you understand what's needed, in what order, and why.", image: serviceImages.apprDocumentation },
+      { title: "Council requirement identification", text: "Support identifying relevant local council requirements for your project.", image: serviceImages.apprCouncil },
     ],
     focus: [
       { title: "Understand", text: "What's possible on your site and what may limit it." },

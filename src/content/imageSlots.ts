@@ -18,35 +18,11 @@ export type ImageSlotContent = {
 };
 
 export type SlotKey =
-  | "servicesRenovations"
-  | "servicesHomes"
-  | "servicesCommercial"
-  | "servicesApprovals"
   | "aboutTeam"
   | "contactOffice"
   | "serviceAreasMap";
 
 export const imageSlots: Record<SlotKey, ImageSlotContent> = {
-  servicesRenovations: {
-    image: null,
-    label: "Renovation in progress or a finished kitchen",
-    hint: "Portrait photo · about 1600 × 2000 px",
-  },
-  servicesHomes: {
-    image: null,
-    label: "New home on site or at handover",
-    hint: "Portrait photo · about 1600 × 2000 px",
-  },
-  servicesCommercial: {
-    image: null,
-    label: "Commercial fit-out underway or complete",
-    hint: "Portrait photo · about 1600 × 2000 px",
-  },
-  servicesApprovals: {
-    image: null,
-    label: "Plans, site assessment or a planning meeting",
-    hint: "Portrait photo · about 1600 × 2000 px",
-  },
   aboutTeam: {
     image: null,
     label: "The Quadra Build team",
