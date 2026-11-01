@@ -5,6 +5,7 @@ import { CtaBand } from "@/components/CtaBand";
 import { divisionKeyStyle } from "@/components/DivisionKey";
 import { DivisionCard } from "@/components/DivisionCard";
 import { FaqList } from "@/components/FaqList";
+import { HeroSlideshow } from "@/components/HeroSlideshow";
 import { Arrow } from "@/components/Icons";
 import { BuildSequence } from "@/components/BuildSequence";
 import { ProjectCard } from "@/components/ProjectCard";
@@ -19,14 +20,22 @@ import { cssVar, delay } from "@/lib/style";
 
 const heroLines = ["We Build.", "We Renovate.", "We Transform."];
 
+// One photo per kind of work, so the hero cycles through every division.
+const heroSlides = [
+  images.heroHome,
+  images.newHome,
+  images.openLiving,
+  images.outdoorPool,
+  images.office,
+  images.siteTeam,
+];
+
 export default function HomePage() {
   return (
     <>
       {/* ---------- Hero ---------- */}
       <section className="hero" aria-labelledby="hero-title">
-        <div className="hero-media">
-          <Image src={images.heroHome.src} alt={images.heroHome.alt} fill priority placeholder="blur" sizes="100vw" />
-        </div>
+        <HeroSlideshow slides={heroSlides} />
 
         {/* Set-out linework: corner pegs and a dimension rail, drawn over the photo. */}
         <div className="hero-setout" aria-hidden="true">

@@ -843,15 +843,44 @@ button {
   position: absolute;
   inset: 0;
 }
-.hero-media img {
-  object-fit: cover;
-  animation: hero-settle 2.6s var(--ease) both;
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
 }
+/* The incoming slide fades in on top; the outgoing one stays put beneath it. */
+.hero-slide[data-state="active"] {
+  z-index: 2;
+  opacity: 1;
+  transition: opacity 1.1s var(--ease);
+}
+.hero-slide[data-state="prev"] {
+  z-index: 1;
+  opacity: 1;
+}
+.hero-slide img {
+  object-fit: cover;
+}
+/* Slow zoom while a slide holds, carried on under the next one as it fades in. */
+.hero-slide[data-state] img {
+  animation: hero-kenburns 4.2s linear both;
+}
+@keyframes hero-kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+/* Shade the photos so the headline reads over any slide, light or dark. */
 .hero-media::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(20, 21, 18, 0.6) 0%, rgba(20, 21, 18, 0.05) 28%, rgba(20, 21, 18, 0.3) 55%, rgba(20, 21, 18, 0.93) 100%),
+  z-index: 3;
+  background: linear-gradient(rgba(20, 21, 18, 0.14), rgba(20, 21, 18, 0.14)),
+    linear-gradient(180deg, rgba(20, 21, 18, 0.6) 0%, rgba(20, 21, 18, 0.05) 28%, rgba(20, 21, 18, 0.3) 55%, rgba(20, 21, 18, 0.93) 100%),
     linear-gradient(90deg, rgba(20, 21, 18, 0.72) 0%, rgba(20, 21, 18, 0.18) 55%, rgba(20, 21, 18, 0) 78%),
     radial-gradient(ellipse at 82% 28%, rgba(228, 138, 92, 0.2), transparent 55%);
 }
@@ -1152,14 +1181,6 @@ html.intro-playing:not(.intro-revealing) .hero *::after {
   }
   to {
     clip-path: inset(0 0 0 0);
-  }
-}
-@keyframes hero-settle {
-  from {
-    transform: scale(1.12);
-  }
-  to {
-    transform: scale(1);
   }
 }
 @keyframes hero-zoom {
