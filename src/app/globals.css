@@ -3479,6 +3479,9 @@ html:not(.js) .process .rail::before {
   position: absolute;
   inset: auto 0 0;
   display: grid;
+  /* One column the width of the panel, so the title wraps in a narrow panel
+     while the fixed-width summary below it is simply clipped. */
+  grid-template-columns: 100%;
   padding: 1.4rem;
 }
 .panel-body .h-lg {

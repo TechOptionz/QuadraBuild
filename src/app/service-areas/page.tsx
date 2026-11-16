@@ -37,11 +37,11 @@ const areas = [
 
 /** Photos of the region — scenery only; they don't imply a list of serviced suburbs. */
 const region = [
-  { image: images.regionRiver, caption: "CAPTION_RIVER" },
-  { image: images.regionQueenslander, caption: "CAPTION_QLDER" },
-  { image: images.regionGoldCoast, caption: "CAPTION_GC" },
-  { image: images.regionSuburbs, caption: "CAPTION_SUBURBS" },
-  { image: images.regionSunshineCoast, caption: "CAPTION_SC" },
+  { image: images.regionRiver, caption: "Brisbane River" },
+  { image: images.regionQueenslander, caption: "Queenslander character" },
+  { image: images.regionGoldCoast, caption: "Gold Coast" },
+  { image: images.regionSuburbs, caption: "Brisbane suburbs" },
+  { image: images.regionSunshineCoast, caption: "Sunshine Coast" },
 ];
 
 export default function ServiceAreasPage() {
