@@ -19,7 +19,8 @@ const SLIDE_MS = 6000;
  * While the cursor (or keyboard focus) is on a division in the bar at the
  * bottom, that division's own photo fades in over the slideshow and the
  * slideshow waits. Only the first slide loads up front: each later slide is
- * requested one step ahead, and division photos after the first interaction.
+ * requested one step ahead and the slideshow holds until it has downloaded.
+ * Division photos are requested after the first interaction.
  */
 export function HomeHero({
   slides,
@@ -36,6 +37,8 @@ export function HomeHero({
   const [paused, setPaused] = useState(false);
   /** Highest slide index rendered so far (the current one plus the next). */
   const [reach, setReach] = useState(0);
+  /** Slides whose photo has finished downloading. */
+  const [loaded, setLoaded] = useState<ReadonlySet<number>>(new Set());
 
   const show = (slug: string) => {
     setArmed(true);
@@ -53,16 +56,18 @@ export function HomeHero({
   }, []);
 
   const holding = paused || active !== null;
+  const next = (index + 1) % slides.length;
+  // Never fade to a photo that is still downloading: wait on the current one.
+  const nextReady = loaded.has(next);
   useEffect(() => {
-    if (holding || slides.length < 2) return;
+    if (holding || !nextReady || slides.length < 2) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const timer = window.setTimeout(() => {
-      const next = (index + 1) % slides.length;
       setIndex(next);
       setReach((r) => Math.max(r, next + 1));
     }, SLIDE_MS);
     return () => window.clearTimeout(timer);
-  }, [holding, index, slides.length]);
+  }, [holding, nextReady, next, slides.length]);
 
   return (
     <section className="hero" aria-labelledby="hero-title">
@@ -75,8 +80,10 @@ export function HomeHero({
                 alt={slide.alt}
                 fill
                 priority={i === 0}
-                placeholder={i === 0 ? "blur" : "empty"}
+                placeholder="blur"
+                quality={70}
                 sizes="100vw"
+                onLoad={() => setLoaded((prev) => (prev.has(i) ? prev : new Set(prev).add(i)))}
               />
             </div>
           ) : null,

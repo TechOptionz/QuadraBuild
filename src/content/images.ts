@@ -108,9 +108,10 @@ import approvalsDecide from "@/assets/photos/approvalsDecide.jpg";
  * only where that division is being linked to (cards, panels, the home hero).
  *
  * All images below are ILLUSTRATIVE stock photography from Unsplash
- * (https://unsplash.com/license), stored in src/assets/photos at 2400px wide
- * so they are served from the site's own CDN with blur placeholders. None of
- * them show Quadra Build projects. When real project photography is
+ * (https://unsplash.com/license), stored in src/assets/photos so they are
+ * served from the site's own CDN with blur placeholders. Keep them at 1920px
+ * wide (the widest layout): larger originals only make resizing slower. None
+ * of them show Quadra Build projects. When real project photography is
  * available, replace the file in src/assets/photos and update the alt text.
  */
 
