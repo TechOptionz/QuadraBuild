@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLink, ButtonLink } from "@/components/ButtonLink";
+import { ButtonLink } from "@/components/ButtonLink";
 import { CtaBand } from "@/components/CtaBand";
 import { FaqList } from "@/components/FaqList";
 import { DivisionKey } from "@/components/DivisionKey";
@@ -10,7 +10,7 @@ import { PageHero } from "@/components/PageHero";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SectionHead } from "@/components/SectionHead";
-import { ServicesShowcase } from "@/components/ServicesShowcase";
+import { Showcase } from "@/components/Showcase";
 import { divisions, getDivision, type DivisionSlug } from "@/content/divisions";
 import { divisionHref } from "@/content/navigation";
 import { projects, type ProjectCategory } from "@/content/projects";
@@ -42,18 +42,9 @@ const relatedCategories: Record<DivisionSlug, ProjectCategory[]> = {
   approvals: [],
 };
 
-/** Each division's pages are tinted with its own logo block colour (light, deep). */
-const TONES: Record<DivisionSlug, [string, string]> = {
-  renovations: ["tone-clay", "tone-brick-deep"],
-  homes: ["tone-slate", "tone-slate-deep"],
-  commercial: ["tone-sage", "tone-sage-deep"],
-  approvals: ["tone-sand", "tone-sand-deep"],
-};
-
 export default async function DivisionPage({ params }: Props) {
   const division = getDivision((await params).division);
   if (!division) notFound();
-  const [light, deep] = TONES[division.slug];
 
   const related = projects.filter((p) => relatedCategories[division.slug].includes(p.category)).slice(0, 3);
   const others = divisions.filter((d) => d.slug !== division.slug);
@@ -65,121 +56,88 @@ export default async function DivisionPage({ params }: Props) {
         eyebrow={`${division.number} — ${division.name}`}
         title={division.headline}
         intro={<p>{division.intro[0]}</p>}
-        image={division.heroImage}
+        variant="gallery"
+        images={[division.heroImage, ...division.supportImages]}
         crumbs={[{ href: "/#services", label: "Services" }, { label: division.name }]}
       >
         <div className="btn-row">
           <ButtonLink href={enquiryHref} variant="primary">
             Discuss Your Project
           </ButtonLink>
-          <ButtonLink href="#services-list" variant="outline">
+          <ButtonLink href="#services-list" variant="outline-light" arrow={false}>
             What We Do
           </ButtonLink>
         </div>
       </PageHero>
 
       {/* Overview */}
-      <section className="section section--bordered" aria-labelledby="overview-title">
-        <div className="container split">
-          <div className="frame" data-reveal="clip">
-            <Image
-              src={division.supportImages[0].src}
-              alt={division.supportImages[0].alt}
-              fill
-              placeholder="blur"
-              sizes="(max-width: 860px) 100vw, 50vw"
-            />
-          </div>
-          <div className="copy">
-            <p className="eyebrow eyebrow--accent" data-reveal>
-              Overview
-            </p>
-            <h2 id="overview-title" className="h-lg" data-reveal style={delay(80)}>
-              How {division.name} Helps
-            </h2>
-            <div className="prose" data-reveal style={delay(140)}>
-              {division.intro.slice(1).map((p) => (
-                <p key={p}>{p}</p>
-              ))}
-            </div>
-            <div className="focus-grid" data-reveal style={delay(200)}>
-              {division.focus.map((f) => (
-                <div key={f.title}>
-                  <h3 className="h-sm">{f.title}</h3>
-                  <p>{f.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+      <section className="section" aria-labelledby="overview-title">
+        <div className="container">
+          <SectionHead eyebrow="Overview" title={`How ${division.name} Helps`} id="overview-title">
+            {division.intro.slice(1).map((p) => (
+              <p key={p}>{p}</p>
+            ))}
+          </SectionHead>
+          <Showcase
+            trigger="hover"
+            numbered
+            items={division.focus.map((f, i) => ({ ...f, image: division.focusImages[i] }))}
+          />
         </div>
       </section>
 
       {/* Services */}
-      <section id="services-list" className={`section ${light}`} aria-labelledby="services-title">
-        <ServicesShowcase services={division.services}>
-          <p className="eyebrow eyebrow--accent" data-reveal>
-            What we do
-          </p>
-          <h2 id="services-title" className="h-xl" data-reveal style={delay(80)}>
-            Services
-          </h2>
-          <p className="lead" data-reveal style={delay(140)}>
+      <section id="services-list" className="section section--alt" aria-labelledby="services-title">
+        <div className="container">
+          <SectionHead eyebrow="What we do" title="Services" id="services-title" titleClass="h-xl">
             {division.name} covers the following services. Not sure where your project fits? Get in touch and
             we&apos;ll point you in the right direction.
-          </p>
-          <div data-reveal style={delay(200)}>
-            <ArrowLink href={enquiryHref}>Ask about your project</ArrowLink>
-          </div>
-        </ServicesShowcase>
+          </SectionHead>
+          <ul className="service-list">
+            {division.services.map((s, i) => (
+              <li key={s.title} data-reveal style={delay((i % 3) * 80)}>
+                <h3 className="h-sm">{s.title}</h3>
+                <p>{s.text}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
 
       {/* Journey */}
-      <section className={`section section--dark ${deep}`} aria-labelledby="journey-title">
+      <section className="section section--dark" aria-labelledby="journey-title">
         <div className="container">
           <SectionHead eyebrow="Process" title={division.journeyTitle} id="journey-title" />
           <ProcessSteps steps={division.journey} />
         </div>
       </section>
 
-      {/* Notice + secondary image */}
+      {/* Notice */}
       {division.notice && (
-        <section className="section" aria-labelledby="notice-title">
-          <div className="container split split--reverse">
-            <div className="frame" data-reveal="clip">
-              <Image
-                src={division.supportImages[1].src}
-                alt={division.supportImages[1].alt}
-                fill
-                placeholder="blur"
-                sizes="(max-width: 860px) 100vw, 50vw"
-              />
-            </div>
-            <div className="copy">
-              <p className="eyebrow eyebrow--accent" data-reveal>
-                Good to know
-              </p>
-              <div className="notice" data-reveal style={delay(100)}>
-                <span className="icon" aria-hidden="true">
-                  i
-                </span>
-                <div className="body">
-                  <h2 id="notice-title" className="h-md">
-                    {division.notice.title}
-                  </h2>
-                  {division.notice.text.map((t) => (
-                    <p key={t}>{t}</p>
-                  ))}
-                </div>
+        <section className="section section--tight" aria-labelledby="notice-title">
+          <div className="container notice-wrap">
+            <div className="notice" data-reveal>
+              <span className="icon" aria-hidden="true">
+                i
+              </span>
+              <div className="body">
+                <p className="eyebrow eyebrow--accent">Good to know</p>
+                <h2 id="notice-title" className="h-md">
+                  {division.notice.title}
+                </h2>
+                {division.notice.text.map((t) => (
+                  <p key={t}>{t}</p>
+                ))}
+                {division.slug !== "approvals" && (
+                  <p className="muted">
+                    Need help with planning or approvals?{" "}
+                    <Link href={divisionHref("approvals")} className="text-link">
+                      Explore Quadra Approvals
+                    </Link>
+                    .
+                  </p>
+                )}
               </div>
-              {division.slug !== "approvals" && (
-                <p className="muted" data-reveal style={delay(160)}>
-                  Need help with planning or approvals?{" "}
-                  <Link href={divisionHref("approvals")} className="text-link">
-                    Explore Quadra Approvals
-                  </Link>
-                  .
-                </p>
-              )}
             </div>
           </div>
         </section>
@@ -187,7 +145,7 @@ export default async function DivisionPage({ params }: Props) {
 
       {/* Related sample projects */}
       {related.length > 0 && (
-        <section className={`section ${light}`} aria-labelledby="related-title">
+        <section className="section section--alt" aria-labelledby="related-title">
           <div className="container">
             <SectionHead eyebrow="Projects" title="Related Work" id="related-title">
               Sample placeholders shown — to be replaced with completed {division.name} projects.
@@ -227,9 +185,12 @@ export default async function DivisionPage({ params }: Props) {
           <h2 id="other-title" className="eyebrow" style={{ marginBottom: "1.5rem" }}>
             Other divisions
           </h2>
-          <nav className="division-nav" aria-labelledby="other-title">
+          <nav className="division-nav division-nav--photo" aria-labelledby="other-title">
             {others.map((d) => (
               <Link key={d.slug} href={divisionHref(d.slug)}>
+                <span className="thumb">
+                  <Image src={d.heroImage.src} alt="" fill placeholder="blur" sizes="(max-width: 760px) 100vw, 33vw" />
+                </span>
                 <span className="num">
                   <DivisionKey slug={d.slug} />
                   {d.number}
@@ -242,7 +203,7 @@ export default async function DivisionPage({ params }: Props) {
         </div>
       </section>
 
-      <CtaBand title={division.cta.title} text={division.cta.text} href={enquiryHref} image={division.heroImage} />
+      <CtaBand title={division.cta.title} text={division.cta.text} href={enquiryHref} image={division.ctaImage} />
     </>
   );
 }

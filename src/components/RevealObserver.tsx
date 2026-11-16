@@ -15,6 +15,10 @@ export function RevealObserver() {
   const pathname = usePathname();
 
   useEffect(() => {
+    // Tells the head script's failsafe that reveals are being handled.
+    (window as Window & { __revealReady?: boolean }).__revealReady = true;
+    document.documentElement.classList.add("js");
+
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {

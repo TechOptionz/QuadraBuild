@@ -1,15 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AreaMap } from "@/components/AreaMap";
 import { ArrowLink, ButtonLink } from "@/components/ButtonLink";
 import { CtaBand } from "@/components/CtaBand";
-import { divisionKeyStyle } from "@/components/DivisionKey";
 import { DivisionCard } from "@/components/DivisionCard";
 import { FaqList } from "@/components/FaqList";
-import { HeroSlideshow } from "@/components/HeroSlideshow";
-import { Arrow } from "@/components/Icons";
-import { BuildSequence } from "@/components/BuildSequence";
+import { HomeHero } from "@/components/HomeHero";
+import { LineIcon, type LineIconName } from "@/components/Icons";
+import { ProcessSteps } from "@/components/ProcessSteps";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SectionHead } from "@/components/SectionHead";
+import { Showcase } from "@/components/Showcase";
 import { divisions } from "@/content/divisions";
 import { homeFaqs, processNote, processSteps, reasons } from "@/content/home";
 import { images } from "@/content/images";
@@ -20,86 +21,67 @@ import { cssVar, delay } from "@/lib/style";
 
 const heroLines = ["We Build.", "We Renovate.", "We Transform."];
 
-// One photo per kind of work, so the hero cycles through every division.
-const heroSlides = [
-  images.heroHome,
-  images.newHome,
-  images.openLiving,
-  images.outdoorPool,
-  images.office,
-  images.siteTeam,
+/** Icons and photos for the "Why Quadra Build" points, in the order they appear in content/home.ts. */
+const reasonIcons: LineIconName[] = ["communication", "tailored", "coordinated", "detail", "local"];
+const reasonImages = [
+  images.whyCommunication,
+  images.whyTailored,
+  images.whyCoordinated,
+  images.homeCraft,
+  images.whyLocal,
 ];
 
 export default function HomePage() {
   return (
     <>
       {/* ---------- Hero ---------- */}
-      <section className="hero" aria-labelledby="hero-title">
-        <HeroSlideshow slides={heroSlides} />
-
-        {/* Set-out linework: corner pegs and a dimension rail, drawn over the photo. */}
-        <div className="hero-setout" aria-hidden="true">
-          <span className="hero-peg hero-peg--tl" />
-          <span className="hero-peg hero-peg--tr" />
-          <span className="hero-peg hero-peg--bl" />
-          <span className="hero-peg hero-peg--br" />
-          <span className="hero-rail">
-            <span>South East Queensland</span>
-          </span>
-        </div>
-
+      <HomeHero
+        image={images.homeHero}
+        divisions={divisions.map((d) => ({
+          slug: d.slug,
+          number: d.number,
+          name: d.shortName,
+          href: divisionHref(d.slug),
+          image: d.heroImage,
+        }))}
+      >
         <div className="container hero-content">
-          <p className="hero-brand">
-            {site.name} — {site.city}, QLD
+          <p className="hero-eyebrow">
+            {site.city} &amp; South East Queensland
           </p>
           <h1 id="hero-title" className="display hero-title">
             {heroLines.map((line, i) => (
               <span className="line" key={line}>
-                <span style={cssVar("--i", i)} className={i === 2 ? "accent-text hero-underline" : undefined}>
+                <span style={cssVar("--i", i)} className={i === 2 ? "accent-text" : undefined}>
                   {line}
                 </span>
               </span>
             ))}
           </h1>
-          <div className="hero-lower">
-            <p>
-              From home renovations and extensions to new homes, granny flats, commercial fit-outs and development
-              approval support, Quadra Build helps bring your vision to life across Brisbane and South East Queensland.
-            </p>
-            <div className="btn-row">
-              <ButtonLink href="/contact" variant="primary">
-                Discuss Your Project
-              </ButtonLink>
-              <ButtonLink href="#services" variant="outline-light">
-                Explore Our Services
-              </ButtonLink>
-            </div>
+          <p className="hero-text">
+            From home renovations and extensions to new homes, granny flats, commercial fit-outs and development
+            approval support, Quadra Build helps bring your vision to life across Brisbane and South East Queensland.
+          </p>
+          <div className="btn-row hero-actions">
+            <ButtonLink href="/contact" variant="primary">
+              Discuss Your Project
+            </ButtonLink>
+            <ButtonLink href="#services" variant="outline-light" arrow={false}>
+              Explore Our Services
+            </ButtonLink>
           </div>
-          <nav className="hero-divisions" aria-label="Divisions">
-            {divisions.map((d, i) => (
-              <Link
-                key={d.slug}
-                href={divisionHref(d.slug)}
-                style={{ ...divisionKeyStyle(d.slug), ...cssVar("--i", i) }}
-              >
-                <span className="num">{d.number}</span>
-                <span className="name">{d.shortName}</span>
-                <Arrow />
-              </Link>
-            ))}
-          </nav>
         </div>
-      </section>
+      </HomeHero>
 
-      {/* ---------- Introduction ---------- */}
-      <section className="section tone-sand" aria-labelledby="intro-title">
+      {/* ---------- About ---------- */}
+      <section className="section" aria-labelledby="intro-title">
         <div className="container intro-grid">
           <div className="intro-media">
             <div className="frame" data-reveal="clip">
-              <Image src={images.newHomeFacade.src} alt={images.newHomeFacade.alt} fill placeholder="blur" sizes="(max-width: 860px) 90vw, 40vw" />
+              <Image src={images.homeIntroFacade.src} alt={images.homeIntroFacade.alt} fill placeholder="blur" sizes="(max-width: 900px) 90vw, 40vw" />
             </div>
             <div className="frame frame--small" data-reveal="clip" style={delay(200)}>
-              <Image src={images.livingWarm.src} alt={images.livingWarm.alt} fill placeholder="blur" sizes="(max-width: 860px) 45vw, 20vw" />
+              <Image src={images.homeIntroLiving.src} alt={images.homeIntroLiving.alt} fill placeholder="blur" sizes="(max-width: 900px) 45vw, 20vw" />
             </div>
           </div>
           <div className="intro-copy">
@@ -109,8 +91,8 @@ export default function HomePage() {
             <h2 id="intro-title" className="h-xl" data-reveal style={delay(80)}>
               One Team. Multiple Ways to Build Better.
             </h2>
-            <div className="prose lead" data-reveal style={delay(160)}>
-              <p>
+            <div className="prose" data-reveal style={delay(160)}>
+              <p className="lead">
                 Quadra Build brings residential construction, renovations, commercial projects and development support
                 together under one brand. Instead of piecing together separate providers for each stage, you work with a
                 coordinated team that understands how planning, design and construction connect.
@@ -121,7 +103,19 @@ export default function HomePage() {
                 the first conversation to the finished space.
               </p>
             </div>
-            <div data-reveal style={delay(220)}>
+            <ul className="intro-divisions" role="list" data-reveal style={delay(220)}>
+              {divisions.map((d) => (
+                <li key={d.slug}>
+                  <Link href={divisionHref(d.slug)}>
+                    <span className="num" aria-hidden="true">
+                      {d.number}
+                    </span>
+                    {d.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div data-reveal style={delay(260)}>
               <ArrowLink href="/about">More about our approach</ArrowLink>
             </div>
           </div>
@@ -129,7 +123,7 @@ export default function HomePage() {
       </section>
 
       {/* ---------- Divisions ---------- */}
-      <section id="services" className="section tone-sage" aria-labelledby="services-title">
+      <section id="services" className="section section--alt" aria-labelledby="services-title">
         <div className="container">
           <SectionHead eyebrow="Our Services" title="Four Specialist Divisions." id="services-title">
             Each division focuses on a different type of project, backed by the same standards of communication,
@@ -144,116 +138,85 @@ export default function HomePage() {
       </section>
 
       {/* ---------- Featured projects ---------- */}
-      {/* Pinned while the cards travel sideways (scroll-driven); a native swipe row where unsupported. */}
-      <section className="showcase" aria-labelledby="projects-title">
-        <div className="showcase-pin">
-          <div className="showcase-sticky">
-            <div className="container showcase-head">
-              <div>
-                <p className="eyebrow" data-reveal>
-                  Featured Projects
-                </p>
-                <h2 className="h-xl" id="projects-title" data-reveal style={delay(80)}>
-                  Built Around Your Vision.
-                </h2>
-              </div>
-              <div className="showcase-aside" data-reveal style={delay(160)}>
-                <p className="lead">A selection of the project types we deliver across Brisbane and South East Queensland.</p>
-                <div className="showcase-progress" aria-hidden="true">
-                  <span className="showcase-count">
-                    {String(featuredProjects.length).padStart(2, "0")} projects
-                  </span>
-                  <span className="showcase-bar">
-                    <span />
-                  </span>
-                  <span className="showcase-hint">Scroll</span>
-                </div>
-              </div>
-            </div>
-            <ul className="showcase-track">
-              {featuredProjects.map((p) => (
-                <li key={p.id}>
-                  <ProjectCard project={p} reveal={false} sizes="(max-width: 760px) 85vw, 36vw" />
-                </li>
-              ))}
-              <li className="showcase-end">
-                <Link href="/projects" className="showcase-end-link">
-                  <span className="eyebrow">Project gallery</span>
-                  <span className="h-lg">View All Projects</span>
-                  <Arrow />
-                </Link>
-              </li>
-            </ul>
+      <section className="section" aria-labelledby="projects-title">
+        <div className="container">
+          <SectionHead eyebrow="Featured Projects" title="Built Around Your Vision." id="projects-title" align="center">
+            <p>A selection of the project types we deliver across Brisbane and South East Queensland.</p>
+          </SectionHead>
+          <div className="project-feature-grid">
+            {featuredProjects.map((p, i) => (
+              <ProjectCard
+                key={p.id}
+                project={p}
+                style={delay((i % 2) * 120)}
+                sizes={i % 4 === 0 || i % 4 === 3 ? "(max-width: 760px) 100vw, 58vw" : "(max-width: 760px) 100vw, 42vw"}
+              />
+            ))}
+          </div>
+          <div className="mt-lg center">
+            <ButtonLink href="/projects" variant="outline">
+              View All Projects
+            </ButtonLink>
           </div>
         </div>
       </section>
 
       {/* ---------- Process ---------- */}
-      <section className="section section--dark tone-slate-deep" aria-labelledby="process-title">
+      <section className="section section--alt" aria-labelledby="process-title">
         <div className="container">
           <SectionHead eyebrow="Our Approach" title="A Clear Path From Idea to Handover." id="process-title">
             Every project follows a structured process, so you understand what&apos;s happening at each stage and what
             decisions are needed next.
           </SectionHead>
-          <BuildSequence steps={processSteps} note={processNote} />
+          <ProcessSteps steps={processSteps} note={processNote} />
         </div>
       </section>
 
       {/* ---------- Why Quadra ---------- */}
-      <section className="section tone-clay" aria-labelledby="why-title">
-        <div className="container reasons-grid">
-          <div className="reasons-aside">
-            <p className="eyebrow eyebrow--accent" data-reveal>
-              Why {site.name}
-            </p>
-            <h2 id="why-title" className="h-xl" data-reveal style={delay(80)}>
-              Built on Clarity and Care.
-            </h2>
-            <p className="lead" data-reveal style={delay(160)}>
-              What you can expect when you work with us.
-            </p>
-            <div className="frame" data-reveal="clip" style={delay(200)}>
-              <Image src={images.newHomeDusk.src} alt={images.newHomeDusk.alt} fill placeholder="blur" sizes="(max-width: 860px) 100vw, 40vw" />
-            </div>
-          </div>
-          <ol className="reason-list">
-            {reasons.map((r, i) => (
-              <li key={r.title} data-reveal style={delay(i * 60)}>
-                <span className="idx" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="h-md">{r.title}</h3>
-                <p>{r.text}</p>
-              </li>
-            ))}
-          </ol>
+      <section className="section" aria-labelledby="why-title">
+        <div className="container">
+          <SectionHead eyebrow={`Why ${site.name}`} title="Built on Clarity and Care." id="why-title" align="center">
+            What you can expect when you work with us.
+          </SectionHead>
+          <Showcase
+            items={reasons.map((r, i) => ({
+              title: r.title,
+              text: r.text,
+              image: reasonImages[i],
+              icon: <LineIcon name={reasonIcons[i]} />,
+            }))}
+          />
         </div>
       </section>
 
       {/* ---------- Service areas ---------- */}
-      <section className="section section--dark grid-lines tone-brick-deep areas-section" aria-labelledby="areas-title">
+      <section className="section section--dark" aria-labelledby="areas-title">
         <div className="container areas-band">
-          <h2 id="areas-title" className="big" data-reveal>
-            Brisbane
-            <span>&amp; South East Queensland.</span>
-          </h2>
-          <div className="copy" data-reveal style={delay(140)}>
-            <p className="eyebrow">Service Areas</p>
-            <p className="lead">
+          <div className="copy">
+            <p className="eyebrow" data-reveal>
+              Service Areas
+            </p>
+            <h2 id="areas-title" className="h-xl" data-reveal style={delay(80)}>
+              Brisbane <span>&amp; South East Queensland.</span>
+            </h2>
+            <p className="lead" data-reveal style={delay(140)}>
               We work with homeowners, businesses and property owners across Brisbane and the wider South East
               Queensland region. Not sure if we cover your location? Ask us — we&apos;ll let you know.
             </p>
-            <div className="btn-row">
-              <ButtonLink href="/service-areas" variant="light">
+            <div className="btn-row" data-reveal style={delay(200)}>
+              <ButtonLink href="/service-areas" variant="primary">
                 View Service Areas
               </ButtonLink>
             </div>
+          </div>
+          <div data-reveal="fade" style={delay(160)}>
+            <AreaMap />
           </div>
         </div>
       </section>
 
       {/* ---------- FAQ ---------- */}
-      <section className="section tone-slate" aria-labelledby="faq-title">
+      <section className="section" aria-labelledby="faq-title">
         <div className="container faq-layout">
           <div>
             <p className="eyebrow eyebrow--accent" data-reveal>

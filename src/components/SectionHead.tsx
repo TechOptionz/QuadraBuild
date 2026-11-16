@@ -5,6 +5,7 @@ export function SectionHead({
   title,
   children,
   stack = false,
+  align = "split",
   titleClass = "h-xl",
   id,
 }: {
@@ -12,11 +13,13 @@ export function SectionHead({
   title: React.ReactNode;
   children?: React.ReactNode;
   stack?: boolean;
+  /** `split`: title left, intro right (default). `center`: both centred in one column. */
+  align?: "split" | "center";
   titleClass?: string;
   id?: string;
 }) {
   return (
-    <div className={`section-head ${stack ? "section-head--stack" : ""}`}>
+    <div className={`section-head ${stack ? "section-head--stack" : ""} ${align === "center" ? "section-head--center" : ""}`.replace(/\s+/g, " ").trim()}>
       <div>
         {eyebrow && (
           <p className="eyebrow" data-reveal>

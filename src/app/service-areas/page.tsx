@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import { AreaMap } from "@/components/AreaMap";
 import { ButtonLink } from "@/components/ButtonLink";
 import { CtaBand } from "@/components/CtaBand";
-import { ImageSlot } from "@/components/ImageSlot";
+import { DivisionCard } from "@/components/DivisionCard";
 import { PageHero } from "@/components/PageHero";
-import { imageSlots } from "@/content/imageSlots";
+import { PhotoMarquee } from "@/components/PhotoMarquee";
 import { Ph } from "@/components/Placeholder";
 import { SectionHead } from "@/components/SectionHead";
 import { divisions } from "@/content/divisions";
@@ -18,6 +20,30 @@ export const metadata: Metadata = {
   alternates: { canonical: "/service-areas" },
 };
 
+const areas = [
+  {
+    tag: "Primary area",
+    title: "Brisbane",
+    text: "Renovations, new homes, granny flats, commercial fit-outs and approvals coordination across the Brisbane area.",
+    image: images.areaBrisbane,
+  },
+  {
+    tag: "Wider region",
+    title: "South East Queensland",
+    text: "Projects in the wider South East Queensland region are considered depending on project type, scope and location. Ask us about your site.",
+    image: images.areaSeq,
+  },
+];
+
+/** Photos of the region — scenery only; they don't imply a list of serviced suburbs. */
+const region = [
+  { image: images.regionRiver, caption: "CAPTION_RIVER" },
+  { image: images.regionQueenslander, caption: "CAPTION_QLDER" },
+  { image: images.regionGoldCoast, caption: "CAPTION_GC" },
+  { image: images.regionSuburbs, caption: "CAPTION_SUBURBS" },
+  { image: images.regionSunshineCoast, caption: "CAPTION_SC" },
+];
+
 export default function ServiceAreasPage() {
   const suburbs = site.confirmedSuburbs;
   return (
@@ -31,7 +57,8 @@ export default function ServiceAreasPage() {
             Queensland region.
           </p>
         }
-        image={images.outdoorPool}
+        image={images.serviceAreasHero}
+        variant="panel"
         crumbs={[{ label: "Service Areas" }]}
       />
 
@@ -42,28 +69,30 @@ export default function ServiceAreasPage() {
             property. We plan every project with that context in mind.
           </SectionHead>
           <div className="area-cards">
-            <article className="area-card" data-reveal>
-              <span className="badge badge--dark tag">Primary area</span>
-              <h3 className="h-lg">Brisbane</h3>
-              <p className="muted">
-                Renovations, new homes, granny flats, commercial fit-outs and approvals coordination across the Brisbane
-                area.
-              </p>
-            </article>
-            <article className="area-card" data-reveal style={delay(100)}>
-              <span className="badge badge--dark tag">Wider region</span>
-              <h3 className="h-lg">South East Queensland</h3>
-              <p className="muted">
-                Projects in the wider South East Queensland region are considered depending on project type, scope and
-                location. Ask us about your site.
-              </p>
-            </article>
+            {areas.map((a, i) => (
+              <article className="area-card" key={a.title} data-reveal style={delay(i * 100)}>
+                <div className="media">
+                  <Image src={a.image.src} alt={a.image.alt} fill placeholder="blur" sizes="(max-width: 760px) 100vw, 50vw" />
+                </div>
+                <div className="body">
+                  <span className="badge tag">{a.tag}</span>
+                  <h3 className="h-lg">{a.title}</h3>
+                  <p>{a.text}</p>
+                </div>
+              </article>
+            ))}
           </div>
-          <ImageSlot slot={imageSlots.serviceAreasMap} ratio="21 / 9" sizes="(max-width: 1400px) 100vw, 1400px" className="mt-lg" />
         </div>
       </section>
 
-      <section className="section tone-clay" aria-labelledby="suburbs-title">
+      <section className="section section--tight region-strip" aria-labelledby="region-title">
+        <div className="container">
+          <SectionHead eyebrow="The region" title="From the River City to the Coast" id="region-title" align="center" titleClass="h-lg" />
+        </div>
+        <PhotoMarquee label="Photos of South East Queensland" items={region} />
+      </section>
+
+      <section className="section section--alt" aria-labelledby="suburbs-title">
         <div className="container split">
           <div className="copy">
             <p className="eyebrow eyebrow--accent" data-reveal>
@@ -97,28 +126,8 @@ export default function ServiceAreasPage() {
               </ButtonLink>
             </div>
           </div>
-          <div className="map-graphic" data-reveal="clip" aria-hidden="true">
-            <svg viewBox="0 0 400 400" fill="none">
-              {Array.from({ length: 9 }).map((_, i) => (
-                <line key={`v${i}`} x1={40 * (i + 1)} y1="0" x2={40 * (i + 1)} y2="400" stroke="rgba(243,240,233,.08)" />
-              ))}
-              {Array.from({ length: 9 }).map((_, i) => (
-                <line key={`h${i}`} x1="0" y1={40 * (i + 1)} x2="400" y2={40 * (i + 1)} stroke="rgba(243,240,233,.08)" />
-              ))}
-              <circle cx="200" cy="200" r="150" stroke="rgba(243,240,233,.18)" strokeDasharray="4 6" />
-              <circle cx="200" cy="200" r="90" stroke="rgba(243,240,233,.28)" />
-              <circle cx="200" cy="200" r="34" fill="rgba(180,83,42,.25)" />
-              <rect x="192" y="192" width="16" height="16" fill="#b4532a" />
-              <text x="222" y="196" fill="#f3f0e9" fontSize="14" fontFamily="sans-serif" fontWeight="600">
-                Brisbane
-              </text>
-              <text x="222" y="214" fill="rgba(243,240,233,.6)" fontSize="10" fontFamily="sans-serif" letterSpacing="2">
-                QLD
-              </text>
-              <text x="200" y="370" fill="rgba(243,240,233,.5)" fontSize="10" fontFamily="sans-serif" letterSpacing="3" textAnchor="middle">
-                SOUTH EAST QUEENSLAND
-              </text>
-            </svg>
+          <div className="map-graphic" data-reveal="clip">
+            <AreaMap />
           </div>
         </div>
       </section>
@@ -128,20 +137,18 @@ export default function ServiceAreasPage() {
           <SectionHead eyebrow="Across the region" title="Services Available" id="services-areas-title">
             Availability can vary with project type and location. We&apos;ll confirm during your initial conversation.
           </SectionHead>
-          <ul className="values">
+          <div className="division-grid">
             {divisions.map((d, i) => (
-              <li key={d.slug} data-reveal style={delay(i * 80)}>
-                <h3 className="h-md">{d.name}</h3>
-                <p>{d.cardSummary}</p>
-              </li>
+              <DivisionCard key={d.slug} division={d} index={i} />
             ))}
-          </ul>
+          </div>
         </div>
       </section>
 
       <CtaBand
         title="Not Sure If We Cover Your Area?"
         text="Send us your suburb and a few details about your project, and we'll let you know how we can help."
+        image={images.serviceAreasCta}
       />
     </>
   );

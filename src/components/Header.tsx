@@ -6,15 +6,14 @@ import { useEffect, useId, useRef, useState } from "react";
 import { mainNav, serviceLinks } from "@/content/navigation";
 import { cssVar } from "@/lib/style";
 import { ButtonLink } from "./ButtonLink";
-import { DivisionKey } from "./DivisionKey";
-import { Chevron } from "./Icons";
+import { divisionKeyStyle } from "./DivisionKey";
+import { Arrow, Chevron } from "./Icons";
 import { Logo } from "./Logo";
+import { LogoSwitcher } from "./LogoSwitcher";
 
 export function Header() {
   const pathname = usePathname();
-  const isHome = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const servicesRef = useRef<HTMLLIElement>(null);
@@ -29,25 +28,25 @@ export function Header() {
     setServicesOpen(false);
   }, [pathname]);
 
-  // Header style on scroll; hide when scrolling down, reveal when scrolling up.
+  // The header gains a soft shadow once the page has scrolled.
   useEffect(() => {
-    let lastY = window.scrollY;
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 40);
-      setHidden(y > 480 && y > lastY + 4 ? true : y < lastY - 4 ? false : (h) => h);
-      lastY = y;
-    };
+    const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock page scroll while the mobile menu is open.
+  // Lock page scroll while the mobile menu is open, and close it if the
+  // viewport grows to the desktop layout.
   useEffect(() => {
     document.documentElement.style.overflow = menuOpen ? "hidden" : "";
+    if (!menuOpen) return;
+    const mq = matchMedia("(min-width: 1101px)");
+    const onChange = () => mq.matches && setMenuOpen(false);
+    mq.addEventListener("change", onChange);
     return () => {
       document.documentElement.style.overflow = "";
+      mq.removeEventListener("change", onChange);
     };
   }, [menuOpen]);
 
@@ -77,20 +76,17 @@ export function Header() {
     };
   }, [servicesOpen, menuOpen]);
 
-  const overlay = isHome && !scrolled && !menuOpen;
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
   const servicesActive = pathname.startsWith("/services");
 
   return (
     <>
-      <header
-        className="site-header"
-        data-overlay={overlay}
-        data-menu-open={menuOpen}
-        data-hidden={hidden && !menuOpen && !servicesOpen}
-      >
+      <header className="site-header" data-scrolled={scrolled} data-menu-open={menuOpen}>
         <div className="container header-inner">
-          <Logo />
+          <div className="brand">
+            <Logo priority />
+            <LogoSwitcher />
+          </div>
           <nav className="nav" aria-label="Main">
             <ul className="nav-list">
               <li
@@ -111,21 +107,32 @@ export function Header() {
                   Services <Chevron />
                 </button>
                 <div id={panelId} className="dropdown-panel" data-open={servicesOpen}>
-                  {serviceLinks.map((s) => (
-                    <Link
-                      key={s.href}
-                      href={s.href}
-                      tabIndex={servicesOpen ? 0 : -1}
-                      aria-current={isActive(s.href) ? "page" : undefined}
-                    >
-                      <span className="num">
-                        <DivisionKey slug={s.slug} />
-                        {s.number}
-                      </span>
-                      <strong>{s.label}</strong>
-                      <span>{s.summary}</span>
-                    </Link>
-                  ))}
+                  <div className="dropdown-grid">
+                    {serviceLinks.map((s) => (
+                      <Link
+                        key={s.href}
+                        href={s.href}
+                        className="dropdown-item"
+                        style={divisionKeyStyle(s.slug)}
+                        tabIndex={servicesOpen ? 0 : -1}
+                        aria-current={isActive(s.href) ? "page" : undefined}
+                      >
+                        <span className="num">{s.number}</span>
+                        <span className="dropdown-item-body">
+                          <strong>
+                            {s.label} <Arrow />
+                          </strong>
+                          <span className="summary">{s.summary}</span>
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                  <Link href="/contact" className="dropdown-foot" tabIndex={servicesOpen ? 0 : -1}>
+                    <span>Not sure which service fits your project?</span>
+                    <span className="dropdown-foot-cta">
+                      Talk to our team <Arrow />
+                    </span>
+                  </Link>
                 </div>
               </li>
               {mainNav.map((item) => (
@@ -136,7 +143,7 @@ export function Header() {
                 </li>
               ))}
             </ul>
-            <ButtonLink href="/contact" variant="primary" className="header-cta">
+            <ButtonLink href="/contact" variant="primary" className="header-cta" arrow={false}>
               Discuss Your Project
             </ButtonLink>
             <button
@@ -165,10 +172,7 @@ export function Header() {
               {serviceLinks.map((s, i) => (
                 <li key={s.href} style={cssVar("--i", i)}>
                   <Link href={s.href} aria-current={isActive(s.href) ? "page" : undefined}>
-                    <span className="num">
-                        <DivisionKey slug={s.slug} />
-                        {s.number}
-                      </span>
+                    <span className="num">{s.number}</span>
                     {s.label}
                   </Link>
                 </li>
@@ -192,8 +196,6 @@ export function Header() {
           </ButtonLink>
         </div>
       </div>
-
-      {!isHome && <div className="header-spacer" aria-hidden="true" />}
     </>
   );
 }

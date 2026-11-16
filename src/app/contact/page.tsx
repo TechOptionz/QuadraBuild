@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { ContactForm } from "@/components/ContactForm";
-import { ImageSlot } from "@/components/ImageSlot";
 import { PageHero } from "@/components/PageHero";
 import { Confirmed } from "@/components/Placeholder";
-import { imageSlots } from "@/content/imageSlots";
+import { images } from "@/content/images";
 import { placeholderText, shouldRender, site } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -37,6 +36,7 @@ export default function ContactPage() {
             opportunity, start with a conversation. Share a few details and we&apos;ll help you understand the next steps.
           </p>
         }
+        image={images.contactHero}
         crumbs={[{ label: "Contact" }]}
       />
 
@@ -98,8 +98,6 @@ export default function ContactPage() {
                 </dd>
               </div>
             </dl>
-
-            <ImageSlot slot={imageSlots.contactOffice} ratio="4 / 3" sizes="(max-width: 860px) 100vw, 30vw" />
 
             <div className="placeholder-panel" style={{ borderStyle: "solid" }}>
               <h2 className="h-sm">Preparing for your consultation</h2>

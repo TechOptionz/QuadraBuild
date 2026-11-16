@@ -86,7 +86,7 @@ export default async function ArticlePage({ params }: Props) {
         </div>
       </article>
 
-      <section className="section tone-sand" aria-labelledby="more-title">
+      <section className="section section--alt" aria-labelledby="more-title">
         <div className="container">
           <h2 id="more-title" className="h-lg" style={{ marginBottom: "2.5rem" }}>
             More Guides

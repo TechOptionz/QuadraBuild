@@ -25,7 +25,7 @@ export const articles: Article[] = [
     category: "Renovation",
     excerpt:
       "A practical checklist of questions to work through before you talk to a builder — from how you cook to where the bins go.",
-    image: images.openLiving,
+    image: images.insightKitchen,
     isSample: true,
     outline: [
       { heading: "Start with how you use the space", body: "Who cooks, how often, and what frustrates you about the current layout? Notes on daily routines are often more useful than inspiration photos alone." },
@@ -40,7 +40,7 @@ export const articles: Article[] = [
     category: "Granny Flats",
     excerpt:
       "Before you picture the floor plan, it's worth understanding the site, planning and practical questions that shape what's possible.",
-    image: images.grannyFlat,
+    image: images.insightGrannyFlat,
     isSample: true,
     outline: [
       { heading: "Why suitability comes first", body: "Whether a secondary dwelling is possible depends on the property and the planning rules that apply to it. Requirements vary, so they need to be checked for each site." },
@@ -55,7 +55,7 @@ export const articles: Article[] = [
     category: "Planning",
     excerpt:
       "An introduction to why approvals exist, who is typically involved, and how to prepare for the process.",
-    image: images.plansDetail,
+    image: images.insightApprovals,
     isSample: true,
     outline: [
       { heading: "Planning versus building approval", body: "Draft section explaining, in general terms, the difference between planning matters and building matters. To be reviewed by a qualified professional before publishing." },
@@ -69,7 +69,7 @@ export const articles: Article[] = [
     title: "Writing a Clear Brief for Your Office Fit-Out",
     category: "Commercial",
     excerpt: "How a well-prepared brief helps align your team, your designer and your builder from day one.",
-    image: images.officeCorridor,
+    image: images.insightOfficeBrief,
     isSample: true,
     outline: [
       { heading: "Describe how your team works", body: "Focus work, collaboration, client meetings, storage — capture how the space needs to perform." },
@@ -83,7 +83,7 @@ export const articles: Article[] = [
     title: "Renovate, Extend or Rebuild? Framing the Decision",
     category: "Homeowner Guides",
     excerpt: "A simple framework for thinking through the options when your home no longer fits the way you live.",
-    image: images.livingWarm,
+    image: images.insightRenovateExtend,
     isSample: true,
     outline: [
       { heading: "Define the problem", body: "Is it space, layout, condition, or all three? Being specific helps narrow the options." },
@@ -97,7 +97,7 @@ export const articles: Article[] = [
     title: "Getting the Most From Your First Project Conversation",
     category: "Homeowner Guides",
     excerpt: "What to gather, what to ask and what to expect when you first talk to a builder about your project.",
-    image: images.livingLounge,
+    image: images.insightConsultation,
     isSample: true,
     outline: [
       { heading: "Gather what you already have", body: "Address details, photos, any existing plans or surveys, and notes on what you'd like to change." },
@@ -111,7 +111,7 @@ export const articles: Article[] = [
     title: "Designing Outdoor Living for the South East Queensland Climate",
     category: "Outdoor",
     excerpt: "Ideas to consider when planning decks, patios and entertaining areas that get used all year.",
-    image: images.outdoorLiving,
+    image: images.insightOutdoor,
     isSample: true,
     outline: [
       { heading: "Follow the sun and breeze", body: "Orientation affects shade, comfort and how often a space is used." },

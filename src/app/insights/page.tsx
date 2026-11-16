@@ -27,6 +27,8 @@ export default function InsightsPage() {
             you ask the right questions before you start.
           </p>
         }
+        variant="collage"
+        images={[rest[5].image, rest[2].image, rest[3].image]}
         crumbs={[{ label: "Insights & Guides" }]}
       >
         {showPlaceholders && (

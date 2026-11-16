@@ -17,14 +17,11 @@ export function DivisionCard({ division, index = 0 }: { division: Division; inde
           placeholder="blur"
           sizes="(max-width: 600px) 100vw, (max-width: 1080px) 50vw, 25vw"
         />
-        <span className="num" aria-hidden="true">
-          {division.number}
-        </span>
       </div>
       <div className="body">
-        <p className="kicker">
+        <p className="num" aria-hidden="true">
+          {division.number}
           <DivisionKey slug={division.slug} />
-          {division.shortName}
         </p>
         <h3 className="h-md">{division.name}</h3>
         <p>{division.cardSummary}</p>

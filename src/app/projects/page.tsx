@@ -26,6 +26,8 @@ export default function ProjectsPage() {
             outdoor living.
           </p>
         }
+        variant="wall"
+        images={projects.map((p) => p.image)}
         crumbs={[{ label: "Projects" }]}
       >
         {hasSamples && (
@@ -48,7 +50,7 @@ export default function ProjectsPage() {
       <CtaBand
         title="Your Project Could Be Next."
         text="Tell us about your renovation, new home, fit-out or development idea and we'll talk through the possibilities."
-        image={images.newHomeDusk}
+        image={images.projectsCta}
       />
     </>
   );
