@@ -2,6 +2,10 @@ import type { StaticImageData } from "next/image";
 
 // Site-wide sections
 import homeHero from "@/assets/photos/homeHero.jpg";
+import heroHomeDusk from "@/assets/photos/heroHomeDusk.jpg";
+import heroHomePool from "@/assets/photos/heroHomePool.jpg";
+import heroHomeTimber from "@/assets/photos/heroHomeTimber.jpg";
+import heroHomeCourtyard from "@/assets/photos/heroHomeCourtyard.jpg";
 import homeIntroFacade from "@/assets/photos/homeIntroFacade.jpg";
 import homeIntroLiving from "@/assets/photos/homeIntroLiving.jpg";
 import homeCraft from "@/assets/photos/homeCraft.jpg";
@@ -120,6 +124,23 @@ export const images = {
   homeHero: {
     src: homeHero,
     alt: "Contemporary two-storey home with floor-to-ceiling glazing, lit from within at dusk",
+  },
+  // Home hero slideshow, after homeHero
+  heroHomeDusk: {
+    src: heroHomeDusk,
+    alt: "Modern home with dark cladding and a lit open-plan living area beside a large gum tree at dusk",
+  },
+  heroHomePool: {
+    src: heroHomePool,
+    alt: "White two-storey home with a timber-lined soffit and wide glazing overlooking a swimming pool",
+  },
+  heroHomeTimber: {
+    src: heroHomeTimber,
+    alt: "Contemporary home with timber and grey panel cladding, a dark garage door and a landscaped front lawn",
+  },
+  heroHomeCourtyard: {
+    src: heroHomeCourtyard,
+    alt: "White single-storey home with sliding glass doors opening to a paved courtyard and pool",
   },
   homeIntroFacade: {
     src: homeIntroFacade,

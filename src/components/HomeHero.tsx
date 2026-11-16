@@ -2,39 +2,85 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { SiteImage } from "@/content/images";
 import { Arrow } from "./Icons";
 
 type HeroDivision = { slug: string; number: string; name: string; href: string; image: SiteImage };
 
+const SLIDE_MS = 6000;
+
 /**
- * Home hero. The background photo cross-fades to a division's own photo while
- * the cursor (or keyboard focus) is on that division in the bar at the bottom,
- * and returns to the main photo when it leaves. The division photos are only
- * requested after the first interaction, so they cost nothing up front.
+ * Home hero. The background is a slideshow of house photos that cross-fade
+ * every few seconds; visitors can pause it or jump to a photo with the
+ * controls at the bottom right. It does not auto-advance for visitors who
+ * prefer reduced motion.
+ *
+ * While the cursor (or keyboard focus) is on a division in the bar at the
+ * bottom, that division's own photo fades in over the slideshow and the
+ * slideshow waits. Only the first slide loads up front: each later slide is
+ * requested one step ahead, and division photos after the first interaction.
  */
 export function HomeHero({
-  image,
+  slides,
   divisions,
   children,
 }: {
-  image: SiteImage;
+  slides: SiteImage[];
   divisions: HeroDivision[];
   children: React.ReactNode;
 }) {
   const [active, setActive] = useState<string | null>(null);
   const [armed, setArmed] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  /** Highest slide index rendered so far (the current one plus the next). */
+  const [reach, setReach] = useState(0);
 
   const show = (slug: string) => {
     setArmed(true);
     setActive(slug);
   };
 
+  const goTo = (i: number) => {
+    setIndex(i);
+    setReach((r) => Math.max(r, i + 1));
+  };
+
+  // Preload the second slide once the page is interactive.
+  useEffect(() => {
+    setReach((r) => Math.max(r, 1));
+  }, []);
+
+  const holding = paused || active !== null;
+  useEffect(() => {
+    if (holding || slides.length < 2) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setTimeout(() => {
+      const next = (index + 1) % slides.length;
+      setIndex(next);
+      setReach((r) => Math.max(r, next + 1));
+    }, SLIDE_MS);
+    return () => window.clearTimeout(timer);
+  }, [holding, index, slides.length]);
+
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="hero-media">
-        <Image src={image.src} alt={image.alt} fill priority placeholder="blur" sizes="100vw" />
+        {slides.map((slide, i) =>
+          i <= reach ? (
+            <div className="hero-slide" key={i} data-active={i === index} aria-hidden={i !== index}>
+              <Image
+                src={slide.src}
+                alt={slide.alt}
+                fill
+                priority={i === 0}
+                placeholder={i === 0 ? "blur" : "empty"}
+                sizes="100vw"
+              />
+            </div>
+          ) : null,
+        )}
         {armed &&
           divisions.map((d) => (
             <div className="hero-alt" key={d.slug} data-active={active === d.slug}>
@@ -44,6 +90,31 @@ export function HomeHero({
       </div>
 
       {children}
+
+      {slides.length > 1 && (
+        <div className="container hero-slide-nav">
+          <button
+            type="button"
+            className="hero-slide-toggle"
+            aria-label={paused ? "Play slideshow" : "Pause slideshow"}
+            onClick={() => setPaused((p) => !p)}
+          >
+            <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true" fill="currentColor">
+              {paused ? <path d="M2.5 1l8 5-8 5z" /> : <path d="M2 1h3v10H2zM7 1h3v10H7z" />}
+            </svg>
+          </button>
+          {slides.map((_, i) => (
+            <button
+              type="button"
+              key={i}
+              className="hero-slide-dot"
+              aria-label={`Show photo ${i + 1} of ${slides.length}`}
+              aria-current={i === index ? "true" : undefined}
+              onClick={() => goTo(i)}
+            />
+          ))}
+        </div>
+      )}
 
       <nav className="hero-divisions" aria-label="Divisions" onMouseLeave={() => setActive(null)}>
         <div className="container">

@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { CtaBand } from "@/components/CtaBand";
-import { DivisionPanels } from "@/components/DivisionPanels";
+import { DivisionCard } from "@/components/DivisionCard";
 import { PageHero } from "@/components/PageHero";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { SectionHead } from "@/components/SectionHead";
 import { Showcase } from "@/components/Showcase";
+import { divisions } from "@/content/divisions";
 import { processNote, processSteps } from "@/content/home";
 import { images } from "@/content/images";
 import { site } from "@/content/site";
@@ -109,7 +110,11 @@ export default function AboutPage() {
           <SectionHead eyebrow="Structure" title="How Quadra Is Organised" id="structure-title" align="center">
             Four divisions working under one brand, each focused on a different kind of project.
           </SectionHead>
-          <DivisionPanels />
+          <div className="division-grid">
+            {divisions.map((d, i) => (
+              <DivisionCard key={d.slug} division={d} index={i} />
+            ))}
+          </div>
         </div>
       </section>
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { AreaMap } from "@/components/AreaMap";
 import { ArrowLink, ButtonLink } from "@/components/ButtonLink";
 import { CtaBand } from "@/components/CtaBand";
-import { DivisionCard } from "@/components/DivisionCard";
+import { DivisionPanels } from "@/components/DivisionPanels";
 import { FaqList } from "@/components/FaqList";
 import { HomeHero } from "@/components/HomeHero";
 import { LineIcon, type LineIconName } from "@/components/Icons";
@@ -36,7 +36,13 @@ export default function HomePage() {
     <>
       {/* ---------- Hero ---------- */}
       <HomeHero
-        image={images.homeHero}
+        slides={[
+          images.homeHero,
+          images.heroHomeDusk,
+          images.heroHomePool,
+          images.heroHomeTimber,
+          images.heroHomeCourtyard,
+        ]}
         divisions={divisions.map((d) => ({
           slug: d.slug,
           number: d.number,
@@ -129,11 +135,7 @@ export default function HomePage() {
             Each division focuses on a different type of project, backed by the same standards of communication,
             coordination and workmanship.
           </SectionHead>
-          <div className="division-grid">
-            {divisions.map((d, i) => (
-              <DivisionCard key={d.slug} division={d} index={i} />
-            ))}
-          </div>
+          <DivisionPanels />
         </div>
       </section>
 

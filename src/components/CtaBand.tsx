@@ -38,7 +38,7 @@ export function CtaBand({
             <ButtonLink href={href} variant="primary">
               {cta}
             </ButtonLink>
-            <ButtonLink href="/service-areas" variant="outline-light" arrow={false}>
+            <ButtonLink href="/service-areas" variant="outline" arrow={false}>
               View Service Areas
             </ButtonLink>
           </div>

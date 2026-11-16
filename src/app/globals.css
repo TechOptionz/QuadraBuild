@@ -134,8 +134,7 @@ button {
 }
 .section--dark :focus-visible,
 .site-footer :focus-visible,
-.hero :focus-visible,
-.cta-band :focus-visible {
+.hero :focus-visible {
   outline-color: var(--orange);
 }
 
@@ -210,7 +209,6 @@ button {
   text-wrap: balance;
 }
 .section--dark :is(.display, .h-xl, .h-lg, .h-md, .h-sm),
-.cta-band :is(.h-xl, .h-lg),
 .hero .display {
   color: var(--on-dark);
 }
@@ -265,8 +263,7 @@ button {
   height: 2px;
   background: var(--orange);
 }
-.section--dark .eyebrow,
-.cta-band .eyebrow {
+.section--dark .eyebrow {
   color: var(--on-dark-muted);
 }
 
@@ -1999,27 +1996,24 @@ html:not(.js) .process .rail::before {
 }
 
 /* ---------- CTA band ---------- */
+/* Light band, so the navy footer below is the only dark block at the page end. */
 .cta-band {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: var(--navy);
-  color: var(--on-dark);
+  background: var(--light);
+  border-top: 1px solid var(--line);
 }
-/* Photo on the right half, dissolved into the navy so the copy stays on solid colour. */
+/* Photo fills the right half with a clean edge. The frame clips the parallax
+   drift, which scales the photo past its box. */
 .cta-band .bg {
   position: absolute;
   inset: 0 0 0 52%;
   z-index: -1;
+  overflow: hidden;
 }
 .cta-band .bg img {
   object-fit: cover;
-}
-.cta-band .bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, var(--navy) 0%, rgba(6, 27, 73, 0.6) 45%, rgba(6, 27, 73, 0.35) 100%);
 }
 .cta-inner {
   position: relative;
@@ -2032,7 +2026,7 @@ html:not(.js) .process .rail::before {
   max-width: 40rem;
 }
 .cta-inner .copy > p:not(.eyebrow):not(.cta-contact) {
-  color: rgba(255, 255, 255, 0.86);
+  color: var(--ink-2);
   font-size: 1.1rem;
   max-width: 34em;
 }
@@ -2045,6 +2039,7 @@ html:not(.js) .process .rail::before {
   gap: 0.5rem 1.75rem;
   font-family: var(--font-display);
   font-weight: 600;
+  color: var(--ink);
 }
 .cta-contact a {
   text-decoration: underline;
@@ -2052,12 +2047,11 @@ html:not(.js) .process .rail::before {
   text-underline-offset: 0.3em;
 }
 @media (max-width: 860px) {
+  /* Stacked: the photo sits above the copy as its own strip. */
   .cta-band .bg {
-    inset: 0;
-    opacity: 0.25;
-  }
-  .cta-band .bg::after {
-    background: rgba(6, 27, 73, 0.5);
+    position: relative;
+    inset: auto;
+    height: clamp(11rem, 42vw, 16rem);
   }
   .cta-inner .btn {
     flex: 1 1 14rem;
@@ -2716,7 +2710,7 @@ html:not(.js) .process .rail::before {
 .site-footer {
   background: var(--navy-deep);
   color: var(--on-dark);
-  border-top: 1px solid var(--line-dark);
+  border-top: 3px solid var(--orange);
 }
 .footer-top {
   display: grid;
@@ -3626,6 +3620,72 @@ html:not(.js) .process .rail::before {
   }
   .marquee-set[aria-hidden="true"] {
     display: none;
+  }
+}
+
+/* ---------- Home hero: slideshow (see components/HomeHero.tsx) ---------- */
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s var(--ease-in-out);
+}
+.hero-slide[data-active="true"] {
+  opacity: 1;
+}
+/* Each photo eases in from slightly enlarged while it is on screen. */
+.hero-media .hero-slide img {
+  animation: none;
+  transform: scale(1.06);
+  transition: transform 7s linear;
+}
+.hero-media .hero-slide[data-active="true"] img {
+  transform: scale(1);
+}
+.hero-slide-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  padding-bottom: 1.25rem;
+}
+.hero-slide-toggle {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-right: 0.35rem;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  background: rgba(6, 27, 73, 0.45);
+  color: #fff;
+  transition: background 0.2s, border-color 0.2s;
+}
+.hero-slide-toggle:hover {
+  background: var(--navy);
+  border-color: #fff;
+}
+/* A short bar with a taller hit area. */
+.hero-slide-dot {
+  width: 2rem;
+  height: 1.5rem;
+  padding: 0;
+  border: 0;
+  background: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)) center / 100% 3px no-repeat;
+  transition: background-color 0.2s;
+}
+.hero-slide-dot:hover {
+  background-image: linear-gradient(#fff, #fff);
+}
+.hero-slide-dot[aria-current="true"] {
+  background-image: linear-gradient(var(--orange), var(--orange));
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-slide,
+  .hero-media .hero-slide img {
+    transition: none;
+    transform: none;
   }
 }
 
